@@ -3,6 +3,4 @@ let edad=23;
 console.log(edad);
 
 
-
-
-//esto es otro cmabio
+//esto es un cmabio
