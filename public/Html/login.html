@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>registrar</title>
+    <script src="/scripts/login.js"></script>
 </head>
+
 <body>
-    <h1>REGISTRO USUARIO</h1>
+    <form action="">
+        <h1>Login</h1>
+
+        <label for="">usuario</label>
+        <input type="text" placeholder="Escriba su usuario" id="usuario">
+        <label for="">contraseña</label>
+        <input type="password" placeholder="Ecriba su contraseña" id="clave">
+
+        <input type="button" value="entrar" onclick="loguear()">
+        <label for="">registrar</label>
+        <a href="registro.html">
+            <input type="button" value="registrar">
+        </a>
+    </form>
 </body>
+
 </html>
