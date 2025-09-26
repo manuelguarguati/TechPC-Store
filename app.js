@@ -8,12 +8,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.get('/', (req, res) => {
+app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'home.html'));
 });
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+
 });
+
+app.get('/registro', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'registro.html'));
+
+});
+
 app.listen(Port, () => {
     console.log(`el servido en  http://localhost:${Port}`);
 });
