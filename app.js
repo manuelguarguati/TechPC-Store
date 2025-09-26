@@ -22,5 +22,5 @@ app.get('/registro', (req, res) => {
 });
 
 app.listen(Port, () => {
-    console.log(`el servido en  http://localhost:${Port}`);
+    console.log(`el servido en  http://localhost:${Port}/home`);
 });
