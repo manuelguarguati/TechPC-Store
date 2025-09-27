@@ -1,28 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>registrar</title>
-    <script src="/scripts/login.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="/scripts/login.js" defer></script>
+  <link rel="stylesheet" href="/public/css/style.css">
 </head>
 
 <body>
-    <form action="">
-        <h1>Login</h1>
+  <div class="formulario">
+    <h1>Inicio de sesión</h1>
+    <form method="post">
+      <!-- Campo de correo -->
+      <div class="usuario">
+        <label for="usuario">Correo:</label>
+        <input type="email" placeholder="Escriba su correo" id="usuario" required />
+      </div>
 
-        <label for="">usuario</label>
-        <input type="text" placeholder="Escriba su usuario" id="usuario">
-        <label for="">contraseña</label>
-        <input type="password" placeholder="Ecriba su contraseña" id="clave">
+      <!-- Campo de contraseña -->
+      <div class="usuario">
+        <label for="clave">Contraseña:</label>
+        <input type="password" placeholder="Escriba su contraseña" id="clave" required />
+      </div>
 
-        <input type="button" value="entrar" onclick="loguear()">
-        <label for="">registrar</label>
-        <a href="/registro">
-            <input type="button" value="registrar">
-        </a>
+      <!-- Botón de iniciar sesión -->
+      <div class="usuario">
+        <input type="button" value="Entrar" onclick="loguear()" />
+      </div>
+     
+      <!-- Bloques de botones al fondo -->
+<div class="botones-inferiores">
+    <!-- Lado izquierdo: Recuperar -->
+    <div class="boton-bloque">
+        <span class="texto-boton">¿Se te olvidó la clave?</span>
+        <a href="/recuperar"><button type="button" class="small-btn recover">Recuperar</button></a>
+    </div>
+
+    <!-- Lado derecho: Registrar -->
+    <div class="boton-bloque">
+        <span class="texto-boton">¿No te has registrado?</span>
+        <a href="/registro"><button type="button" class="small-btn register">Registrar</button></a>
+    </div>
+
     </form>
+  </div>
 </body>
 
 </html>
