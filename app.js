@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //  Servir archivos estáticos
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //  Rutas principales
 app.get('/home', (req, res) => {
@@ -22,6 +22,10 @@ app.get('/login', (req, res) => {
 
 app.get('/registro', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'registro.html'));
+});
+
+app.get('/carrito', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'carrito.html'));
 });
 
 //  Iniciar el servidor
