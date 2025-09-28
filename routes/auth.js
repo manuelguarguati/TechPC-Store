@@ -19,8 +19,7 @@ router.post('/registro', async (req, res) => {
             password: hashedPassword
         });
 
-        // Devuelve redirección para el frontend
-        res.status(201).json({ redirect: '/home' });
+       res.json({ redirect: '/login', message: 'Usuario registrado correctamente' });
 
     } catch (err) {
         console.error(err);
