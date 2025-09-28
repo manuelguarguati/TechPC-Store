@@ -1,6 +1,10 @@
  function logear(){
 
 
-    const usuario=document.getElementById('usuario');
+    const user=document.getElementById('usuario');
+    const password=document.getElementById('clave');
+    
+
+    
 
  }
