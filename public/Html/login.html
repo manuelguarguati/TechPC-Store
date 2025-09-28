@@ -1,11 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>registrar</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="/scripts/login.js" defer></script>
+  <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-    <h1>REGISTRO USUARIO</h1>
+  <div class="formulario">
+    <h1>Inicio de sesión</h1>
+    <form method="post">
+      <!-- Campo de correo -->
+      <div class="usuario">
+        <label for="usuario">Correo:</label>
+        <input type="email" placeholder="Escriba su correo" id="usuario" required />
+      </div>
+
+      <!-- Campo de contraseña -->
+      <div class="usuario">
+        <label for="clave">Contraseña:</label>
+        <input type="password" placeholder="Escriba su contraseña" id="clave" required />
+      </div>
+
+      <!-- Botón de iniciar sesión -->
+      <div class="usuario">
+        <input type="button" value="Entrar" onclick="loguear()" />
+      </div>
+     
+      <!-- Bloques de botones al fondo -->
+<div class="botones-inferiores">
+    <!-- Lado izquierdo: Recuperar -->
+    <div class="boton-bloque">
+        <span class="texto-boton">¿Se te olvidó la clave?</span>
+        <a href="/recuperar"><button type="button" class="small-btn recover">Recuperar</button></a>
+    </div>
+
+    <!-- Lado derecho: Registrar -->
+    <div class="boton-bloque">
+        <span class="texto-boton">¿No te has registrado?</span>
+        <a href="/registro"><button type="button" class="small-btn register">Registrar</button></a>
+    </div>
+
+    </form>
+  </div>
 </body>
+
 </html>

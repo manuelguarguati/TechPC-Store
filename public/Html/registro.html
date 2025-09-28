@@ -1,11 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>registro usuarios</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro</title>
+    <link rel="stylesheet" href="/css/registro.css" />
 </head>
+
 <body>
-    aqui se va a regitrar las personas
+    <div class="formulario">
+        <h2>Crear tu cuenta</h2>
+        <form method="post" action="/registro">
+
+            <!-- Email -->
+            <div class="campo">
+                <label for="correo">Ingresa tu e-mail</label>
+                <label>Asegúrate de tener acceso a él.</label>
+                <input type="email" name="email" id="correo" placeholder="ejemplo@correo.com" required />
+            </div>
+
+             <!--nombre y apellido-->
+            <div class="fila">
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="name" id="nombre" placeholder="Tu nombre" required />
+                </div>
+                <div class="campo">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" name="lastname" id="apellido" placeholder="Tu apellido" required />
+                </div>
+            </div>
+
+            <!-- Telefono -->
+            <div class="campo">
+                <label for="celular">Teléfono</label>
+                <div class="telefono">
+                    <span>+57</span>
+                    <input type="tel" name="phone" id="celular" placeholder="Tu número" required />
+                </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="fila">
+                <div class="campo">
+                    <label for="contraseña1">Contraseña</label>
+                    <input type="password" name="password" id="contraseña1" placeholder="Crea una contraseña" required />
+                </div>
+                <div class="campo">
+                    <label for="contraseña2">Confirmar</label>
+                    <input type="password" name="password2" id="contraseña2" placeholder="Repite la contraseña" required />
+                </div>
+            </div>
+            <small class="requisitos">Min. 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 símbolo.</small>
+
+            <!-- Autorizacion -->
+            <div class="autorizacion">
+                <label>
+                    <input type="checkbox" required />
+                    Acepto la <a href="#">Declaración de privacidad</a> y los
+                    <a href="#">Términos y condiciones</a>.
+                </label>
+            </div>
+
+            <!-- Boton -->
+            <button type="submit" class="boton">Crear cuenta</button>
+        </form>
+    </div>
 </body>
+
 </html>

@@ -1,0 +1,144 @@
+/* --- General --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ecf0f3, #359fd0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 1rem;
+}
+body:hover{
+
+  background:linear-gradient(135deg, #ffffff, #247fff);
+}
+.formulario {
+  background: #fff;
+  padding: 1.8rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.2rem;
+  font-size: 1.7rem;
+  color: #2676a3;
+}
+
+/* --- Campos --- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+  padding: 0.6rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #f5fcf8;
+  box-shadow: 0 0 5px rgba(225, 238, 233, 0.4);
+}
+
+/* --- Filas lado a lado --- */
+.fila {
+  display: flex;
+  gap: 10px;
+}
+
+.fila .campo {
+  flex: 1;
+}
+
+/* --- Telefono --- */
+.telefono {
+  display: flex;
+  align-items: center;
+}
+
+.telefono span {
+  background: #f0f0f0;
+  padding: 0.6rem;
+  border: 2px solid #ccc;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+}
+
+.telefono input {
+  border-radius: 0 8px 8px 0;
+  flex: 1;
+}
+
+/* --- Requisitos contraseña --- */
+.requisitos {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* --- Autorizacion --- */
+.autorizacion {
+  font-size: 0.85rem;
+  margin-bottom: 1.3rem;
+  line-height: 1.3;
+}
+
+.autorizacion a {
+  color: #7d8560;
+  text-decoration: none;
+}
+
+.autorizacion a:hover {
+  text-decoration: underline;
+}
+
+/* --- Boton --- */
+.boton {
+  width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #4a5258, #5c9dbb);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.boton:hover {
+  background: linear-gradient(135deg, #c3cdcf, #3d667e);
+  transform: scale(1.03);
+}
+
+/* --- Responsive movil --- */
+@media (max-width: 480px) {
+  .fila {
+    flex-direction: column;
+  }
+}
