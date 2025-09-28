@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 // registro
-router.post('/registre', async(req , res) => {
+router.post('/register', async(req , res) => {
     const {name , lastname , email , phone, password} = req.body;
 
     const hashedpassword = await bcrypt.hash(password, 10);
