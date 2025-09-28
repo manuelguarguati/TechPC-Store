@@ -31,32 +31,8 @@ app.get('/registro', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'registro.html'));
 });
 
-// post 
-app.post('/registro', async (req, res) => {
-  const { name, lastname, email, phone, password } = req.body;
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  try {
-    const user = await User.create({
-      name,
-      lastname,
-      email,
-      phone,
-      password: hashedPassword
-    });
-
-    res.redirect('/login');
-  } catch (err) {
-    res.status(400).send('Error al registrar usuario');
-  }
-});
-
-
 // rutas a la logica de auntetificacion
 app.use('/auth',authRoutes);
-
-
 
 //  Iniciar el servidor
 app.listen(Port, () => {
