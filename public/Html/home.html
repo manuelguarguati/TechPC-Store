@@ -1,85 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
-    <link rel="stylesheet" href="css/home.css">
-</head>
-<body>
+<html lang="es">
 
-   <header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - TechPC Store</title>
+  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="icon" href="/img/favicon.ico" />
+</head>
+
+<body>
+  <header>
     <!-- Logo -->
     <div class="logo">
-      <img src="../img/unnamed.png" alt="TechPC Store" width="120">
+      <img src="/img/unnamed.png" alt="TechPC Store" />
     </div>
-
-    <!-- Barra de búsqueda -->
+    <!--  Barra de búsqueda -->
     <div class="search-bar">
-      <input type="text" placeholder="Buscar productos, marcas y más...">
-      <button>🔍</button>
+      <input type="text" placeholder="Buscar productos..." />
+      <button>Buscar</button>
     </div>
+    </nav>
+    <!-- Barra de navegación -->
+    <nav>
+      <a href="/login" id="login-link">Login</a>
+      <a href="/registro" id="registro-link">Registro</a>
+      <a href="/carrito">🛒</a>
+      <span id="correo-usuario"></span>
+
+
+      <button id="logout-btn" style="display: none;">Cerrar sesión</button>
+    </nav>
 
     <!-- Banner -->
     <div class="banner">ENVÍO GRATIS EN TU PRIMERA COMPRA</div>
-
-    <!-- Opciones -->
-    <nav>
-      <a href="/login">Inicia session</a>
-      <a href="/registro">Registro</a>
-      <a href="/carrito">🛒</a>
-      
-    </nav>
   </header>
-  
-  <div class="container">
-      <h1>Computadores en promoción</h1>
-      <div class="productos">
-        <div class="producto">
-          <img src="/img/laptopgamer1.png" alt="Laptop gamer negra con teclado RGB iluminado" >
-          <h3>Laptop Gamer</h3>
-          <p>Laptop gamer negra con teclado RGB iluminado</p>
-          <div class="precio">$4.500.000</div>
-          <button>Añadir al carrito 🛒</button>
-        </div>
-        <div class="producto">
-          <img src="/img/laptopgamer2.png" alt="Laptop gamer negra con teclado RGB iluminado de alta calidad" >
-          <h3>Laptop Gamer</h3>
-          <p>Laptop gamer negra con teclado RGB iluminado de alta calidad</p>
-          <div class="precio">$4.500.000</div>
-          <button>Añadir al carrito 🛒</button>
-        </div>
-        <div class="producto">
-          <img src="" alt="" >
-          <h3>Laptop Gamer</h3>
-          <p>Descripcion de la pc</p>
-          <div class="precio">$9.500.000</div>
-          <button>Añadir al carrito 🛒</button>
-        </div>
-        <div class="producto">
-          <img src="" alt="" >
-          <h3>Laptop Gamer</h3>
-          <p>Descripcion de la pc</p>
-          <div class="precio">$4.500.000</div>
-          <button>Añadir al carrito 🛒</button>
-        </div>
+
+  <main class="container">
+    <h1>Bienvenido <span id="nombre-usuario">Visitante </span></h1>
+
+    <!-- Sección de productos -->
+    <h2>Computadores en promoción</h2>
+    <div class="productos">
+      <div class="producto">
+        <img src="/img/laptopgamer1.png" alt="Laptop gamer negra con teclado RGB iluminado" />
+        <h3>Laptop Gamer</h3>
+        <p>Laptop gamer negra con teclado RGB iluminado</p>
+        <div class="precio">$4.500.000</div>
+        <button>Añadir al carrito 🛒</button>
       </div>
-  </div>
-    
+
+      <div class="producto">
+        <img src="/img/laptopgamer2.png" alt="Laptop gamer negra con teclado RGB iluminado de alta calidad" />
+        <h3>Laptop Gamer</h3>
+        <p>Laptop gamer negra con teclado RGB iluminado de alta calidad</p>
+        <div class="precio">$4.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+
+      <div class="producto">
+        <img src="/img/laptopgamer3.png" alt="Laptop Gamer" />
+        <h3>Laptop Gamer</h3>
+        <p>Descripción de la PC</p>
+        <div class="precio">$9.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+
+      <div class="producto">
+        <img src="/img/laptopgamer4.png" alt="Laptop Gamer" />
+        <h3>Laptop Gamer</h3>
+        <p>Descripción de la PC</p>
+        <div class="precio">$4.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+    </div>
+  </main>
+
   <footer>
     © TechPC Store
   </footer>
 
-  
-  <div class="menu">
-    <div class="barra_Busqueda">
-      
-    </div>
-    <div class="botones">
-      
-    </div>
-  </div>
-
-
+  <script src="/scripts/home.js"></script>
 </body>
+
 </html>

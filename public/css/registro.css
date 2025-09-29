@@ -13,24 +13,27 @@ body {
   justify-content: center;
   height: 100vh;
   padding: 1rem;
+  transition: background 0.6s;
 }
-body:hover{
 
-  background:linear-gradient(135deg, #ffffff, #247fff);
+body:hover {
+  background: linear-gradient(135deg, #ffffff, #247fff);
 }
+
 .formulario {
   background: #fff;
-  padding: 1.8rem 2rem;
+  padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 600px;
+  animation: fadeIn 0.6s ease;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 1.2rem;
-  font-size: 1.7rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
   color: #2676a3;
 }
 
@@ -50,18 +53,19 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="tel"] {
-  padding: 0.6rem;
+input[type="tel"],
+input[type="number"] {
+  padding: 0.7rem;
   border: 2px solid #ccc;
   border-radius: 8px;
   font-size: 0.95rem;
-  transition: border 0.3s;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
 input:focus {
   outline: none;
-  border-color: #f5fcf8;
-  box-shadow: 0 0 5px rgba(225, 238, 233, 0.4);
+  border-color: #359fd0;
+  box-shadow: 0 0 5px rgba(53, 159, 208, 0.5);
 }
 
 /* --- Filas lado a lado --- */
@@ -74,7 +78,7 @@ input:focus {
   flex: 1;
 }
 
-/* --- Telefono --- */
+/* --- Teléfono --- */
 .telefono {
   display: flex;
   align-items: center;
@@ -82,10 +86,11 @@ input:focus {
 
 .telefono span {
   background: #f0f0f0;
-  padding: 0.6rem;
+  padding: 0.7rem;
   border: 2px solid #ccc;
   border-right: none;
   border-radius: 8px 0 0 8px;
+  font-weight: 600;
 }
 
 .telefono input {
@@ -101,7 +106,7 @@ input:focus {
   display: block;
 }
 
-/* --- Autorizacion --- */
+/* --- Autorización --- */
 .autorizacion {
   font-size: 0.85rem;
   margin-bottom: 1.3rem;
@@ -109,18 +114,19 @@ input:focus {
 }
 
 .autorizacion a {
-  color: #7d8560;
+  color: #2676a3;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .autorizacion a:hover {
   text-decoration: underline;
 }
 
-/* --- Boton --- */
+/* --- Botón --- */
 .boton {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.9rem;
   background: linear-gradient(135deg, #4a5258, #5c9dbb);
   color: #fff;
   font-weight: 600;
@@ -132,13 +138,33 @@ input:focus {
 }
 
 .boton:hover {
-  background: linear-gradient(135deg, #c3cdcf, #3d667e);
+  background: linear-gradient(135deg, #3d667e, #5c9dbb);
   transform: scale(1.03);
 }
 
-/* --- Responsive movil --- */
+/* --- Animación entrada --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive móvil --- */
 @media (max-width: 480px) {
   .fila {
     flex-direction: column;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .formulario {
+    padding: 1.5rem;
   }
 }

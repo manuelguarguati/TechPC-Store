@@ -1,10 +1,20 @@
 {
+  "name": "tienda-otp",
+  "version": "1.0.0",
+  "description": "Proyecto tienda con registro, OTP por SMS y login",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "express-session": "^1.18.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "mysql2": "^3.15.1",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.32.1",
+    "twilio": "^5.10.1"
   }
 }
