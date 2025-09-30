@@ -30,7 +30,8 @@ app.get('/home', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html', 'login.html')));
 app.get('/registro', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html', 'registro.html')));
 app.get('/verificar', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html', 'verificar.html')));
-
+app.get('/perfil', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html', 'perfil.html')));
+app.get('/cambiar-password', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html', 'cambiar-passowrd.html')));
 // API de autenticación
 app.use('/auth', authRoutes);
 

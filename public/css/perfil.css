@@ -1,0 +1,112 @@
+/* ======= Estilos generales ======= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ecf0f3, #359fd0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ======= Header ======= */
+header {
+  width: 100%;
+  background: #1b263b;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+}
+
+header a {
+  position: absolute;
+  left: 1rem;
+  top: 1.2rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  background: #359fd0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+header a:hover {
+  background: #2179a3;
+}
+
+/* ======= Contenedor del perfil ======= */
+.perfil-container {
+  margin-top: 3rem;
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.perfil-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #1b263b;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 0.4rem;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #f8f9fa;
+}
+
+input[readonly] {
+  background: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* ======= Botones ======= */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #359fd0;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #2179a3;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .perfil-container {
+    margin: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+}

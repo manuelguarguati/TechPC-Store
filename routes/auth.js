@@ -107,24 +107,67 @@ router.post('/login', async (req, res) => {
   }
 });
 
+
 // SESIÓN
 router.get('/session', (req, res) => {
   if (req.session.userId) {
     res.json({
       loggedIn: true,
       name: req.session.userName,
-      email: req.session.userEmail, //  Ahora lo enviamos
+      email: req.session.userEmail,
       password: req.session.userPlainPassword || null
     });
   } else {
     res.json({ loggedIn: false });
   }
 });
+
 // CERRAR SESIÓN
 router.post('/logout', (req, res) => {
   req.session.destroy(() => {
     res.json({ success: true, message: 'Sesión cerrada' });
   });
+});
+// CAMBIAR CONTRASEÑA
+router.put('/change-password', async (req, res) => {
+  try {
+    // 1️ Verificar si hay sesión activa
+    if (!req.session.userId) {
+      return res.status(401).send('No autorizado. Inicia sesión.');
+    }
+
+    const { actual, nueva } = req.body;
+
+    if (!actual || !nueva) {
+      return res.status(400).send('Faltan campos obligatorios.');
+    }
+
+    // 2️ Buscar al usuario en la BD
+    const user = await User.findByPk(req.session.userId);
+    if (!user) {
+      return res.status(404).send('Usuario no encontrado.');
+    }
+
+    // 3️ Verificar contraseña actual
+    const isMatch = await bcrypt.compare(actual, user.password);
+    if (!isMatch) {
+      return res.status(400).send('La contraseña actual no es correcta.');
+    }
+
+    // 4️ Encriptar la nueva contraseña
+    const hashedPassword = await bcrypt.hash(nueva, 10);
+
+    // 5️ Guardar nueva contraseña
+    await User.update({ password: hashedPassword }, { where: { id: user.id } });
+
+    // 6️ Eliminar contraseña en texto plano de la sesión
+    delete req.session.userPlainPassword;
+
+    res.status(200).send('Contraseña actualizada correctamente ');
+  } catch (err) {
+    console.error('Error en /auth/change-password:', err);
+    res.status(500).send('Error interno del servidor.');
+  }
 });
 
 
