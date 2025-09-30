@@ -11,35 +11,54 @@
 
 <body>
   <header>
-    <!-- Logo -->
+    <!--  LOGO -->
     <div class="logo">
       <img src="/img/unnamed.png" alt="TechPC Store" />
     </div>
-    <!--  Barra de búsqueda -->
+
+    <!--  BARRA DE BÚSQUEDA -->
     <div class="search-bar">
       <input type="text" placeholder="Buscar productos..." />
       <button>Buscar</button>
     </div>
-    </nav>
-    <!-- Barra de navegación -->
+
+    <!--  BARRA DE NAVEGACIÓN -->
     <nav>
+      <!-- Links de login y registro (se ocultan cuando hay sesión activa) -->
       <a href="/login" id="login-link">Login</a>
       <a href="/registro" id="registro-link">Registro</a>
-      <a href="/carrito">🛒</a>
-      <span id="correo-usuario"></span>
 
+      <!--  Botón del carrito -->
+      <a href="/carrito" id="carrito-btn">🛒</a>
 
-      <button id="logout-btn" style="display: none;">Cerrar sesión</button>
+      <!--  BOTÓN DE USUARIO (MENÚ DESPLEGABLE) -->
+      <div class="usuario-container">
+        <button id="usuario-btn">👤 Cuenta ▼</button>
+
+        <!--  Menú desplegable del usuario -->
+        <div id="menu-usuario" class="menu-usuario">
+          <p><strong>Nombre:</strong> <span id="nombre-usuario"></span></p>
+          <p><strong>Correo:</strong> <span id="correo-usuario"></span></p>
+
+          <hr />
+
+          <!--  Opciones del menú -->
+          <button id="ver-perfil">Ver perfil</button>
+          <button id="cambiar-pass">Cambiar contraseña</button>
+          <button id="logout-btn">Cerrar sesión</button>
+        </div>
+      </div>
     </nav>
 
-    <!-- Banner -->
+    <!--  Banner de promoción -->
     <div class="banner">ENVÍO GRATIS EN TU PRIMERA COMPRA</div>
   </header>
 
+  <!--  Contenido principal -->
   <main class="container">
-    <h1>Bienvenido <span id="nombre-usuario">Visitante </span></h1>
+    <h1>Bienvenido <span id="nombre-bienvenida">Visitante</span></h1>
 
-    <!-- Sección de productos -->
+    <!--  Sección de productos -->
     <h2>Computadores en promoción</h2>
     <div class="productos">
       <div class="producto">

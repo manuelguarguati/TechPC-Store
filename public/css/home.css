@@ -192,3 +192,74 @@ footer {
   color: white;
   margin-top: auto;
 }
+/* ===== Menú desplegable de usuario ===== */
+.usuario-container {
+  position: relative;
+  display: inline-block;
+}
+
+#usuario-btn {
+  background: #359fd0;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#usuario-btn:hover {
+  background: #2179a9;
+}
+
+.menu-usuario {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 230px;
+  padding: 15px;
+  display: none;
+  z-index: 1000;
+}
+
+.menu-usuario.mostrar {
+  display: block;
+}
+
+.menu-usuario p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.menu-usuario hr {
+  margin: 10px 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}
+
+.menu-usuario button {
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.menu-usuario button:hover {
+  background: #dcdcdc;
+}
+
+#logout-btn {
+  background: #e74c3c;
+  color: #fff;
+}
+
+#logout-btn:hover {
+  background: #c0392b;
+}
