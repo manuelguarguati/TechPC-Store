@@ -1,0 +1,170 @@
+/* --- General --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ecf0f3, #359fd0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 1rem;
+  transition: background 0.6s;
+}
+
+body:hover {
+  background: linear-gradient(135deg, #ffffff, #247fff);
+}
+
+.formulario {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  animation: fadeIn 0.6s ease;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #2676a3;
+}
+
+/* --- Campos --- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"] {
+  padding: 0.7rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #359fd0;
+  box-shadow: 0 0 5px rgba(53, 159, 208, 0.5);
+}
+
+/* --- Filas lado a lado --- */
+.fila {
+  display: flex;
+  gap: 10px;
+}
+
+.fila .campo {
+  flex: 1;
+}
+
+/* --- Teléfono --- */
+.telefono {
+  display: flex;
+  align-items: center;
+}
+
+.telefono span {
+  background: #f0f0f0;
+  padding: 0.7rem;
+  border: 2px solid #ccc;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-weight: 600;
+}
+
+.telefono input {
+  border-radius: 0 8px 8px 0;
+  flex: 1;
+}
+
+/* --- Requisitos contraseña --- */
+.requisitos {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* --- Autorización --- */
+.autorizacion {
+  font-size: 0.85rem;
+  margin-bottom: 1.3rem;
+  line-height: 1.3;
+}
+
+.autorizacion a {
+  color: #2676a3;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.autorizacion a:hover {
+  text-decoration: underline;
+}
+
+/* --- Botón --- */
+.boton {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #4a5258, #5c9dbb);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.boton:hover {
+  background: linear-gradient(135deg, #3d667e, #5c9dbb);
+  transform: scale(1.03);
+}
+
+/* --- Animación entrada --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive móvil --- */
+@media (max-width: 480px) {
+  .fila {
+    flex-direction: column;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .formulario {
+    padding: 1.5rem;
+  }
+}

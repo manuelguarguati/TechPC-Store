@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - TechPC Store</title>
+  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="icon" href="/img/favicon.ico" />
+</head>
+
+<body>
+  <header>
+    <!--  LOGO -->
+    <div class="logo">
+      <img src="/img/unnamed.png" alt="TechPC Store" />
+    </div>
+
+    <!--  BARRA DE BÚSQUEDA -->
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar productos..." />
+      <button>Buscar</button>
+    </div>
+
+    <!--  BARRA DE NAVEGACIÓN -->
+    <nav>
+      <!-- Links de login y registro (se ocultan cuando hay sesión activa) -->
+      <a href="/login" id="login-link">Login</a>
+      <a href="/registro" id="registro-link">Registro</a>
+
+      <!--  Botón del carrito -->
+      <a href="/carrito" id="carrito-btn">🛒</a>
+
+      <!--  BOTÓN DE USUARIO (MENÚ DESPLEGABLE) -->
+      <div class="usuario-container">
+        <button id="usuario-btn">👤 Cuenta ▼</button>
+
+        <!--  Menú desplegable del usuario -->
+        <div id="menu-usuario" class="menu-usuario">
+          <p><strong>Nombre:</strong> <span id="nombre-usuario"></span></p>
+          <p><strong>Correo:</strong> <span id="correo-usuario"></span></p>
+
+          <hr />
+
+          <!--  Opciones del menú -->
+          <button id="ver-perfil">Ver perfil</button>
+          <button id="cambiar-pass">Cambiar contraseña</button>
+          <button id="logout-btn">Cerrar sesión</button>
+        </div>
+      </div>
+    </nav>
+
+    <!--  Banner de promoción -->
+    <div class="banner">ENVÍO GRATIS EN TU PRIMERA COMPRA</div>
+  </header>
+
+  <!--  Contenido principal -->
+  <main class="container">
+    <h1>Bienvenido <span id="nombre-bienvenida">Visitante</span></h1>
+
+    <!--  Sección de productos -->
+    <h2>Computadores en promoción</h2>
+    <div class="productos">
+      <div class="producto">
+        <img src="/img/laptopgamer1.png" alt="Laptop gamer negra con teclado RGB iluminado" />
+        <h3>Laptop Gamer</h3>
+        <p>Laptop gamer negra con teclado RGB iluminado</p>
+        <div class="precio">$4.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+
+      <div class="producto">
+        <img src="/img/laptopgamer2.png" alt="Laptop gamer negra con teclado RGB iluminado de alta calidad" />
+        <h3>Laptop Gamer</h3>
+        <p>Laptop gamer negra con teclado RGB iluminado de alta calidad</p>
+        <div class="precio">$4.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+
+      <div class="producto">
+        <img src="/img/laptopgamer3.png" alt="Laptop Gamer" />
+        <h3>Laptop Gamer</h3>
+        <p>Con diseño esbeltos y refinado, materiales de primera calidad y juegos 
+          arraigados en su ADN, los portátiles ROG Zephyrus fusionan forma y función sin esfuerzo.</p>
+        <div class="precio">$9.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+
+      <div class="producto">
+        <img src="/img/laptopgamer4.png" alt="Laptop Gamer" />
+        <h3>Laptop Gamer</h3>
+        <p>El portátil ASUS ROG Strix G15 Advantage Edition (G513QY) es un modelo centrado en el rendimiento que combina una 
+          CPU AMD Ryzen 9 5900HX y una GPU AMD Radeon RX 6800M, que fue lanzado en 2021. Se destaca por
+           su gran rendimiento en juegos y por su optimización a través de las tecnologías SmartShift y 
+           Smart Access Memory de AMD</p>
+        <div class="precio">$4.500.000</div>
+        <button>Añadir al carrito 🛒</button>
+      </div>
+    </div>
+
+    
+  </main>
+
+  <footer>
+    © TechPC Store
+  </footer>
+
+  <script src="/scripts/home.js"></script>
+</body>
+
+</html>
