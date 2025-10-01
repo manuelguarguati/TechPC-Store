@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar Código</title>
+  <link rel="stylesheet" href="/css/verificacion.css">
+</head>
+<body>
+  <div class="formulario">
+    <h2>Verificación</h2>
+    <p>Hemos enviado un código de 6 dígitos al número que registraste.</p>
+
+    <form id="otpForm">
+      <div class="otp-campos">
+        <input type="text" maxlength="1" class="code-input" required />
+        <input type="text" maxlength="1" class="code-input" required />
+        <input type="text" maxlength="1" class="code-input" required />
+        <input type="text" maxlength="1" class="code-input" required />
+        <input type="text" maxlength="1" class="code-input" required />
+        <input type="text" maxlength="1" class="code-input" required />
+      </div>
+
+      <button type="submit" class="boton">Verificar</button>
+    </form>
+
+    <p id="msg"></p>
+  </div>
+
+  <script src="/scripts/verificar.js"></script>
+</body>
+</html>
