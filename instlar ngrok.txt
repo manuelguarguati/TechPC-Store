@@ -1,0 +1,10 @@
+// instlar ngrok
+choco install ngrok
+
+// configuramos la api
+ngrok config add-authtoken TU_AUTHTOKEN_AQUI
+
+
+// para iniciar mi pagina
+
+ngrok http 3000

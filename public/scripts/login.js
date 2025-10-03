@@ -28,3 +28,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+///7
+window.handleCredentialResponse = async (response) => {
+  try {
+    // Token de Google JWT (ID Token)
+    const id_token = response.credential;
+
+    // Lo enviamos al backend para validarlo
+    const res = await fetch('/auth/google-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_token }),
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      alert(data.error);
+    } else {
+      alert('Inicio de sesión con Google correcto ');
+      window.location.href = data.redirect || '/home';
+    }
+  } catch (err) {
+    console.error('Error Google login:', err);
+    alert('Error iniciando sesión con Google');
+  }
+};

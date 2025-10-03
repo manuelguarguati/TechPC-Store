@@ -8,6 +8,8 @@ const User = sequelize.define('User', {
   phone: { type: DataTypes.STRING, allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
   phone_verified: { type: DataTypes.BOOLEAN, defaultValue: false }
+
+
 });
 
 module.exports = User;
