@@ -1,4 +1,6 @@
+// home.js
 document.addEventListener("DOMContentLoaded", async () => {
+  // Elementos del DOM
   const nombreSpan = document.getElementById("nombre-usuario");
   const correoSpan = document.getElementById("correo-usuario");
   const nombreBienvenida = document.getElementById("nombre-bienvenida");
@@ -7,18 +9,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoutBtn = document.getElementById("logout-btn");
   const verPerfilBtn = document.getElementById("ver-perfil");
   const cambiarPassBtn = document.getElementById("cambiar-pass");
+  const usuarioBtn = document.getElementById("usuario-btn");
+  const menuUsuario = document.getElementById("menu-usuario");
 
-  //  Verificar si hay sesión activa
+  // ===========================
+  // 🔹 1. Verificar sesión
+  // ===========================
   try {
     const res = await fetch("/auth/session", { credentials: "include" });
     const data = await res.json();
 
     if (data.loggedIn) {
-      // Usuario logueado
+      // Usuario autenticado
       nombreSpan.textContent = data.name || "Usuario";
       correoSpan.textContent = data.email || "correo@correo.com";
       nombreBienvenida.textContent = data.name || "Usuario";
 
+      // Ocultar login y registro
       loginLink.style.display = "none";
       registroLink.style.display = "none";
     } else {
@@ -29,36 +36,45 @@ document.addEventListener("DOMContentLoaded", async () => {
       logoutBtn.style.display = "none";
     }
   } catch (err) {
-    console.error("Error al obtener la sesión:", err);
+    console.error("❌ Error al obtener la sesión:", err);
   }
 
-  //  Mostrar / ocultar menú al hacer clic
-  document.getElementById("usuario-btn").addEventListener("click", () => {
-    document.getElementById("menu-usuario").classList.toggle("mostrar");
+  // ===========================
+  // 🔹 2. Menú desplegable de usuario
+  // ===========================
+  usuarioBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Evita cierre inmediato
+    menuUsuario.classList.toggle("mostrar");
   });
 
-  //  Cerrar menú si se hace clic fuera
+  // Cerrar menú al hacer clic fuera
   window.addEventListener("click", (e) => {
-    const menu = document.getElementById("menu-usuario");
-    const boton = document.getElementById("usuario-btn");
-    if (!menu.contains(e.target) && !boton.contains(e.target)) {
-      menu.classList.remove("mostrar");
+    if (!menuUsuario.contains(e.target) && !usuarioBtn.contains(e.target)) {
+      menuUsuario.classList.remove("mostrar");
     }
   });
 
-  //  Cerrar sesión
+  // ===========================
+  // 🔹 3. Acciones del menú
+  // ===========================
+
+  // Cerrar sesión
   logoutBtn.addEventListener("click", async () => {
-    await fetch("/auth/logout", { method: "POST", credentials: "include" });
-    location.reload();
+    try {
+      await fetch("/auth/logout", { method: "POST", credentials: "include" });
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
   });
 
-  // Ver perfil 
+  // Ver perfil
   verPerfilBtn.addEventListener("click", () => {
-    window.location.href = "/perfil"; //  perfil.html 
+    window.location.href = "/perfil";
   });
 
-  //  Cambiar contraseña 
+  // Cambiar contraseña
   cambiarPassBtn.addEventListener("click", () => {
-    window.location.href = "/cambiar-password"; //  cambiar-password.html
+    window.location.href = "/cambiar-password";
   });
 });

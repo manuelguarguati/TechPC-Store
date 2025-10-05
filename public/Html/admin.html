@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración 👑</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración 👑</h1>
+    <nav>
+      <a href="/home">🏠 Volver al inicio</a>
+      <a href="/logout">🚪 Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==============================
+         SECCIÓN USUARIOS
+    =============================== -->
+    <section id="seccion-usuarios">
+      <h2>👤 Lista de usuarios registrados</h2>
+      <table id="tablaUsuarios">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Rol</th>
+            <th>Verificado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <!-- ==============================
+         SECCIÓN PRODUCTOS
+    =============================== -->
+    <section id="seccion-productos">
+      <h2>🛍️ Gestión de Productos</h2>
+
+      <!-- Formulario para agregar producto -->
+      <form id="form-nuevo-producto">
+        <h3>➕ Agregar nuevo producto</h3>
+        <div class="form-grid">
+          <input type="text" name="nombre" placeholder="Nombre" required>
+          <input type="text" name="descripcion" placeholder="Descripción">
+          <input type="number" name="precio" placeholder="Precio" required>
+          <input type="number" name="stock" placeholder="Stock" required>
+          <input type="text" name="imagen" placeholder="URL de la imagen">
+          <input type="text" name="categoria" placeholder="Categoría">
+        </div>
+        <button type="submit" class="btn-agregar">Agregar producto</button>
+      </form>
+
+      <!-- Tabla de productos -->
+      <table id="tablaProductos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Categoría</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 TechPC Store - Panel de Administración</p>
+  </footer>
+
+  <!-- Script principal -->
+  <script src="/scripts/admin.js"></script>
+</body>
+</html>
