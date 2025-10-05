@@ -34,6 +34,8 @@ app.get('/perfil', (req, res) => res.sendFile(path.join(__dirname, 'public', 'ht
 app.get('/cambiar-password', (req, res) => res.sendFile(path.join(__dirname, 'public', 'html', 'cambiar-passowrd.html')));
 // API de autenticación
 app.use('/auth', authRoutes);
+const productRoutes = require('./routes/product');
+app.use('/products', productRoutes);
 
 // Servidor
 app.listen(PORT, () => {

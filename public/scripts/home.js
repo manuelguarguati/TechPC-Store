@@ -62,3 +62,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "/cambiar-password"; //  cambiar-password.html
   });
 });
+
+async function cargarProductos() {
+  const res = await fetch('/products/all');
+  const productos = await res.json();
+
+  const contenedor = document.getElementById('productos-container');
+  contenedor.innerHTML = '';
+
+  productos.forEach(p => {
+    const div = document.createElement('div');
+    div.classList.add('producto');
+    div.innerHTML = `
+      <img src="${p.image}" alt="${p.name}" />
+      <h3>${p.name}</h3>
+      <p>${p.description}</p>
+      <div class="precio">$${p.price.toLocaleString()}</div>
+      <button>Añadir al carrito 🛒</button>
+    `;
+    contenedor.appendChild(div);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', cargarProductos);
