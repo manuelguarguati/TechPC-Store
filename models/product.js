@@ -4,6 +4,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
+
 const Product = sequelize.define('Product', {
     name: {
         type: DataTypes.STRING,
@@ -13,7 +14,7 @@ const Product = sequelize.define('Product', {
         type: DataTypes.TEXT
     },
     price: {
-        type: DataTypes.DECIMAL(10, 2),
+        type: DataTypes.DECIMAL,
         allowNull: false
     },
     stock: {
@@ -27,8 +28,8 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING // Guardamos la ruta o URL de la imagen
     }
 }, {
-    tableName: 'productos', // 🔥 Nombre de tu tabla real
+    tableName: 'productos', //  Nombre de tu tabla real
     timestamps: true
 });
 
-module.exports = Product; // ✅ Exportación correcta del modelo
+module.exports = Product; //  Exportación correcta del modelo

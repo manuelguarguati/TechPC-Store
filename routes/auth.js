@@ -57,7 +57,7 @@ router.post('/google-login', async (req, res) => {
 
     // ⚙️ Aquí normalmente se verifica el token de Google.
     // Por ahora, simulamos un correo de usuario de Google:
-    const googleEmail = '1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com';
+    const googleEmail = 'test@google.com';
 
     // 🔍 Buscar o crear usuario
     let user = await User.findOne({ where: { email: googleEmail } });

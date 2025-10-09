@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
+  color: black; /* Texto negro por defecto */
 }
 
 body {
@@ -20,7 +21,7 @@ header {
   align-items: center;
   background: #1a1a1a;
   padding: 15px 40px;
-  color: white;
+  color: white; /* Texto blanco solo en el header */
   flex-wrap: wrap;
 }
 
@@ -28,13 +29,7 @@ header {
   height: 60px;
 }
 
-/* === Contenedor nav + buscador === */
-.nav-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* ===== Navegación ===== */
 nav {
   display: flex;
   align-items: center;
@@ -55,7 +50,7 @@ nav {
 .search-bar {
   display: flex;
   align-items: center;
-  background: white;
+  background: rgb(25, 23, 23);
   border-radius: 20px;
   overflow: hidden;
 }
@@ -66,6 +61,7 @@ nav {
   font-size: 14px;
   width: 220px;
   outline: none;
+  color: black; /* Texto del input negro */
 }
 
 .search-bar button {
@@ -81,65 +77,39 @@ nav {
   background: #023e8a;
 }
 
-/* ===== Mini banner ===== */
-.mini-banner {
-  margin-top: 5px;
+/* ===== Banner ===== */
+.banner {
   font-size: 14px;
   color: #00b4d8;
   font-weight: bold;
+  margin-top: 5px;
 }
 
-/* ===== Usuario y cerrar sesión ===== */
-.user-section {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-#correo-usuario {
-  font-weight: bold;
-  color: #00ff7f;
-}
-
-#logout-btn {
-  background: #e63946;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-#logout-btn:hover {
-  background: #c9182b;
-}
-
-/* ===== Contenido ===== */
+/* ===== Contenido principal ===== */
 .container {
   width: 90%;
   margin: 40px auto;
   text-align: center;
+  color: black; /* Asegura texto negro en el contenido */
 }
 
 .container h1 {
-  font-size: 2.2rem;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: black;
 }
 
 .container h2 {
-  font-size: 1.8rem;
-  margin: 30px 0 20px;
+  font-size: 1.5rem;
+  margin: 20px 0;
+  color: black;
 }
 
 /* ===== Productos ===== */
 .productos {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 25px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
   padding-bottom: 20px;
 }
 
@@ -147,11 +117,10 @@ nav {
   background: white;
   border-radius: 15px;
   padding: 20px;
-  width: 250px;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
-  flex-shrink: 0;
+  color: black;
 }
 
 .producto:hover {
@@ -184,28 +153,18 @@ nav {
   background: #023e8a;
 }
 
-/* ===== Footer ===== */
-footer {
-  text-align: center;
-  padding: 15px;
-  background: #1a1a1a;
-  color: white;
-  margin-top: auto;
-}
-/* ===== Menú desplegable de usuario ===== */
+/* ===== Menú de usuario ===== */
 .usuario-container {
   position: relative;
-  display: inline-block;
 }
 
 #usuario-btn {
   background: #359fd0;
-  color: #fff;
+  color: white;
   padding: 8px 15px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
 }
 
 #usuario-btn:hover {
@@ -223,43 +182,33 @@ footer {
   padding: 15px;
   display: none;
   z-index: 1000;
+  color: black;
 }
 
 .menu-usuario.mostrar {
   display: block;
 }
 
-.menu-usuario p {
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.menu-usuario hr {
-  margin: 10px 0;
-  border: 0;
-  border-top: 1px solid #ddd;
-}
-
 .menu-usuario button {
-  background: #f0f0f0;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
   width: 100%;
-  cursor: pointer;
+  padding: 8px;
   margin-top: 6px;
-  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  color: black;
 }
 
 .menu-usuario button:hover {
   background: #dcdcdc;
 }
 
-#logout-btn {
-  background: #e74c3c;
-  color: #fff;
-}
-
-#logout-btn:hover {
-  background: #c0392b;
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #1a1a1a;
+  color: white; /* Texto blanco solo en el footer */
+  margin-top: auto;
 }
