@@ -15,6 +15,7 @@
     "express-openid-connect": "^2.19.2",
     "express-session": "^1.18.2",
     "google-auth-library": "^10.4.0",
+    "multer": "^2.0.2",
     "mysql2": "^3.15.1",
     "passport": "^0.7.0",
     "passport-auth0": "^1.4.4",

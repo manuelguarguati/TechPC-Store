@@ -102,19 +102,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (formNuevo) {
       formNuevo.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const data = {
-          name: formNuevo.nombre.value,
-          description: formNuevo.descripcion.value,
-          price: parseFloat(formNuevo.precio.value),
-          stock: parseInt(formNuevo.stock.value),
-          image_url: formNuevo.imagen.value, // 🧠 Debe coincidir con el campo del modelo Product
-          category: formNuevo.categoria.value
-        };
+
+        const formData = new FormData(formNuevo);
 
         const res = await fetch('/api/admin/products', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+          body: formData, // ✅ Enviar como FormData
           credentials: 'include'
         });
 
@@ -153,8 +146,71 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
+    // ---------------------------------------------------------------
+    // ✏️ 6️⃣ Editar producto
+    // ---------------------------------------------------------------
+    if (tbodyProductos) {
+      tbodyProductos.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('editar')) {
+          const id = e.target.dataset.id;
+
+          // Obtener datos del producto
+          const res = await fetch(`/api/admin/products/${id}`, { credentials: 'include' });
+          const product = await res.json();
+
+          // Llenar formulario de edición
+          document.getElementById('edit-id').value = product.id;
+          document.getElementById('edit-nombre').value = product.name;
+          document.getElementById('edit-descripcion').value = product.description || '';
+          document.getElementById('edit-precio').value = product.price;
+          document.getElementById('edit-stock').value = product.stock;
+          document.getElementById('edit-categoria').value = product.category || '';
+          document.getElementById('edit-image_url_anterior').value = product.image_url;
+
+          // Mostrar formulario de edición
+          document.getElementById('form-editar-producto-container').style.display = 'block';
+        }
+      });
+    }
+
+    // ---------------------------------------------------------------
+    // ✏️ 7️⃣ Guardar edición de producto
+    // ---------------------------------------------------------------
+    const formEditar = document.getElementById('form-editar-producto');
+    if (formEditar) {
+      formEditar.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(formEditar);
+
+        const res = await fetch(`/api/admin/products/${formData.get('id')}`, {
+          method: 'PUT',
+          body: formData,
+          credentials: 'include'
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert('✅ Producto actualizado correctamente');
+          location.reload();
+        } else {
+          alert('❌ Error al actualizar producto');
+        }
+      });
+    }
+
+    // ---------------------------------------------------------------
+    // ❌ 8️⃣ Cancelar edición
+    // ---------------------------------------------------------------
+    const botonCancelar = document.getElementById('cancelar-edicion');
+    if (botonCancelar) {
+      botonCancelar.addEventListener('click', () => {
+        document.getElementById('form-editar-producto-container').style.display = 'none';
+      });
+    }
+
   } catch (err) {
     console.error('Error en el panel admin:', err);
     alert('Error cargando el panel de administración');
   }
-});
+}); 

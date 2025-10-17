@@ -5,6 +5,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 
+
 const Product = sequelize.define('Product', {
     name: {
         type: DataTypes.STRING,
@@ -24,8 +25,16 @@ const Product = sequelize.define('Product', {
     category: {
         type: DataTypes.STRING
     },
+    // image_url: {
+    //     type: DataTypes.STRING // Guardamos la ruta o URL de la imagen
+    // }
     image_url: {
-        type: DataTypes.STRING // Guardamos la ruta o URL de la imagen
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: '/images/default.png', // Ruta a imagen por defecto
+    // validate: {
+    //     // isUrl: false // No es necesario si guardas rutas locales
+    // }
     }
 }, {
     tableName: 'productos', //  Nombre de tu tabla real

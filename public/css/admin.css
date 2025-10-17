@@ -153,3 +153,33 @@ footer {
   margin-top: 30px;
   font-size: 0.9rem;
 }
+
+/* ==========================
+   FORMULARIOS DE EDICIÓN
+========================== */
+#form-editar-producto-container {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#form-editar-producto-container h3 {
+  margin-top: 0;
+  color: #222;
+  margin-bottom: 15px;
+}
+
+/* Botones de editar y cancelar */
+button.btn-editar {
+  background: #28a745;
+  color: white;
+  margin-right: 10px;
+}
+
+button.btn-cancelar {
+  background: #dc3545;
+  color: white;
+}

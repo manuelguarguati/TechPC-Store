@@ -40,25 +40,26 @@
 
     <hr>
 
-    <!-- ==============================
-         SECCIÓN PRODUCTOS
-    =============================== -->
-    <section id="seccion-productos">
-      <h2>🛍️ Gestión de Productos</h2>
+      <!-- ==============================
+          SECCIÓN PRODUCTOS
+      =============================== -->
+      <section id="seccion-productos">
+        <h2>🛍️ Gestión de Productos</h2>
 
-      <!-- Formulario para agregar producto -->
-      <form id="form-nuevo-producto">
-        <h3>➕ Agregar nuevo producto</h3>
-        <div class="form-grid">
-          <input type="text" name="nombre" placeholder="Nombre" required>
-          <input type="text" name="descripcion" placeholder="Descripción">
-          <input type="number" name="precio" placeholder="Precio" required>
-          <input type="number" name="stock" placeholder="Stock" required>
-          <input type="text" name="imagen" placeholder="URL de la imagen">
-          <input type="text" name="categoria" placeholder="Categoría">
-        </div>
-        <button type="submit" class="btn-agregar">Agregar producto</button>
-      </form>
+        <!-- Formulario para agregar producto -->
+        <form id="form-nuevo-producto">
+          <h3>➕ Agregar nuevo producto</h3>
+          <div class="form-grid">
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="descripcion" placeholder="Descripción">
+            <input type="number" name="precio" step="0.01" placeholder="Precio" required>
+            <input type="number" name="stock" placeholder="Stock" required>
+            <input type="file" name="imagen" accept="image/*"> <!-- Cambiado a tipo file -->
+            <input type="text" name="categoria" placeholder="Categoría">
+          </div>
+          <button type="submit" class="btn-agregar">Agregar producto</button>
+        </form>
+      </section>
 
       <!-- Tabla de productos -->
       <table id="tablaProductos">
@@ -76,6 +77,25 @@
         </thead>
         <tbody></tbody>
       </table>
+      <!-- Formulario para editar producto (oculto por defecto) -->
+      <div id="form-editar-producto-container" style="display: none;">
+        <h3>✏️ Editar producto</h3>
+        <form id="form-editar-producto">
+          <input type="hidden" name="id" id="edit-id">
+          <div class="form-grid">
+            <input type="text" name="nombre" id="edit-nombre" placeholder="Nombre" required>
+            <input type="text" name="descripcion" id="edit-descripcion" placeholder="Descripción">
+            <input type="number" name="precio" id="edit-precio" step="0.01" placeholder="Precio" required>
+            <input type="number" name="stock" id="edit-stock" placeholder="Stock" required>
+            <input type="hidden" name="image_url_anterior" id="edit-image_url_anterior">
+            <input type="file" name="imagen" accept="image/*"> <!-- Opcional: subir nueva imagen -->
+            <input type="text" name="categoria" id="edit-categoria" placeholder="Categoría">
+          </div>
+          <button type="submit" class="btn-editar">Guardar cambios</button>
+          <button type="button" id="cancelar-edicion" class="btn-cancelar">Cancelar</button>
+        </form>
+      </div>
+
     </section>
   </main>
 
