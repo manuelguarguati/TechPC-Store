@@ -15,5 +15,5 @@ router.get('/perfil', mainController.perfil);
 router.get('/cambiar-password', mainController.cambiarPassword);
 router.get('/admin', mainController.admin);
 
-// 👇 ESTA LÍNEA ES FUNDAMENTAL
+
 module.exports = router;

@@ -52,9 +52,7 @@ const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const productsRoutes = require('./routes/products');
 
-const rutas=require('./routes/main');
 
-app.use('/',rutas);
 // 📌 Usar las rutas
 app.use('/', mainRoutes);
 app.use('/auth', authRoutes);

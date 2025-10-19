@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.handleCredentialResponse = async (response) => {
   try {
     // 🔑 Token JWT de Google
-   const id_token = response.credential; // 👈 FIX: The token is in response.credential
+   const id_token = response.credential; 
 
     // 🚀 Enviamos el token al backend
     const res = await fetch('/auth/google-login', {
