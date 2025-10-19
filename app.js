@@ -1,6 +1,8 @@
 // --------------------------------------------------------------
 // app.js — Servidor principal con panel admin, autenticación y productos públicos
 // --------------------------------------------------------------
+
+
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -43,43 +45,21 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --------------------------------------------------------------
-// 🌐 RUTAS HTML PÚBLICAS
+// 🌐 RUTAS HTML PÚBLICAS Y API
 // --------------------------------------------------------------
-app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'home.html'))
-);
-app.get('/home', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'home.html'))
-);
-app.get('/login', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'))
-);
-app.get('/registro', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'registro.html'))
-);
-app.get('/verificar', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'verificar.html'))
-);
-app.get('/perfil', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'perfil.html'))
-);
-app.get('/cambiar-password', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'cambiar-password.html'))
-);
-app.get('/admin', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'html', 'admin.html'))
-);
-
-// --------------------------------------------------------------
-// 🧩 RUTAS BACKEND (API)
-// --------------------------------------------------------------
+const mainRoutes = require('./routes/main');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
-const productsRoutes = require('./routes/products'); // 👈 Ruta pública de productos
+const productsRoutes = require('./routes/products');
 
+const rutas=require('./routes/main');
+
+app.use('/',rutas);
+// 📌 Usar las rutas
+app.use('/', mainRoutes);
 app.use('/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/products', productsRoutes); // 👈 Se usa en home.js
+app.use('/api/products', productsRoutes);
 
 // --------------------------------------------------------------
 // 🚀 INICIAR SERVIDOR HTTPS

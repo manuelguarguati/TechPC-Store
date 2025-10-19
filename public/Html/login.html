@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +10,7 @@
   <!-- SDK de Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body>
   <div class="formulario">
     <h1>Inicio de sesión</h1>
@@ -34,21 +36,14 @@
 
     <hr style="margin:20px 0;">
 
-    <!-- Botón de Google -->
-    <div id="g_id_onload"
-         data-client_id="1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse">
+    <!-- ✅ Botón de Google -->
+    <div id="g_id_onload" data-client_id="1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com" data-callback="handleCredentialResponse">
     </div>
-    <div class="g_id_signin"
-         data-type="standard"
-         data-shape="rectangular"
-         data-theme="outline"
-         data-text="signin_with"
-         data-size="large"
-         data-logo_alignment="left">
-    </div>
-  </div>
 
-  <script src="/scripts/login.js"></script>
+    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
+      data-size="large" data-logo_alignment="left">
+    </div>
+
 </body>
+
 </html>

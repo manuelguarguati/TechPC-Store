@@ -1,58 +1,66 @@
+// --------------------------------------------------------------
+// login.js — Manejo del login normal y login con Google
+// --------------------------------------------------------------
+
 // Espera que cargue el DOM
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById('loginForm');
 
-  // 📤 Evento al enviar el formulario de login normal
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Evita recargar la página
+  if (form) {
+    // 📤 Evento al enviar el formulario de login normal
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Evita recargar la página
 
-    // ✉️ Obtenemos los valores del formulario
-    const email = document.getElementById('usuario').value.trim();
-    const password = document.getElementById('clave').value;
+      // ✉️ Obtenemos los valores del formulario
+      const email = document.getElementById('usuario').value.trim();
+      const password = document.getElementById('clave').value;
 
-    try {
-      // 🔥 Enviamos los datos al backend
-      const res = await fetch('/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include' // Guarda la cookie de sesión
-      });
+      try {
+        // 🔥 Enviamos los datos al backend
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+          credentials: 'include' // Guarda la cookie de sesión
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      // ⚠️ Si hay error, lo mostramos
-      if (data.error) {
-        alert(data.error);
-      } else if (data.success) {
-        alert(data.message);
+        // ⚠️ Si hay error, lo mostramos
+        if (data.error) {
+          alert(data.error);
+        } else if (data.success) {
+          alert(data.message);
 
-        // 👑 Si es admin, lo mandamos al panel
-        if (data.role === 'admin') {
-          window.location.href = '/admin';
+          // 👑 Si es admin, lo mandamos al panel
+          if (data.role === 'admin') {
+            window.location.href = '/admin';
+          } else {
+            // 👤 Usuario normal
+            window.location.href = data.redirect || '/home';
+          }
         } else {
-          // 👤 Usuario normal
-          window.location.href = data.redirect || '/home';
+          alert('Error al iniciar sesión');
         }
-      } else {
-        alert('Error al iniciar sesión');
+      } catch (err) {
+        console.error('Error en login:', err);
+        alert('Error de conexión con el servidor');
       }
-    } catch (err) {
-      console.error('Error en login:', err);
-      alert('Error de conexión con el servidor');
-    }
-  });
+    });
+  }
 });
 
-//--------------------------------------------------------------
+// --------------------------------------------------------------
 // LOGIN CON GOOGLE
-//--------------------------------------------------------------
+// --------------------------------------------------------------
+// Esta función es llamada automáticamente por el botón de Google
+// (definido en el HTML con data-callback="handleCredentialResponse")
 window.handleCredentialResponse = async (response) => {
   try {
-    // Token de Google JWT (ID Token)
-    const id_token = response.credential;
+    // 🔑 Token JWT de Google
+   const id_token = response.credential; // 👈 FIX: The token is in response.credential
 
-    // Enviamos el token al backend para validarlo
+    // 🚀 Enviamos el token al backend
     const res = await fetch('/auth/google-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -62,16 +70,17 @@ window.handleCredentialResponse = async (response) => {
 
     const data = await res.json();
 
+    // 📢 Resultado
     if (data.error) {
       alert(data.error);
     } else {
-      alert('Inicio de sesión con Google correcto');
+      alert('Inicio de sesión con Google exitoso');
 
-      // Redirigimos según el rol
+      // Redirigir según el rol
       if (data.role === 'admin') {
         window.location.href = '/admin';
       } else {
-        window.location.href = '/home';
+        window.location.href = data.redirect || '/home';
       }
     }
   } catch (err) {
