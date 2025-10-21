@@ -7,7 +7,7 @@ const multer = require('multer');
 const path = require('path');
 
 // ✅ Importar modelos
-const Product = require('../models/product');
+const Product = require('../models/products');
 const User = require('../models/user');
 
 // ======================================================

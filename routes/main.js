@@ -14,6 +14,8 @@ router.get('/verificar', mainController.verificar);
 router.get('/perfil', mainController.perfil);
 router.get('/cambiar-password', mainController.cambiarPassword);
 router.get('/admin', mainController.admin);
+router.get('/carrito', mainController.carrito);
+router.get('/producto/:id', mainController.detalleProducto);
 
 
 module.exports = router;
