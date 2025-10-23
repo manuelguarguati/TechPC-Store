@@ -1,10 +1,8 @@
 // --------------------------------------------------------------
-// home.js — Carga de productos y gestión del usuario
+// home.js — Carga de productos, usuario y mini-carrito
 // --------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", async () => {
-  // ----------------------------------------------------
-  // 🔹 1. ELEMENTOS DEL DOM
-  // ----------------------------------------------------
+  // ELEMENTOS DEL DOM
   const nombreSpan = document.getElementById("nombre-usuario");
   const correoSpan = document.getElementById("correo-usuario");
   const nombreBienvenida = document.getElementById("nombre-bienvenida");
@@ -15,103 +13,124 @@ document.addEventListener("DOMContentLoaded", async () => {
   const cambiarPassBtn = document.getElementById("cambiar-pass");
   const usuarioBtn = document.getElementById("usuario-btn");
   const menuUsuario = document.getElementById("menu-usuario");
+  const carritoBtn = document.getElementById("carrito-btn");
 
-  // ----------------------------------------------------
-  // 🔹 2. VERIFICAR SESIÓN DEL USUARIO
-  // ----------------------------------------------------
+  let miniCarrito = { cantidad: 0 }; // Contador de productos
+
+  // -------------------------------
+  // 1. VERIFICAR SESIÓN
+  // -------------------------------
+  let usuario = null;
   try {
     const res = await fetch("/auth/session", { credentials: "include" });
     const data = await res.json();
-
     if (data.loggedIn) {
-      // ✅ Usuario autenticado
-      nombreSpan.textContent = data.name || "Usuario";
-      correoSpan.textContent = data.email || "correo@correo.com";
-      nombreBienvenida.textContent = data.name || "Usuario";
-
-      // Ocultar botones de login y registro
+      usuario = { id: data.id, nombre: data.name, correo: data.email };
+      nombreSpan.textContent = data.name;
+      correoSpan.textContent = data.email;
+      nombreBienvenida.textContent = data.name;
       loginLink.style.display = "none";
       registroLink.style.display = "none";
+      logoutBtn.style.display = "inline-block";
+      await actualizarMiniCarrito();
     } else {
-      // 🚫 Visitante (no autenticado)
       nombreSpan.textContent = "Visitante";
-      correoSpan.textContent = "";
       nombreBienvenida.textContent = "Visitante";
       logoutBtn.style.display = "none";
     }
   } catch (err) {
-    console.error("❌ Error al obtener la sesión:", err);
+    console.error("Error al obtener la sesión:", err);
   }
 
-  // ----------------------------------------------------
-  // 🔹 3. MENÚ DESPLEGABLE DE USUARIO
-  // ----------------------------------------------------
-  usuarioBtn.addEventListener("click", (e) => {
+  // -------------------------------
+  // 2. MENÚ DE USUARIO
+  // -------------------------------
+  usuarioBtn.addEventListener("click", e => {
     e.stopPropagation();
     menuUsuario.classList.toggle("mostrar");
   });
 
-  window.addEventListener("click", (e) => {
+  window.addEventListener("click", e => {
     if (!menuUsuario.contains(e.target) && !usuarioBtn.contains(e.target)) {
       menuUsuario.classList.remove("mostrar");
     }
   });
 
-  // ----------------------------------------------------
-  // 🔹 4. ACCIONES DEL MENÚ
-  // ----------------------------------------------------
   logoutBtn.addEventListener("click", async () => {
     try {
       await fetch("/auth/logout", { method: "POST", credentials: "include" });
       window.location.reload();
-    } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-    }
+    } catch (err) { console.error(err); }
   });
 
-  verPerfilBtn.addEventListener("click", () => {
-    window.location.href = "/perfil";
-  });
+  verPerfilBtn.addEventListener("click", () => window.location.href = "/perfil");
+  cambiarPassBtn.addEventListener("click", () => window.location.href = "/cambiar-password");
 
-  cambiarPassBtn.addEventListener("click", () => {
-    window.location.href = "/cambiar-password";
-  });
-
-  // ----------------------------------------------------
-  // 🔹 5. CARGAR PRODUCTOS DINÁMICAMENTE
-  // ----------------------------------------------------
+  // -------------------------------
+  // 3. CARGAR PRODUCTOS Y BOTONES AGREGAR
+  // -------------------------------
   async function cargarProductos() {
     try {
       const res = await fetch("/api/products");
       const productos = await res.json();
 
       const contenedor = document.getElementById("lista-productos");
-      if (!contenedor) return;
-
       contenedor.innerHTML = "";
 
       if (!productos.length) {
-        contenedor.innerHTML = "<p>No hay productos disponibles por ahora.</p>";
+        contenedor.innerHTML = "<p>No hay productos disponibles.</p>";
         return;
       }
 
-      productos.forEach((p) => {
+      productos.forEach(p => {
         const div = document.createElement("div");
         div.classList.add("producto");
 
         div.innerHTML = `
           <img src="${p.image_url || '/img/default.png'}" alt="${p.name}">
           <h3>${p.name}</h3>
-          <p>${p.description || 'Sin descripción disponible'}</p>
+          <p>${p.description || 'Sin descripción'}</p>
           <div class="precio">$${parseFloat(p.price).toLocaleString()}</div>
-          <button class="btn-agregar">Añadir al carrito 🛒</button>
+          <button class="btn-agregar" data-id="${p.id}">Añadir al carrito 🛒</button>
         `;
         contenedor.appendChild(div);
       });
-    } catch (err) {
-      console.error("❌ Error al cargar los productos:", err);
-    }
+
+      // Botones de agregar
+      document.querySelectorAll(".btn-agregar").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          if (!usuario) return alert("Debes iniciar sesión");
+          const productId = e.target.dataset.id;
+          await fetch("/carrito/agregar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId, cantidad: 1 }),
+            credentials: "include"
+          });
+          miniCarrito.cantidad++;
+          actualizarContador();
+        });
+      });
+
+    } catch (err) { console.error(err); }
   }
 
   cargarProductos();
+
+  // -------------------------------
+  // 4. MINI-CARRITO
+  // -------------------------------
+  function actualizarContador() {
+    carritoBtn.textContent = `🛒 (${miniCarrito.cantidad})`;
+  }
+
+  async function actualizarMiniCarrito() {
+    try {
+      const res = await fetch("/carrito/session", { credentials: "include" });
+      const data = await res.json();
+      miniCarrito.cantidad = data.cantidad || 0;
+      actualizarContador();
+    } catch (err) { console.error(err); }
+  }
+
 });

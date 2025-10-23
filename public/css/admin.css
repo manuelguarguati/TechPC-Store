@@ -4,21 +4,21 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #f3f3f3;
-  color: #333;
+  background: #1e272e; /* Dark background */
+  color: #f1f2f6; /* Texto claro */
 }
 
 h1, h2, h3 {
   margin: 0;
-  color: #222;
+  color: #4cd137; /* Verde para títulos */
 }
 
 /* ==========================
    CABECERA
 ========================== */
 header {
-  background: #222;
-  color: white;
+  background: #2f3640;
+  color: #f1f2f6;
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -31,14 +31,14 @@ header h1 {
 }
 
 header nav a {
-  color: #fff;
+  color: #f1f2f6;
   text-decoration: none;
   margin-left: 15px;
   transition: color 0.3s;
 }
 
 header nav a:hover {
-  color: #4CAF50;
+  color: #4cd137;
 }
 
 /* ==========================
@@ -60,24 +60,25 @@ section {
 table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: #2f3640; /* Dark table background */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   margin-top: 15px;
+  color: #f1f2f6;
 }
 
 th, td {
   padding: 10px;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid #444;
 }
 
 th {
-  background: #f5f5f5;
+  background: #3d3d3d;
   font-weight: bold;
 }
 
 tr:hover {
-  background-color: #f9f9f9;
+  background-color: #4cd13733; /* Verde suave al hover */
 }
 
 /* ==========================
@@ -96,11 +97,7 @@ button:hover {
   opacity: 0.85;
 }
 
-button.eliminar {
-  background: #e74c3c;
-  color: white;
-}
-
+button.eliminar,
 button.eliminar-producto {
   background: #e74c3c;
   color: white;
@@ -112,20 +109,25 @@ button.editar {
 }
 
 button.btn-agregar {
-  background: #2ecc71;
-  color: white;
+  background: #4cd137; /* Verde principal */
+  color: #1e272e;
   margin-top: 10px;
+}
+
+button.btn-agregar:hover {
+  background: #3f9c2d;
 }
 
 /* ==========================
    FORMULARIOS
 ========================== */
 form {
-  background: white;
+  background: #2f3640;
   padding: 15px;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   margin-top: 15px;
+  color: #f1f2f6;
 }
 
 .form-grid {
@@ -136,18 +138,20 @@ form {
 
 input {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+  background: #1e272e;
+  color: #f1f2f6;
 }
 
 /* ==========================
    PIE DE PÁGINA
 ========================== */
 footer {
-  background: #222;
-  color: white;
+  background: #2f3640;
+  color: #f1f2f6;
   text-align: center;
   padding: 10px;
   margin-top: 30px;
@@ -160,26 +164,31 @@ footer {
 #form-editar-producto-container {
   margin: 20px 0;
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #2f3640;
+  border: 1px solid #444;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  color: #f1f2f6;
 }
 
 #form-editar-producto-container h3 {
   margin-top: 0;
-  color: #222;
+  color: #4cd137;
   margin-bottom: 15px;
 }
 
 /* Botones de editar y cancelar */
 button.btn-editar {
-  background: #28a745;
-  color: white;
+  background: #4cd137; /* Verde principal */
+  color: #1e272e;
   margin-right: 10px;
 }
 
+button.btn-editar:hover {
+  background: #3f9c2d;
+}
+
 button.btn-cancelar {
-  background: #dc3545;
+  background: #e74c3c;
   color: white;
 }

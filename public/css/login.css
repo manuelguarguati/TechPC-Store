@@ -7,7 +7,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #ecf0f3, #359fd0);
+    background: linear-gradient(135deg, #2d3436, #1e272e); /* Dark mode base */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,15 +16,15 @@ body {
 }
 
 body:hover {
-    background: linear-gradient(135deg, #ffffff, #247fff);
+    background: linear-gradient(135deg, #1e272e, #2d3436); /* Hover sutil */
 }
 
 /* ===== Contenedor del formulario ===== */
 .formulario {
-    background: #fff;
+    background: #3b3f44; /* Dark card */
     padding: 2.5rem 2.2rem;
     border-radius: 16px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
     width: 100%;
     max-width: 420px;
     text-align: center;
@@ -34,8 +34,8 @@ body:hover {
 .formulario h1 {
     margin-bottom: 1.8rem;
     font-size: 1.8rem;
-    color: #2676a3;
-    border-bottom: 2px solid #ddd;
+    color: #4cd137; /* Verde principal */
+    border-bottom: 2px solid #535c68;
     padding-bottom: 0.6rem;
 }
 
@@ -50,7 +50,7 @@ form .usuario {
     margin-bottom: 0.5rem;
     font-weight: 600;
     font-size: 0.95rem;
-    color: #333;
+    color: #ffffff;
 }
 
 .usuario input[type="email"],
@@ -58,15 +58,17 @@ form .usuario {
     width: 100%;
     padding: 0.7rem;
     font-size: 0.95rem;
-    border: 2px solid #ccc;
+    border: 2px solid #535c68;
     border-radius: 8px;
+    background-color: #2d3436; /* Fondo input dark */
+    color: #ffffff;
     transition: border 0.3s, box-shadow 0.3s;
 }
 
 .usuario input:focus {
     outline: none;
-    border-color: #359fd0;
-    box-shadow: 0 0 5px rgba(53, 159, 208, 0.4);
+    border-color: #4cd137; /* Verde al foco */
+    box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
 }
 
 /* ===== Botón principal ===== */
@@ -74,8 +76,8 @@ form .usuario {
     width: 100%;
     padding: 0.9rem;
     font-size: 1rem;
-    background: linear-gradient(135deg, #4a5258, #5c9dbb);
-    color: #fff;
+    background: linear-gradient(135deg, #4cd137, #3f9c2d);
+    color: #ffffff;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -85,20 +87,20 @@ form .usuario {
 }
 
 .usuario .boton:hover {
-    background: linear-gradient(135deg, #3d667e, #5c9dbb);
+    background: linear-gradient(135deg, #3f9c2d, #2d7a21);
     transform: scale(1.03);
 }
 
 /* ===== Link registro ===== */
 .formulario a {
-    color: #2676a3;
+    color: #4cd137;
     font-weight: 600;
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .formulario a:hover {
-    color: #359fd0;
+    color: #3f9c2d;
     text-decoration: underline;
 }
 

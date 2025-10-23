@@ -123,4 +123,48 @@ router.post('/logout', (req, res) => {
   });
 });
 
+// --------------------------------------------------------------
+// CAMBIAR CONTRASEÑA (PUT /auth/change-password)
+// --------------------------------------------------------------
+router.put('/change-password', async (req, res) => {
+  try {
+    const { actual, nueva } = req.body;
+
+    // Verificar sesión
+    if (!req.session.user) {
+      return res.status(401).send('No hay sesión activa');
+    }
+
+    // Buscar usuario en la base de datos
+    const user = await User.findOne({ where: { id: req.session.user.id } });
+    if (!user) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Si el usuario no tiene contraseña (por ejemplo, login con Google)
+    if (!user.password) {
+      const nuevaHash = await bcrypt.hash(nueva, 10);
+      await User.update({ password: nuevaHash }, { where: { id: user.id } });
+      return res.status(200).send('Contraseña establecida correctamente');
+    }
+
+    // Verificar contraseña actual
+    const coincide = await bcrypt.compare(actual, user.password);
+    if (!coincide) {
+      return res.status(400).send('La contraseña actual es incorrecta');
+    }
+
+    // Encriptar nueva contraseña
+    const nuevaHash = await bcrypt.hash(nueva, 10);
+
+    // Actualizar en BD
+    await User.update({ password: nuevaHash }, { where: { id: user.id } });
+
+    res.status(200).send('Contraseña cambiada correctamente');
+  } catch (err) {
+    console.error('Error al cambiar contraseña:', err);
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
 module.exports = router;
