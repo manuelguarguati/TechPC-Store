@@ -31,14 +31,16 @@
         <div class="usuario-container">
           <button id="usuario-btn">👤 Cuenta ▼</button>
           <div id="menu-usuario" class="menu-usuario">
-            <p><strong>Nombre:</strong> <span id="nombre-usuario"><%= usuario ? usuario.nombre : "Visitante" %></span></p>
-            <p><strong>Correo:</strong> <span id="correo-usuario"><%= usuario ? usuario.correo : "" %></span></p>
-            <hr />
-            <% if (usuario) { %>
-              <button id="ver-perfil">Ver perfil</button>
-              <button id="cambiar-pass">Cambiar contraseña</button>
-              <button id="logout-btn">Cerrar sesión</button>
-            <% } %>
+            
+            
+            <span>Nombre: <span id="nombre-usuario">Visitante</span></span>
+          <span>Correo: <span id="correo-usuario">-</span></span>
+          <hr />
+          <button id="ver-perfil">Ver perfil</button>
+          <button id="cambiar-pass">Cambiar contraseña</button>
+          <button id="logout-btn">Cerrar sesión</button>
+          <a id="login-link" href="/login">Iniciar sesión</a>
+          <a id="registro-link" href="/registro">Registrarse</a>
           </div>
         </div>
       </nav>
@@ -52,7 +54,9 @@
       <h2>Computadores en promoción</h2>
 
       <!-- Productos cargados dinámicamente -->
-      <div class="productos" id="lista-productos"></div>
+      <div class="productos" id="lista-productos">
+  
+
     </main>
 
     <!-- ===================== FOOTER ===================== -->

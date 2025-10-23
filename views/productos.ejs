@@ -1,0 +1,31 @@
+<!-- views/productos.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tienda - Productos</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Productos disponibles</h1>
+    <a href="/cart" class="btn-cart">🛒 Ver carrito</a>
+  </header>
+
+  <main>
+    <div class="productos-container">
+      <% productos.forEach(prod => { %>
+        <div class="producto">
+          <img src="<%= prod.imagen %>" alt="<%= prod.nombre %>" width="200">
+          <h3><%= prod.nombre %></h3>
+          <p><%= prod.descripcion %></p>
+          <p><strong>$<%= prod.precio %></strong></p>
+          <button class="btn-add" data-id="<%= prod.id %>">Agregar al carrito</button>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <script src="/js/cart.js"></script>
+</body>
+</html>
