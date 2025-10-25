@@ -12,19 +12,19 @@
     <h2>Verificación</h2>
     <p>Hemos enviado un código de 6 dígitos al número que registraste.</p>
 
+    <!-- 🧩 Formulario OTP -->
     <form id="otpForm">
       <div class="otp-campos">
-        <input type="text" maxlength="1" class="code-input" required />
-        <input type="text" maxlength="1" class="code-input" required />
-        <input type="text" maxlength="1" class="code-input" required />
-        <input type="text" maxlength="1" class="code-input" required />
-        <input type="text" maxlength="1" class="code-input" required />
-        <input type="text" maxlength="1" class="code-input" required />
+        <!-- Campos individuales para el código -->
+        <% for (let i = 0; i < 6; i++) { %>
+          <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" inputmode="numeric" />
+        <% } %>
       </div>
 
       <button type="submit" class="boton">Verificar</button>
     </form>
 
+    <!-- Mensaje dinámico -->
     <% if (typeof mensaje !== 'undefined' && mensaje) { %>
       <p id="msg"><%= mensaje %></p>
     <% } else { %>

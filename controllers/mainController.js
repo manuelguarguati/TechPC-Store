@@ -7,12 +7,13 @@ const Cart = require('../models/cart');
 const Product = require('../models/product');
 const Pedido = require('../models/pedido');
 const PedidoDetalle = require('../models/pedido_detalle');
+const User = require('../models/user'); // tu modelo User
 
 const mainController = {
   // 🏠 Página principal
   home: (req, res) => {
     const usuario = req.session.user
-      ? { id: req.session.user.id, nombre: req.session.user.nombre, correo: req.session.user.correo }
+      ? { id: req.session.user.id, name: req.session.user.name, email: req.session.user.email }
       : null;
 
     res.render('home', {
@@ -37,13 +38,17 @@ const mainController = {
   },
 
   // 👤 Página de perfil del usuario
-  perfil: (req, res) => {
-    const usuario = req.session.user || null;
+   perfil: (req, res) => {
+    const usuario = req.session.user;
     if (!usuario) return res.redirect('/login');
 
     res.render('perfil', {
       titulo: 'Mi perfil - TechPC Store',
-      usuario,
+      usuario: {
+        name: usuario.name || '',
+        lastname: usuario.lastname || '',
+        phone: usuario.phone || ''
+      }
     });
   },
 
@@ -61,13 +66,11 @@ const mainController = {
   // ⚙️ Panel de administración
   admin: (req, res) => {
     const usuario = req.session.user || null;
-    if (!usuario || usuario.role !== 'admin') {
-      return res.redirect('/login');
-    }
+    if (!usuario || usuario.role !== 'admin') return res.redirect('/login');
 
     res.render('admin', {
       titulo: 'Panel de administración - TechPC Store',
-      user: usuario, // se usa "user" para admin.ejs
+      user: usuario,
     });
   },
 
@@ -99,22 +102,16 @@ const mainController = {
 
     try {
       const items = await Cart.findAll({ where: { userId: usuario.id } });
+      if (items.length === 0) return res.json({ success: false, message: 'Carrito vacío' });
 
-      if (items.length === 0) {
-        return res.json({ success: false, message: 'Carrito vacío' });
-      }
-
-      // Calcular total
       let total = 0;
       for (const item of items) {
         const producto = await Product.findByPk(item.productId);
         total += producto.price * item.cantidad;
       }
 
-      // Crear pedido
       const pedido = await Pedido.create({ userId: usuario.id, total });
 
-      // Crear detalle de pedido
       for (const item of items) {
         const producto = await Product.findByPk(item.productId);
         await PedidoDetalle.create({
@@ -125,9 +122,7 @@ const mainController = {
         });
       }
 
-      // Limpiar carrito
       await Cart.destroy({ where: { userId: usuario.id } });
-
       res.json({ success: true, message: 'Compra realizada con éxito' });
     } catch (err) {
       res.json({ success: false, message: err.message });
@@ -166,7 +161,42 @@ const mainController = {
     } catch (err) {
       res.json({ success: false, message: err.message });
     }
-  }
-};
+  },
 
+  // 📲 Página para completar registro tras Google Login
+  completarRegistro: (req, res) => {
+    if (!req.session.tempGoogleUser) return res.redirect('/login');
+
+    res.render('completar-registro', {
+      email: req.session.tempGoogleUser.email,
+      name: req.session.tempGoogleUser.name,
+      lastname: req.session.tempGoogleUser.lastname
+    });
+  },
+
+ // ✏️ Guardar cambios de perfil (usuarios normales o Google)
+guardarPerfil: async (req, res) => {
+  const usuario = req.session.user;
+  if (!usuario) return res.status(401).json({ success: false, message: 'No autorizado' });
+
+  const { name, lastname, phone } = req.body; // <- mismo nombre que frontend
+
+  try {
+    await User.update(
+      { name, lastname, phone },
+      { where: { id: usuario.id } }
+    );
+
+    // Actualizar la sesión
+    req.session.user.name = name;
+    req.session.user.lastname = lastname;
+    req.session.user.phone = phone;
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: err.message });
+  }
+}
+};
 module.exports = mainController;

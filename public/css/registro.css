@@ -7,36 +7,54 @@
 }
 
 body {
-  background: #1e272e; /* Dark mode */
+  background: linear-gradient(135deg, #2d3436, #1e272e);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
   padding: 1rem;
-  transition: background 0.6s;
   color: #f1f2f6;
+  transition: background 0.6s;
 }
 
 body:hover {
-  background: #2f3640; /* Darker hover */
+  background: linear-gradient(135deg, #1e272e, #2d3436);
 }
 
+/* Fondo animado Tubes */
+#canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* --- Formulario --- */
 .formulario {
-  background: #2f3640; /* Dark container */
+  background: rgba(47, 54, 64, 0.85);
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 600px;
-  animation: fadeIn 0.6s ease;
   color: #f1f2f6;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.6s ease;
+  margin-left: 300px;
 }
 
+/* --- Título --- */
 h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  color: #4cd137; /* Verde */
+  color: #4cd137;
+  border-bottom: 2px solid #535c68;
+  padding-bottom: 0.6rem;
 }
 
 /* --- Campos --- */
@@ -50,7 +68,6 @@ label {
   font-weight: 600;
   font-size: 0.95rem;
   margin-bottom: 0.3rem;
-  color: #f1f2f6;
 }
 
 input[type="text"],
@@ -59,12 +76,12 @@ input[type="password"],
 input[type="tel"],
 input[type="number"] {
   padding: 0.7rem;
-  border: 2px solid #555;
+  border: 2px solid #535c68;
   border-radius: 8px;
   font-size: 0.95rem;
-  transition: border 0.3s, box-shadow 0.3s;
-  background: #3b3b3b;
+  background: #2d3436;
   color: #f1f2f6;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
 input:focus {
@@ -73,7 +90,7 @@ input:focus {
   box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
 }
 
-/* --- Filas lado a lado --- */
+/* --- Fila lado a lado --- */
 .fila {
   display: flex;
   gap: 10px;
@@ -90,29 +107,16 @@ input:focus {
 }
 
 .telefono span {
-  background: #555;
+  background: #535c68;
   padding: 0.7rem;
-  border: 2px solid #555;
+  border: 2px solid #535c68;
   border-right: none;
   border-radius: 8px 0 0 8px;
   font-weight: 600;
-  color: #f1f2f6;
 }
 
 .telefono input {
   border-radius: 0 8px 8px 0;
-  flex: 1;
-  border: 2px solid #555;
-  background: #3b3b3b;
-  color: #f1f2f6;
-}
-
-/* --- Requisitos contraseña --- */
-.requisitos {
-  font-size: 0.8rem;
-  color: #95a5a6;
-  margin-bottom: 1rem;
-  display: block;
 }
 
 /* --- Autorización --- */
@@ -120,7 +124,6 @@ input:focus {
   font-size: 0.85rem;
   margin-bottom: 1.3rem;
   line-height: 1.3;
-  color: #f1f2f6;
 }
 
 .autorizacion a {
@@ -137,19 +140,48 @@ input:focus {
 .boton {
   width: 100%;
   padding: 0.9rem;
-  background: linear-gradient(135deg, #4cd137, #3f9c2d);
-  color: #1e272e;
-  font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  background: transparent;
+  color: #64ed85;
   border: none;
-  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  font-weight: 700;
+  overflow: hidden;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transition: background 0.5s, color 0.5s;
+  -webkit-box-reflect: below 10px linear-gradient(transparent, #64ed842a);
 }
 
 .boton:hover {
-  background: linear-gradient(135deg, #3f9c2d, #2e8c22);
-  transform: scale(1.03);
+  background: #64ed85;
+  box-shadow: 0 0 40px #64ed85;
+  color: #23252f;
+}
+
+/* --- Título superior --- */
+.titulo-pagina {
+  position: absolute;
+  top: 20px;
+  left: 60px;
+  font-size: 50px;
+  font-weight: 900;
+  color: #00ff88;
+  text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88, 0 0 45px #00ff88;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 3px;
+  animation: glow 2s ease-in-out infinite alternate;
+  user-select: none;
+}
+
+/* --- Efecto glow --- */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88;
+  }
+  to {
+    text-shadow: 0 0 20px #00ffaa, 0 0 40px #00ffaa, 0 0 60px #00ffaa;
+  }
 }
 
 /* --- Animación entrada --- */
@@ -164,16 +196,14 @@ input:focus {
   }
 }
 
-/* --- Responsive móvil --- */
+/* --- Responsive --- */
 @media (max-width: 480px) {
   .fila {
     flex-direction: column;
   }
-
   h2 {
     font-size: 1.5rem;
   }
-
   .formulario {
     padding: 1.5rem;
   }

@@ -16,18 +16,14 @@
     <div class="perfil-card">
       <h2>Información del usuario</h2>
 
-      <!-- Datos del usuario obtenidos desde el servidor -->
       <label>Nombre:</label>
-      <input type="text" id="nombre" value="<%= usuario?.nombre || '' %>" readonly />
+      <input id="nombre" value="<%= usuario.name %>" readonly />
 
       <label>Apellido:</label>
-      <input type="text" id="apellido" value="<%= usuario?.apellido || '' %>" readonly />
-
-      <label>Correo:</label>
-      <input type="email" id="correo" value="<%= usuario?.correo || '' %>" readonly />
+      <input id="apellido" value="<%= usuario.lastname %>" readonly />
 
       <label>Teléfono:</label>
-      <input type="text" id="telefono" value="<%= usuario?.telefono || '' %>" readonly />
+      <input id="telefono" value="<%= usuario.phone %>" readonly />
 
       <button id="editar-btn">Editar</button>
       <button id="guardar-btn" style="display:none;">Guardar cambios</button>

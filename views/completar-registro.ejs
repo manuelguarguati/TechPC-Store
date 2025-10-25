@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Completar registro - TechPC Store</title>
+  <link rel="stylesheet" href="/css/registro.css" />
+  <link rel="icon" href="/img/favicon.ico" />
+</head>
+
+<body>
+  <div class="titulo-pagina">TECHPC STORE</div>
+
+  <div class="formulario">
+    <h2>Completa tu registro</h2>
+    <p>Ingresa tu teléfono y crea una contraseña para finalizar tu registro con Google</p>
+
+    <form id="completarForm">
+      <!-- Email (solo lectura) -->
+      <div class="campo">
+        <label>Email</label>
+        <input type="email" value="<%= email %>" readonly />
+      </div>
+
+      <!-- Nombre y Apellido (solo lectura) -->
+      <div class="fila">
+        <div class="campo">
+          <label>Nombre</label>
+          <input type="text" value="<%= name %>" readonly />
+        </div>
+
+        <div class="campo">
+          <label>Apellido</label>
+          <input type="text" value="<%= lastname %>" readonly />
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="campo">
+        <label>Teléfono</label>
+        <div class="telefono">
+          <span>+57</span>
+          <input type="tel" name="phone" id="celular" placeholder="3001234567" required pattern="[0-9]{10}" title="Debe tener 10 dígitos" />
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" name="password" id="contraseña1" placeholder="Crea una contraseña" required minlength="8" />
+      </div>
+
+      <!-- Confirmar contraseña -->
+      <div class="campo">
+        <label>Confirmar contraseña</label>
+        <input type="password" id="contraseña2" placeholder="Repite la contraseña" required minlength="8" />
+      </div>
+
+      <!-- Botón continuar -->
+      <button type="submit" class="boton" id="btn-continuar">Continuar</button>
+
+      <!-- Mensaje dinámico -->
+      <p id="msg"></p>
+    </form>
+  </div>
+
+  <!-- Script externo -->
+  <script src="/scripts/verificargoogle.js"></script>
+</body>
+</html>
