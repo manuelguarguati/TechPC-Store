@@ -1,7 +1,7 @@
 const Cart = require('../models/cart');
-const Product = require('../models/product');
-const Pedido = require('../models/pedido'); // lo crearemos
-const PedidoDetalle = require('../models/pedido_detalle'); // lo crearemos
+const Product = require('../models/Product');
+const Pedido = require('../models/Pedido'); // lo crearemos
+const PedidoDetalle = require('../models/PedidoDetalle'); // lo crearemos
 
 // Agregar producto al carrito
 exports.agregarAlCarrito = async (req, res) => {

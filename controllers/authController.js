@@ -1,6 +1,5 @@
-const User = require('../models/user');
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-
 
 const authController = {
   changePassword: async (req, res) => {
@@ -18,7 +17,7 @@ const authController = {
       const hashed = await bcrypt.hash(nueva, 10);
       await User.update({ password: hashed }, { where: { id: usuario.id } });
 
-      res.json({ success: true });
+      res.json({ success: true, message: 'Contraseña actualizada correctamente' });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });
     }

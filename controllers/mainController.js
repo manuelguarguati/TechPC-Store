@@ -4,11 +4,11 @@
 // --------------------------------------------------------------
 
 const Cart = require('../models/cart');
-const Product = require('../models/product');
-const Pedido = require('../models/pedido');
-const PedidoDetalle = require('../models/pedido_detalle');
-const User = require('../models/user');
-const ProductDetail = require('../models/product_detalle');
+const Product = require('../models/Product');
+const Pedido = require('../models/Pedido');
+const PedidoDetalle = require('../models/PedidoDetalle');
+const User = require('../models/User');
+const ProductDetail = require('../models/ProductoDetalle');
 
 const mainController = {
   // Página principal
@@ -41,9 +41,19 @@ const mainController = {
   },
 
   admin: (req, res) => {
-    const usuario = req.session.user || null;
-    if (!usuario || usuario.role !== 'admin') return res.redirect('/login');
-    res.render('admin', { titulo: 'Panel de administración - TechPC Store', user: usuario });
+    const usuario = req.session.user;
+
+    // Si no hay sesión → redirigir a login
+    if (!usuario) return res.redirect('/login');
+
+    // Si no es admin → redirigir a login o mostrar mensaje
+    if (usuario.role !== 'admin') return res.status(403).send('No autorizado');
+
+    // Renderizar panel de admin
+    res.render('admin', {
+      titulo: 'Panel de administración - TechPC Store',
+      user: usuario
+    });
   },
 
   // 🔹 Carrito
@@ -82,19 +92,19 @@ const mainController = {
     }
   },
 
- eliminarDelCarrito: async (req, res) => {
-  const usuario = req.session.user;
-  if (!usuario) return res.json({ success: false, message: 'Debes iniciar sesión' });
+  eliminarDelCarrito: async (req, res) => {
+    const usuario = req.session.user;
+    if (!usuario) return res.json({ success: false, message: 'Debes iniciar sesión' });
 
-  const { cartId } = req.body;
-  try {
-    // Elimina solo si el carrito pertenece al usuario
-    await Cart.destroy({ where: { id: cartId, userId: usuario.id } });
-    res.json({ success: true, message: 'Producto eliminado del carrito' });
-  } catch (err) {
-    res.json({ success: false, message: err.message });
-  }
-},
+    const { cartId } = req.body;
+    try {
+      // Elimina solo si el carrito pertenece al usuario
+      await Cart.destroy({ where: { id: cartId, userId: usuario.id } });
+      res.json({ success: true, message: 'Producto eliminado del carrito' });
+    } catch (err) {
+      res.json({ success: false, message: err.message });
+    }
+  },
 
   finalizarCompra: async (req, res) => {
     const usuario = req.session.user;

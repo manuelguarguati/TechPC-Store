@@ -4,13 +4,12 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { OAuth2Client } = require('google-auth-library');
-const User = require('../models/user'); // Modelo Sequelize
+const User = require('../models/User'); // Modelo Sequelize
 const twilio = require('twilio');
 const authController = require('../controllers/authController');
-
 const router = express.Router();
 
-// 🟢 Configuración de Twilio (para enviar SMS)
+// 🟢 Configuración Twilio
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const FROM = process.env.TWILIO_FROM_NUMBER;
 
@@ -18,73 +17,26 @@ const FROM = process.env.TWILIO_FROM_NUMBER;
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // --------------------------------------------------------------
-// REGISTRO CON VERIFICACIÓN (POST /auth/registro)
+// FUNCION AUXILIAR: normalizar teléfono a formato E.164 (+57xxxx)
 // --------------------------------------------------------------
-router.post('/registro', async (req, res) => {
-  try {
-    const { name, lastname, email, phone, password } = req.body;
-
-    if (!name || !lastname || !email || !phone || !password)
-      return res.status(400).json({ error: 'Todos los campos son obligatorios' });
-
-    const existe = await User.findOne({ where: { email } });
-    if (existe) return res.status(400).json({ error: 'El correo ya está registrado' });
-
-    const codigo = Math.floor(100000 + Math.random() * 900000);
-
-    req.session.tempUser = { name, lastname, email, phone, password, codigo };
-    await req.session.save();
-
-    await twilioClient.messages.create({
-      from: FROM,
-      to: '+57' + phone.replace(/\D/g, ''),
-      body: `Tu código de verificación es: ${codigo}`
-    });
-
-    res.json({
-      success: true,
-      message: 'Código enviado al número proporcionado',
-      redirect: '/verificar'
-    });
-  } catch (err) {
-    console.error('Error en /auth/registro:', err);
-    res.status(500).json({ error: 'Error interno al registrar usuario' });
-  }
-});
+function formatPhone(phone) {
+  let clean = phone.replace(/\D/g, ''); // eliminar todo lo que no sea número
+  if (clean.length === 10) return '+57' + clean; // agregar +57 si tiene 10 dígitos
+  if (clean.length === 12 && clean.startsWith('57')) return '+' + clean; // si ya tiene 57
+  if (clean.startsWith('+') && clean.length >= 12) return clean; // ya con código internacional
+  return null; // formato inválido
+}
 
 // --------------------------------------------------------------
-// LOGIN NORMAL (POST /auth/login)
+// RUTA GET COMPLETAR REGISTRO (Google o temporal)
 // --------------------------------------------------------------
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
+router.get('/completar-registro', (req, res) => {
+  if (!req.session.tempGoogleUser && !req.session.tempUser) return res.redirect('/login');
 
-    if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
-    if (!user.password) return res.status(400).json({ error: 'Cuenta de Google sin contraseña local' });
+  const temp = req.session.tempGoogleUser || req.session.tempUser;
+  const { name, lastname, email } = temp;
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(400).json({ error: 'Contraseña incorrecta' });
-
-    req.session.user = {
-      id: user.id,
-      name: user.name,
-      lastname: user.lastname || '',
-      email: user.email,
-      phone: user.phone || '',
-      role: user.role || 'user'
-    };
-
-    res.json({
-      success: true,
-      message: 'Inicio de sesión correcto',
-      role: user.role,
-      redirect: user.role === 'admin' ? '/admin' : '/home'
-    });
-  } catch (err) {
-    console.error('Error en /auth/login:', err);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+  res.render('completar-registro', { name, lastname, email });
 });
 
 // --------------------------------------------------------------
@@ -105,11 +57,9 @@ router.post('/google-login', async (req, res) => {
 
     let user = await User.findOne({ where: { email: googleEmail } });
 
-    // No existe → completar registro
     if (!user) {
       req.session.tempGoogleUser = { name: googleName, lastname: '', email: googleEmail };
       await req.session.save();
-
       return res.json({
         success: true,
         message: 'Completa tu registro agregando teléfono y contraseña',
@@ -117,7 +67,6 @@ router.post('/google-login', async (req, res) => {
       });
     }
 
-    // Existe pero sin teléfono o contraseña
     if (!user.phone || !user.password) {
       req.session.tempGoogleUser = {
         id: user.id,
@@ -126,7 +75,6 @@ router.post('/google-login', async (req, res) => {
         email: user.email
       };
       await req.session.save();
-
       return res.json({
         success: true,
         message: 'Debes completar tu perfil con teléfono y contraseña',
@@ -134,7 +82,6 @@ router.post('/google-login', async (req, res) => {
       });
     }
 
-    // Todo correcto → iniciar sesión
     req.session.user = {
       id: user.id,
       name: user.name,
@@ -144,14 +91,89 @@ router.post('/google-login', async (req, res) => {
       role: user.role || 'user'
     };
 
+    // ✅ Enviar rol al frontend
     res.json({
       success: true,
       message: 'Inicio de sesión con Google exitoso',
-      redirect: user.role === 'admin' ? '/admin' : '/home'
+      redirect: user.role === 'admin' ? '/admin' : '/home',
+      role: user.role
     });
+
   } catch (err) {
     console.error('Error en /auth/google-login:', err);
     res.status(500).json({ error: 'Error al iniciar sesión con Google' });
+  }
+});
+
+
+// --------------------------------------------------------------
+// LOGIN NORMAL (POST /auth/login)
+// --------------------------------------------------------------
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ where: { email } });
+    if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(400).json({ error: 'Contraseña incorrecta' });
+
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      lastname: user.lastname || '',
+      email: user.email,
+      phone: user.phone || '',
+      role: user.role || 'user'
+    };
+
+    // ✅ Enviar rol al frontend
+    res.json({
+      success: true,
+      message: 'Inicio de sesión exitoso',
+      redirect: user.role === 'admin' ? '/admin' : '/home',
+      role: user.role
+    });
+
+  } catch (err) {
+    console.error('Error en /auth/login:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
+// --------------------------------------------------------------
+// REGISTRO NORMAL (POST /auth/registro)
+// --------------------------------------------------------------
+router.post('/registro', async (req, res) => {
+  try {
+    const { name, lastname, email, phone, password } = req.body;
+
+    const cleanPhone = formatPhone(phone);
+    if (!cleanPhone) return res.status(400).json({ error: 'Número de teléfono inválido' });
+
+    const codigo = Math.floor(100000 + Math.random() * 900000);
+
+    req.session.tempUser = { name, lastname, email, phone: cleanPhone, password, codigo };
+    await req.session.save();
+
+    try {
+      await twilioClient.messages.create({
+        from: FROM,
+        to: cleanPhone,
+        body: `Tu código de verificación es: ${codigo}`
+      });
+    } catch (err) {
+      console.error('Error enviando SMS:', err.message);
+      return res.status(500).json({ error: 'No se pudo enviar el SMS. Revisa el número' });
+    }
+
+    res.json({ success: true, message: 'Código enviado al número', redirect: '/verificar' });
+
+  } catch (err) {
+    console.error('Error en /auth/registro:', err);
+    res.status(500).json({ error: 'Error al registrar usuario' });
   }
 });
 
@@ -162,40 +184,47 @@ router.post('/completar-registro', async (req, res) => {
   try {
     const { phone, password } = req.body;
 
-    if (!req.session.tempGoogleUser)
-      return res.status(400).json({ error: 'Sesión no encontrada' });
+    const temp = req.session.tempGoogleUser || req.session.tempUser;
+    if (!temp) return res.status(400).json({ error: 'Sesión no encontrada' });
 
-    const temp = req.session.tempGoogleUser;
+    const cleanPhone = formatPhone(phone);
+    if (!cleanPhone) return res.status(400).json({ error: 'Número de teléfono inválido' });
+
     const codigo = Math.floor(100000 + Math.random() * 900000);
 
-    temp.phone = phone;
+    temp.phone = cleanPhone;
     temp.password = password;
     temp.codigo = codigo;
     await req.session.save();
 
-    await twilioClient.messages.create({
-      from: FROM,
-      to: phone.replace(/\D/g, ''),
-      body: `Tu código de verificación es: ${codigo}`
-    });
+    try {
+      await twilioClient.messages.create({
+        from: FROM,
+        to: cleanPhone,
+        body: `Tu código de verificación es: ${codigo}`
+      });
+    } catch (err) {
+      console.error('Error enviando SMS:', err.message);
+      return res.status(500).json({ error: 'No se pudo enviar el SMS. Revisa el número' });
+    }
 
     res.json({ success: true, message: 'Código enviado al número', redirect: '/verificar' });
+
   } catch (err) {
     console.error('Error en /auth/completar-registro:', err);
-    res.status(500).json({ error: 'Error al completar registro con Google' });
+    res.status(500).json({ error: 'Error al completar registro' });
   }
 });
 
 // --------------------------------------------------------------
-// VERIFICAR CÓDIGO (POST /auth/verificar)
+// VERIFICAR CÓDIGO OTP (POST /auth/verificar)
 // --------------------------------------------------------------
 router.post('/verificar', async (req, res) => {
   try {
-    const { codigo, phone } = req.body;
+    const { codigo } = req.body;
 
-    let temp = req.session.tempUser || req.session.tempGoogleUser;
-    if (!temp)
-      return res.status(400).json({ success: false, message: 'Sesión no encontrada o expirada' });
+    const temp = req.session.tempUser || req.session.tempGoogleUser;
+    if (!temp) return res.status(400).json({ success: false, message: 'Sesión expirada' });
 
     if (parseInt(codigo) !== temp.codigo)
       return res.status(400).json({ success: false, message: 'Código incorrecto' });
@@ -203,18 +232,21 @@ router.post('/verificar', async (req, res) => {
     const hashedPassword = await bcrypt.hash(temp.password, 10);
 
     let user = await User.findOne({ where: { email: temp.email } });
+
     if (user) {
+      // Actualizar usuario existente
       await user.update({
-        phone: temp.phone || phone,
+        phone: temp.phone,
         password: hashedPassword,
         phone_verified: true
       });
     } else {
+      // Crear nuevo usuario
       user = await User.create({
         name: temp.name,
         lastname: temp.lastname || '',
         email: temp.email,
-        phone: temp.phone || phone,
+        phone: temp.phone,
         password: hashedPassword,
         phone_verified: true,
         role: 'user'
@@ -231,10 +263,12 @@ router.post('/verificar', async (req, res) => {
       role: user.role || 'user'
     };
 
+    // Limpiar sesiones temporales
     delete req.session.tempUser;
     delete req.session.tempGoogleUser;
 
-    res.json({ success: true, message: 'Cuenta verificada y completada correctamente' });
+    res.json({ success: true, message: 'Cuenta verificada y completada', redirect: '/home' });
+
   } catch (err) {
     console.error('Error en /auth/verificar:', err);
     res.status(500).json({ success: false, message: 'Error interno al verificar código' });
@@ -242,34 +276,57 @@ router.post('/verificar', async (req, res) => {
 });
 
 // --------------------------------------------------------------
-// SESIÓN ACTUAL (GET /auth/session)
+// CERRAR SESIÓN
 // --------------------------------------------------------------
-router.get('/session', (req, res) => {
-  if (req.session.user) {
-    const { name, lastname, email, phone, role } = req.session.user;
-    res.json({ loggedIn: true, name, lastname, email, phone, role });
-  } else {
-    res.json({ loggedIn: false });
-  }
-});
-
-// --------------------------------------------------------------
-// LOGOUT (POST /auth/logout)
-// --------------------------------------------------------------
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
-      console.error('Error destruyendo sesión:', err);
-      return res.status(500).json({ error: 'Error al cerrar sesión' });
+      console.error('Error al cerrar sesión:', err);
+      return res.status(500).send('No se pudo cerrar sesión');
     }
+    // Borra la cookie de sesión y redirige al login
     res.clearCookie('connect.sid');
-    res.json({ success: true, message: 'Sesión cerrada correctamente' });
+    res.redirect('/login');
   });
 });
 
-// --------------------------------------------------------------
-// CAMBIAR CONTRASEÑA
-// --------------------------------------------------------------
+//cambiar contraseña
 router.put('/change-password', authController.changePassword);
+
+
+
+// Devuelve solo rol, usado por panel admin
+router.get('/session-role', (req, res) => {
+  if (req.session.user) {
+    return res.json({ loggedIn: true, role: req.session.user.role });
+  }
+  res.json({ loggedIn: false });
+});
+
+
+router.get('/session', (req, res) => {
+  if (req.session.user) {
+    const { id, name, lastname, email, phone, role } = req.session.user;
+    return res.json({
+      loggedIn: true,
+      id,
+      name,
+      lastname,
+      email,
+      phone,
+      role
+    });
+  }
+  res.json({ loggedIn: false });
+});
+
+// GET /perfil — Renderizar la vista con datos de sesión
+router.get('/', (req, res) => {
+  if (!req.session.user) return res.redirect('/login'); // redirige si no hay sesión
+
+  // Pasa la sesión del usuario al EJS
+  res.render('perfil', { usuario: req.session.user });
+});
+
 
 module.exports = router;

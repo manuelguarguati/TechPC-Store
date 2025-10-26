@@ -29,7 +29,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 🔹 IMPORTAR RUTAS
-const mainRoutes = require('./routes/main');       // <--- Asegúrate de tener esto
+const mainRoutes = require('./routes/main');    
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const productsRoutes = require('./routes/products');
@@ -38,12 +38,12 @@ const perfilRoutes = require('./routes/perfil');
 // 🔹 USAR RUTAS
 const subirProductoRoutes = require('./routes/subirProducto');
 
-app.use('/', subirProductoRoutes); // ahora GET /subir-producto funciona
+app.use('/', subirProductoRoutes);
 app.use('/', mainRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/perfil', perfilRoutes);
 app.use('/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
 
 // Servidor
 const PORT = process.env.PORT || 3000;

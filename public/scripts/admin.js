@@ -1,35 +1,39 @@
 // ======================================================================
 // 📦 PANEL DE ADMINISTRACIÓN — admin.js
 // ======================================================================
-// Este script controla toda la lógica del panel de administración:
-// - Verifica que el usuario sea admin
-// - Carga lista de usuarios y productos
-// - Permite agregar y eliminar productos/usuarios
-// ======================================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     // ---------------------------------------------------------------
     // 🔒 1️⃣ Verificar sesión y rol de administrador
     // ---------------------------------------------------------------
-    const sessionRes = await fetch('/auth/session', { credentials: 'include' });
-    const sessionData = await sessionRes.json();
+    const sessionRoleRes = await fetch('/auth/session-role', { credentials: 'include' });
+    const sessionRoleData = await sessionRoleRes.json();
 
-    if (!sessionData.loggedIn || sessionData.role !== 'admin') {
+    if (!sessionRoleData.loggedIn || sessionRoleData.role !== 'admin') {
       alert('Acceso restringido. Solo para administradores.');
       window.location.href = '/home';
       return;
     }
 
+    console.log('Bienvenido al panel de admin');
+
+    // Opcional: obtener info completa del admin
+    const sessionInfoRes = await fetch('/auth/session', { credentials: 'include' });
+    const sessionInfoData = await sessionInfoRes.json();
+    if (sessionInfoData.loggedIn) {
+      console.log('Admin:', sessionInfoData.name);
+    }
+
     // ---------------------------------------------------------------
-    // 👥 2️⃣ Cargar lista de usuarios registrados
+    // 👥 2️⃣ Cargar lista de usuarios
     // ---------------------------------------------------------------
     const usuariosRes = await fetch('/api/admin/usuarios', { credentials: 'include' });
     const usuarios = await usuariosRes.json();
-
     const tbodyUsuarios = document.querySelector('#tablaUsuarios tbody');
+
     if (tbodyUsuarios) {
-      tbodyUsuarios.innerHTML = ''; // Limpiar antes de agregar
+      tbodyUsuarios.innerHTML = '';
       usuarios.forEach(user => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -45,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         tbodyUsuarios.appendChild(tr);
       });
 
-      // 🗑️ Eliminar usuario
       tbodyUsuarios.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
           const id = e.target.dataset.id;
@@ -54,7 +57,6 @@ document.addEventListener('DOMContentLoaded', async () => {
               method: 'DELETE',
               credentials: 'include'
             });
-
             const result = await res.json();
             if (result.success) {
               alert('✅ Usuario eliminado.');
@@ -72,8 +74,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ---------------------------------------------------------------
     const productosRes = await fetch('/api/admin/products', { credentials: 'include' });
     const productos = await productosRes.json();
-
     const tbodyProductos = document.querySelector('#tablaProductos tbody');
+
     if (tbodyProductos) {
       tbodyProductos.innerHTML = '';
       productos.forEach(p => {
@@ -102,15 +104,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (formNuevo) {
       formNuevo.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const formData = new FormData(formNuevo);
-
         const res = await fetch('/api/admin/products', {
           method: 'POST',
-          body: formData, // ✅ Enviar como FormData
+          body: formData,
           credentials: 'include'
         });
-
         const result = await res.json();
         if (result.success) {
           alert('✅ Producto agregado correctamente');
@@ -133,7 +132,6 @@ document.addEventListener('DOMContentLoaded', async () => {
               method: 'DELETE',
               credentials: 'include'
             });
-
             const result = await res.json();
             if (result.success) {
               alert('✅ Producto eliminado.');
@@ -153,12 +151,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       tbodyProductos.addEventListener('click', async (e) => {
         if (e.target.classList.contains('editar')) {
           const id = e.target.dataset.id;
-
-          // Obtener datos del producto
           const res = await fetch(`/api/admin/products/${id}`, { credentials: 'include' });
           const product = await res.json();
 
-          // Llenar formulario de edición
           document.getElementById('edit-id').value = product.id;
           document.getElementById('edit-nombre').value = product.name;
           document.getElementById('edit-descripcion').value = product.description || '';
@@ -167,7 +162,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('edit-categoria').value = product.category || '';
           document.getElementById('edit-image_url_anterior').value = product.image_url;
 
-          // Mostrar formulario de edición
           document.getElementById('form-editar-producto-container').style.display = 'block';
         }
       });
@@ -180,15 +174,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (formEditar) {
       formEditar.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const formData = new FormData(formEditar);
-
         const res = await fetch(`/api/admin/products/${formData.get('id')}`, {
           method: 'PUT',
           body: formData,
           credentials: 'include'
         });
-
         const result = await res.json();
         if (result.success) {
           alert('✅ Producto actualizado correctamente');
@@ -213,4 +204,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error en el panel admin:', err);
     alert('Error cargando el panel de administración');
   }
-}); 
+});

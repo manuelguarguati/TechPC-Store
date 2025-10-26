@@ -13,21 +13,19 @@
 
     <nav>
       <a href="/home">🏠 Volver al inicio</a>
-      <a href="#" id="logout-admin">🚪 Cerrar sesión</a>
+      <a href="/auth/logout" id="logout-admin">🚪 Cerrar sesión</a>
     </nav>
 
     <% if (user) { %>
       <p class="bienvenida">
-        Bienvenido, <strong><%= user.nombre %></strong>
+        Bienvenido, <strong><%= user.name %></strong>
         (<%= user.role %>)
       </p>
     <% } %>
   </header>
 
   <main>
-    <!-- ==============================
-         SECCIÓN USUARIOS
-    =============================== -->
+    <!-- SECCIÓN USUARIOS -->
     <section id="seccion-usuarios">
       <h2>👤 Lista de usuarios registrados</h2>
       <table id="tablaUsuarios">
@@ -51,9 +49,7 @@
 
     <hr />
 
-    <!-- ==============================
-         SECCIÓN PRODUCTOS
-    =============================== -->
+    <!-- SECCIÓN PRODUCTOS -->
     <section id="seccion-productos">
       <h2>🛍️ Gestión de Productos</h2>
 
@@ -72,9 +68,7 @@
       </form>
     </section>
 
-    <!-- ==============================
-         TABLA DE PRODUCTOS
-    =============================== -->
+    <!-- TABLA DE PRODUCTOS -->
     <table id="tablaProductos">
       <thead>
         <tr>
@@ -93,9 +87,7 @@
       </tbody>
     </table>
 
-    <!-- ==============================
-         FORMULARIO EDITAR PRODUCTO
-    =============================== -->
+    <!-- FORMULARIO EDITAR PRODUCTO -->
     <div id="form-editar-producto-container" style="display: none;">
       <h3>✏️ Editar producto</h3>
       <form id="form-editar-producto" enctype="multipart/form-data">

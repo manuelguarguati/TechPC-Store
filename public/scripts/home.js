@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await res.json();
 
     if (data.loggedIn) {
-      usuario = { id: data.id, name: data.name, email: data.email, role: data.role };
+      usuario = data.user;
+  
       nombreSpan.textContent = data.name;
       correoSpan.textContent = data.email;
       nombreBienvenida.textContent = data.name;
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ===================== 2️⃣ Menú de usuario =====================
-  if(usuarioBtn && menuUsuario){
+  if (usuarioBtn && menuUsuario) {
     usuarioBtn.addEventListener("click", e => {
       e.stopPropagation();
       menuUsuario.classList.toggle("mostrar");
@@ -55,13 +56,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
-
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
       try {
-        await fetch("/auth/logout", { method: "POST", credentials: "include" });
+        await fetch("/auth/logout", { method: "GET", credentials: "include" });
         window.location.reload();
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      }
     });
   }
 
@@ -110,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ===================== 5️⃣ Mini-carrito =====================
   function actualizarContador() {
-    if(carritoBtn) carritoBtn.textContent = `🛒 (${miniCarrito.cantidad})`;
+    if (carritoBtn) carritoBtn.textContent = `🛒 (${miniCarrito.cantidad})`;
   }
 
   async function actualizarMiniCarrito() {

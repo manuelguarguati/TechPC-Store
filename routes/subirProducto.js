@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product'); // importamos Product para consultar la BD
+const Product = require('../models/Product'); // importamos Product para consultar la BD
 
 // Middleware para verificar sesión
 const isLoggedIn = (req, res, next) => {

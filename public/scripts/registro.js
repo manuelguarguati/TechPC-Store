@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await res.json();
 
+      // 10️⃣ Mostrar mensajes según respuesta del backend
       if (result.error) {
         alert("❌ " + result.error);
       } else {

@@ -1,27 +1,18 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Product = require('./product');
+const User = require('./User');
+const Product = require('./Product');
 
 const Cart = sequelize.define('Cart', {
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  productId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  cantidad: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 1
-  }
+  userId: { type: DataTypes.INTEGER },
+  productId: { type: DataTypes.INTEGER },
+  cantidad: { type: DataTypes.INTEGER, defaultValue: 1 }
 }, {
   tableName: 'carrito',
-  timestamps: false
+  timestamps: true
 });
 
-// Relación opcional para obtener datos del producto
+Cart.belongsTo(User, { foreignKey: 'userId' });
 Cart.belongsTo(Product, { foreignKey: 'productId' });
 
 module.exports = Cart;
