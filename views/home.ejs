@@ -21,7 +21,6 @@
 
       <nav>
         <% if (!usuario) { %>
-          <!-- 🔹 Si el usuario NO está autenticado -->
           <a href="/login" id="login-link">Login</a>
           <a href="/registro" id="registro-link">Registro</a>
         <% } %>
@@ -31,10 +30,15 @@
         <div class="usuario-container">
           <button id="usuario-btn">👤 Cuenta ▼</button>
           <div id="menu-usuario" class="menu-usuario">
-            <p><strong>Nombre:</strong> <span id="nombre-usuario"><%= usuario ? usuario.nombre : "Visitante" %></span></p>
-            <p><strong>Correo:</strong> <span id="correo-usuario"><%= usuario ? usuario.correo : "" %></span></p>
+            <p><strong>Nombre:</strong> <span id="nombre-usuario"><%= usuario ? usuario.name : "Visitante" %></span></p>
+            <p><strong>Correo:</strong> <span id="correo-usuario"><%= usuario ? usuario.email : "" %></span></p>
             <hr />
             <% if (usuario) { %>
+              <% if (usuario.role === 'admin') { %>
+                <button id="btn-panel">Panel Admin</button>
+              <% } else { %>
+                <button id="btn-subir-producto">Subir producto</button>
+              <% } %>
               <button id="ver-perfil">Ver perfil</button>
               <button id="cambiar-pass">Cambiar contraseña</button>
               <button id="logout-btn">Cerrar sesión</button>
@@ -48,7 +52,7 @@
 
     <!-- ===================== MAIN ===================== -->
     <main class="container">
-      <h1>Bienvenido <span id="nombre-bienvenida"><%= usuario ? usuario.nombre : "Visitante" %></span></h1>
+      <h1>Bienvenido <span id="nombre-bienvenida"><%= usuario ? usuario.name : "Visitante" %></span></h1>
       <h2>Computadores en promoción</h2>
 
       <!-- Productos cargados dinámicamente -->
@@ -59,6 +63,6 @@
     <footer>© TechPC Store 2025</footer>
 
     <!-- Script principal -->
-    <script src="/scripts/home.js"></script>
+    <script type="module" src="/scripts/home.js"></script>
   </body>
 </html>

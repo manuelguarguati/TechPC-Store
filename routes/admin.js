@@ -68,13 +68,14 @@ router.delete('/usuarios/:id', isAdmin, async (req, res) => {
 // 🔹 Obtener todos los productos
 router.get('/products', isAdmin, async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({ where: { activo: true } });
     res.json(products);
   } catch (err) {
-    console.error('❌ Error obteniendo productos:', err);
+    console.error(err);
     res.status(500).json({ error: 'Error al obtener productos' });
   }
 });
+
 
 // 🔹 Obtener producto por ID
 router.get('/products/:id', isAdmin, async (req, res) => {
@@ -133,13 +134,16 @@ router.put('/products/:id', upload.single('imagen'), isAdmin, async (req, res) =
   }
 });
 
-// 🔹 Eliminar producto
+// 🔹 Eliminar producto (soft delete)
 router.delete('/products/:id', isAdmin, async (req, res) => {
   try {
-    await Product.destroy({ where: { id: req.params.id } });
+    await Product.update(
+      { activo: false },
+      { where: { id: req.params.id } }
+    );
     res.json({ success: true });
   } catch (err) {
-    console.error('❌ Error eliminando producto:', err);
+    console.error('Error eliminando producto:', err);
     res.status(500).json({ error: 'Error al eliminar producto' });
   }
 });

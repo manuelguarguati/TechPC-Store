@@ -1,8 +1,5 @@
-// --------------------------------------------------------------
-// home.js — Carga de productos, usuario y mini-carrito
-// --------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", async () => {
-  // ELEMENTOS DEL DOM
+  // Elementos del DOM
   const nombreSpan = document.getElementById("nombre-usuario");
   const correoSpan = document.getElementById("correo-usuario");
   const nombreBienvenida = document.getElementById("nombre-bienvenida");
@@ -14,70 +11,76 @@ document.addEventListener("DOMContentLoaded", async () => {
   const usuarioBtn = document.getElementById("usuario-btn");
   const menuUsuario = document.getElementById("menu-usuario");
   const carritoBtn = document.getElementById("carrito-btn");
+  const btnPanel = document.getElementById("btn-panel");
+  const btnSubirProducto = document.getElementById("btn-subir-producto");
 
-  let miniCarrito = { cantidad: 0 }; // Contador de productos
-
-  // -------------------------------
-  // 1. VERIFICAR SESIÓN
-  // -------------------------------
   let usuario = null;
+  let miniCarrito = { cantidad: 0 };
+
+  // ===================== 1️⃣ Verificar sesión =====================
   try {
     const res = await fetch("/auth/session", { credentials: "include" });
     const data = await res.json();
+
     if (data.loggedIn) {
-      usuario = { id: data.id, nombre: data.name, correo: data.email };
+      usuario = { id: data.id, name: data.name, email: data.email, role: data.role };
       nombreSpan.textContent = data.name;
       correoSpan.textContent = data.email;
       nombreBienvenida.textContent = data.name;
-      loginLink.style.display = "none";
-      registroLink.style.display = "none";
-      logoutBtn.style.display = "inline-block";
+
+      if (loginLink) loginLink.style.display = "none";
+      if (registroLink) registroLink.style.display = "none";
+      if (logoutBtn) logoutBtn.style.display = "inline-block";
+
       await actualizarMiniCarrito();
     } else {
       nombreSpan.textContent = "Visitante";
       nombreBienvenida.textContent = "Visitante";
-      logoutBtn.style.display = "none";
+      if (logoutBtn) logoutBtn.style.display = "none";
     }
   } catch (err) {
     console.error("Error al obtener la sesión:", err);
   }
 
-  // -------------------------------
-  // 2. MENÚ DE USUARIO
-  // -------------------------------
-  usuarioBtn.addEventListener("click", e => {
-    e.stopPropagation();
-    menuUsuario.classList.toggle("mostrar");
-  });
+  // ===================== 2️⃣ Menú de usuario =====================
+  if(usuarioBtn && menuUsuario){
+    usuarioBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      menuUsuario.classList.toggle("mostrar");
+    });
 
-  window.addEventListener("click", e => {
-    if (!menuUsuario.contains(e.target) && !usuarioBtn.contains(e.target)) {
-      menuUsuario.classList.remove("mostrar");
-    }
-  });
+    window.addEventListener("click", e => {
+      if (!menuUsuario.contains(e.target) && !usuarioBtn.contains(e.target)) {
+        menuUsuario.classList.remove("mostrar");
+      }
+    });
+  }
 
-  logoutBtn.addEventListener("click", async () => {
-    try {
-      await fetch("/auth/logout", { method: "POST", credentials: "include" });
-      window.location.reload();
-    } catch (err) { console.error(err); }
-  });
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await fetch("/auth/logout", { method: "POST", credentials: "include" });
+        window.location.reload();
+      } catch (err) { console.error(err); }
+    });
+  }
 
-  verPerfilBtn.addEventListener("click", () => window.location.href = "/perfil");
-  cambiarPassBtn.addEventListener("click", () => window.location.href = "/cambiar-password");
+  if (verPerfilBtn) verPerfilBtn.addEventListener("click", () => window.location.href = "/perfil");
+  if (cambiarPassBtn) cambiarPassBtn.addEventListener("click", () => window.location.href = "/cambiar-password");
 
-  // -------------------------------
-  // 3. CARGAR PRODUCTOS Y BOTONES AGREGAR
-  // -------------------------------
+  // ===================== 3️⃣ Redirecciones según rol =====================
+  if (btnPanel) btnPanel.addEventListener("click", () => window.location.href = "/admin");
+  if (btnSubirProducto) btnSubirProducto.addEventListener("click", () => window.location.href = "/subir-producto");
+
+  // ===================== 4️⃣ Cargar productos =====================
   async function cargarProductos() {
     try {
       const res = await fetch("/api/products");
       const productos = await res.json();
-
       const contenedor = document.getElementById("lista-productos");
       contenedor.innerHTML = "";
 
-      if (!productos.length) {
+      if (!productos || !productos.length) {
         contenedor.innerHTML = "<p>No hay productos disponibles.</p>";
         return;
       }
@@ -85,43 +88,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       productos.forEach(p => {
         const div = document.createElement("div");
         div.classList.add("producto");
+        div.style.cursor = "pointer";
 
         div.innerHTML = `
           <img src="${p.image_url || '/img/default.png'}" alt="${p.name}">
           <h3>${p.name}</h3>
-          <p>${p.description || 'Sin descripción'}</p>
           <div class="precio">$${parseFloat(p.price).toLocaleString()}</div>
-          <button class="btn-agregar" data-id="${p.id}">Añadir al carrito 🛒</button>
+          <div class="envio">${p.envio_gratis ? "Envío GRATIS" : "Envío NO gratis"}</div>
         `;
+
+        div.addEventListener("click", () => window.location.href = `/producto/${p.id}`);
         contenedor.appendChild(div);
       });
 
-      // Botones de agregar
-      document.querySelectorAll(".btn-agregar").forEach(btn => {
-        btn.addEventListener("click", async e => {
-          if (!usuario) return alert("Debes iniciar sesión");
-          const productId = e.target.dataset.id;
-          await fetch("/carrito/agregar", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ productId, cantidad: 1 }),
-            credentials: "include"
-          });
-          miniCarrito.cantidad++;
-          actualizarContador();
-        });
-      });
-
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error("Error al cargar productos:", err);
+    }
   }
 
   cargarProductos();
 
-  // -------------------------------
-  // 4. MINI-CARRITO
-  // -------------------------------
+  // ===================== 5️⃣ Mini-carrito =====================
   function actualizarContador() {
-    carritoBtn.textContent = `🛒 (${miniCarrito.cantidad})`;
+    if(carritoBtn) carritoBtn.textContent = `🛒 (${miniCarrito.cantidad})`;
   }
 
   async function actualizarMiniCarrito() {
@@ -130,7 +119,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await res.json();
       miniCarrito.cantidad = data.cantidad || 0;
       actualizarContador();
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error("Error al actualizar mini-carrito:", err);
+    }
   }
-
 });

@@ -24,27 +24,26 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'mi_secreto_seguro',
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    maxAge: 1000 * 60 * 60,
-    secure: false,
-    sameSite: 'lax'
-  }
+  cookie: { maxAge: 1000 * 60 * 60, secure: false, sameSite: 'lax' }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rutas
-const mainRoutes = require('./routes/main');
+// 🔹 IMPORTAR RUTAS
+const mainRoutes = require('./routes/main');       // <--- Asegúrate de tener esto
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const productsRoutes = require('./routes/products');
 const perfilRoutes = require('./routes/perfil');
 
+// 🔹 USAR RUTAS
+const subirProductoRoutes = require('./routes/subirProducto');
 
-app.use('/api/perfil', perfilRoutes); // rutas PUT/GET para fetch
+app.use('/', subirProductoRoutes); // ahora GET /subir-producto funciona
 app.use('/', mainRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/perfil', perfilRoutes);
 app.use('/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/products', productsRoutes);
 
 // Servidor
 const PORT = process.env.PORT || 3000;

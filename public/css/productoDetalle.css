@@ -1,0 +1,239 @@
+/* ===== Generales ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+body {
+  background: linear-gradient(135deg, #2d3436, #1e272e);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1f2a27;
+  padding: 10px 30px;
+  gap: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header a {
+  color: #4cd137;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+header a:hover {
+  color: #3f9c2d;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+#busqueda {
+  width: 100%;
+  max-width: 350px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+#buscar-btn {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  background: #4cd137;
+  color: #1e272e;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+#buscar-btn:hover {
+  background: #3f9c2d;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#carrito-btn, #logout-btn {
+  background: #4cd137;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #1e272e;
+  transition: background 0.3s;
+}
+
+#carrito-btn:hover, #logout-btn:hover {
+  background: #3f9c2d;
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  width: 90%;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.detalle-producto {
+  background: #3b3f44;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.imagenes {
+  flex: 1;
+  min-width: 300px;
+}
+
+.imagenes img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.miniaturas {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.miniatura {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.miniatura:hover {
+  border: 2px solid #4cd137;
+}
+
+.info-producto {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-producto h1 {
+  font-size: 2rem;
+  color: #4cd137;
+}
+
+.precio {
+  font-size: 2rem;
+  color: #ffd32a;
+  font-weight: bold;
+}
+
+.envio {
+  font-size: 1rem;
+  color: #b2bec3;
+}
+
+.descripcion {
+  line-height: 1.5;
+}
+
+.caracteristicas li {
+  padding: 6px 0;
+  border-bottom: 1px solid #2d3436;
+}
+
+.stock {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* ===== Acciones ===== */
+.acciones {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.acciones input[type="number"] {
+  width: 70px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  text-align: center;
+  background: #2d3436;
+  color: #fff;
+}
+
+.acciones button {
+  padding: 12px 25px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: #4cd137;
+  color: #1e272e;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.acciones button:hover {
+  background: #3f9c2d;
+  transform: scale(1.05);
+}
+
+/* ===== Productos relacionados ===== */
+.productos-relacionados h2 {
+  margin-bottom: 15px;
+  color: #ffd32a;
+}
+
+#relacionados {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #1f2a27;
+  color: #ffffff;
+  margin-top: auto;
+}

@@ -19,7 +19,7 @@
         <a href="/login">Login</a>
         <a href="/registro">Registro</a>
       <% } else { %>
-        <span> <%= usuario.nombre %></span>
+        <span><%= usuario.name || usuario.nombre %></span>
         <a href="/perfil">Perfil</a>
         <a href="#" id="logout-btn">Cerrar sesión</a>
       <% } %>
@@ -29,38 +29,38 @@
   <main class="container">
     <h1>Mi Carrito de Compras</h1>
 
-    <% if (!items || items.length === 0) { %>
-      <p>Tu carrito está vacío.</p>
-    <% } else { %>
-      <div id="carrito-contenedor">
-        <% items.forEach(item => { %>
-          <div class="producto-carrito">
-            <img src="<%= item.Product.image_url || '/img/default.png' %>" alt="<%= item.Product.name %>">
+    <div id="carrito-contenedor">
+      <% if (!items || items.length === 0) { %>
+        <p>Tu carrito está vacío.</p>
+        <a href="/home">Ir a comprar</a>
+      <% } else { %>
+        <% let total = 0; %>
+        <% items.forEach(item => { 
+             const activo = item.Product.activo !== false;
+             const subtotal = activo ? item.Product.price * item.cantidad : 0;
+             total += subtotal;
+        %>
+          <div class="producto-carrito" data-id="<%= item.id %>">
+            <img src="<%= item.Product.image_url || '/img/default.png' %>" alt="<%= activo ? item.Product.name : 'Producto no disponible' %>">
             <div class="info-producto">
-              <h3><%= item.Product.name %></h3>
+              <h3><%= activo ? item.Product.name : 'Producto no disponible' %></h3>
               <p>Cantidad: <%= item.cantidad %></p>
-              <p>Precio unitario: $<%= item.Product.price.toLocaleString() %></p>
-              <p>Subtotal: $<%= (item.Product.price * item.cantidad).toLocaleString() %></p>
+              <p>Precio unitario: $<%= activo ? item.Product.price.toLocaleString() : '0' %></p>
+              <p>Subtotal: $<%= subtotal.toLocaleString() %></p>
             </div>
-            <form action="/carrito/eliminar" method="POST">
-              <input type="hidden" name="cartId" value="<%= item.id %>">
-              <button type="submit" class="btn-eliminar">Eliminar</button>
-            </form>
+            <button class="btn-eliminar" data-id="<%= item.id %>">Eliminar</button>
           </div>
         <% }) %>
-      </div>
 
-      <h3 class="total">
-        Total: $
-        <%= items.reduce((acc, item) => acc + item.Product.price * item.cantidad, 0).toLocaleString() %>
-      </h3>
+        <h3 class="total">Total: $<%= total.toLocaleString() %></h3>
 
-      <form action="/carrito/finalizar" method="POST">
-        <button type="submit" class="btn-finalizar">Finalizar Compra</button>
-      </form>
-    <% } %>
+        <button id="finalizar-btn" class="btn-finalizar">Finalizar Compra</button>
+      <% } %>
+    </div>
   </main>
 
   <footer>© TechPC Store 2025</footer>
+
+  <script src="/scripts/carrito.js"></script>
 </body>
 </html>
