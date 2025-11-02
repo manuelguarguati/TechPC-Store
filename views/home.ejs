@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= titulo || "Home - TechPC Store" %></title>
+    <meta name="description" content="TechPC Store - Compra los mejores computadores y accesorios con envío rápido y promociones exclusivas." />
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="icon" href="/img/favicon.ico" />
   </head>
@@ -14,7 +15,9 @@
         <img src="/img/unnamed.png" alt="TechPC Store" />
       </div>
 
+      <!-- ===== Barra de búsqueda ===== -->
       <div class="search-bar">
+        <label for="busqueda" class="visually-hidden">Buscar productos</label>
         <input type="text" placeholder="Buscar productos..." id="busqueda" />
         <button id="buscar-btn">Buscar</button>
       </div>
@@ -27,13 +30,13 @@
 
         <a href="/carrito" id="carrito-btn">🛒</a>
 
-        <div class="usuario-container">
-          <button id="usuario-btn">👤 Cuenta ▼</button>
-          <div id="menu-usuario" class="menu-usuario">
-            <p><strong>Nombre:</strong> <span id="nombre-usuario"><%= usuario ? usuario.name : "Visitante" %></span></p>
-            <p><strong>Correo:</strong> <span id="correo-usuario"><%= usuario ? usuario.email : "" %></span></p>
-            <hr />
-            <% if (usuario) { %>
+        <% if (usuario) { %>
+          <div class="usuario-container">
+            <button id="usuario-btn">👤 Cuenta ▼</button>
+            <div id="menu-usuario" class="menu-usuario">
+              <p><strong>Nombre:</strong> <span id="nombre-usuario"><%= usuario.name %></span></p>
+              <p><strong>Correo:</strong> <span id="correo-usuario"><%= usuario.email %></span></p>
+              <hr />
               <% if (usuario.role === 'admin') { %>
                 <button id="btn-panel">Panel Admin</button>
               <% } else { %>
@@ -42,9 +45,9 @@
               <button id="ver-perfil">Ver perfil</button>
               <button id="cambiar-pass">Cambiar contraseña</button>
               <button id="logout-btn">Cerrar sesión</button>
-            <% } %>
+            </div>
           </div>
-        </div>
+        <% } %>
       </nav>
 
       <div class="banner">ENVÍO GRATIS EN TU PRIMERA COMPRA 💥</div>
@@ -62,7 +65,7 @@
     <!-- ===================== FOOTER ===================== -->
     <footer>© TechPC Store 2025</footer>
 
-    <!-- Script principal -->
-    <script type="module" src="/scripts/home.js"></script>
+    <!-- Script principal cargado de manera no bloqueante -->
+    <script type="module" src="/scripts/home.js" defer></script>
   </body>
 </html>

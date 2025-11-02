@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= titulo %></title>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+  <div class="formulario">
+    <h1>Recuperar contraseña</h1>
+    <% if (mensaje) { %><p style="color:#4cd137;"><%= mensaje %></p><% } %>
+    <% if (error) { %><p style="color:#ff3f3f;"><%= error %></p><% } %>
+    <form action="/recuperar-cuenta" method="POST">
+      <div class="usuario">
+        <label for="email">Correo:</label>
+        <input type="email" name="email" id="email" placeholder="ejemplo@correo.com" required />
+      </div>
+      <div class="usuario">
+        <button type="submit" class="boton">Enviar enlace</button>
+      </div>
+    </form>
+    <p style="margin-top:12px;">
+      <a href="/login">Volver al inicio de sesión</a>
+    </p>
+  </div>
+</body>
+</html>
