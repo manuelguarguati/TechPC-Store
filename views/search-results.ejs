@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+  <header>
+    <a href="/home">🏠 Home</a>
+  </header>
+
+  <main class="container">
+    <h1>Resultados para "<%= query %>"</h1>
+
+    <div class="productos">
+      <% if(productos.length > 0) { %>
+        <% productos.forEach(p => { %>
+          <div class="producto" onclick="window.location.href='/producto/<%= p.id %>'">
+            <img src="<%= p.image_url || '/img/default.png' %>" alt="<%= p.name %>">
+            <h3><%= p.name %></h3>
+            <div class="precio">$<%= parseFloat(p.price).toLocaleString() %></div>
+            <div class="envio"><%= p.envio_gratis ? 'Envío GRATIS' : 'Envío NO gratis' %></div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No se encontraron productos.</p>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>

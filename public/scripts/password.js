@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const res = await fetch("/auth/change-password", {
-        method: "PUT",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ actual, nueva }),
         credentials: "include"

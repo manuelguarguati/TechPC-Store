@@ -4,13 +4,18 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #1e272e; /* Dark background */
-  color: #f1f2f6; /* Texto claro */
+  background: #1e272e;
+  /* Dark background */
+  color: #f1f2f6;
+  /* Texto claro */
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
-  color: #4cd137; /* Verde para títulos */
+  color: #4cd137;
+  /* Verde para títulos */
 }
 
 /* ==========================
@@ -60,13 +65,15 @@ section {
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #2f3640; /* Dark table background */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  background: #2f3640;
+  /* Dark table background */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   margin-top: 15px;
   color: #f1f2f6;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: center;
   border: 1px solid #444;
@@ -78,7 +85,8 @@ th {
 }
 
 tr:hover {
-  background-color: #4cd13733; /* Verde suave al hover */
+  background-color: #4cd13733;
+  /* Verde suave al hover */
 }
 
 /* ==========================
@@ -109,7 +117,8 @@ button.editar {
 }
 
 button.btn-agregar {
-  background: #4cd137; /* Verde principal */
+  background: #4cd137;
+  /* Verde principal */
   color: #1e272e;
   margin-top: 10px;
 }
@@ -125,7 +134,7 @@ form {
   background: #2f3640;
   padding: 15px;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   margin-top: 15px;
   color: #f1f2f6;
 }
@@ -167,7 +176,7 @@ footer {
   background-color: #2f3640;
   border: 1px solid #444;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   color: #f1f2f6;
 }
 
@@ -179,7 +188,8 @@ footer {
 
 /* Botones de editar y cancelar */
 button.btn-editar {
-  background: #4cd137; /* Verde principal */
+  background: #4cd137;
+  /* Verde principal */
   color: #1e272e;
   margin-right: 10px;
 }
@@ -190,5 +200,66 @@ button.btn-editar:hover {
 
 button.btn-cancelar {
   background: #e74c3c;
+  color: white;
+}
+
+/* Tabla de pedidos */
+#tablaPedidos td,
+#tablaPedidos th {
+  text-align: center;
+  border: 1px solid #444;
+  padding: 8px;
+}
+
+#tablaPedidos th {
+  background-color: #3d3d3d;
+}
+
+/* Estados de pedidos */
+.pendiente {
+  color: #f39c12;
+  font-weight: bold;
+}
+
+.pagado {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.enviado {
+  color: #4cd137;
+  font-weight: bold;
+}
+
+.entregado {
+  color: #8e44ad;
+  font-weight: bold;
+}
+
+.cancelado {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Botones pedidos */
+#tablaPedidos button {
+  margin: 2px;
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+#tablaPedidos .btn-enviar {
+  background-color: #4cd137;
+  color: #1e272e;
+}
+
+#tablaPedidos .btn-cancelar {
+  background-color: #e74c3c;
+  color: white;
+}
+
+#tablaPedidos .btn-detalle {
+  background-color: #3498db;
   color: white;
 }

@@ -4,7 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
-  color: #ffffff; /* Texto claro por defecto para dark mode */
+  color: #ffffff; /* Texto claro por defecto */
 }
 
 body {
@@ -36,13 +36,13 @@ nav {
   gap: 20px;
 }
 
-.carrito {
+a.carrito {
   font-size: 24px;
   color: #4cd137; /* Verde principal */
   text-decoration: none;
 }
 
-.carrito:hover {
+a.carrito:hover {
   color: #3f9c2d; /* Verde hover */
 }
 
@@ -106,7 +106,7 @@ nav {
   color: #b2bec3;
 }
 
-/* ===== Productos uniformes ===== */
+/* ===== Productos ===== */
 .productos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -125,7 +125,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 380px; /* Altura uniforme */
+  height: 380px;
   overflow: hidden;
 }
 
@@ -135,24 +135,16 @@ nav {
 
 .producto img {
   max-width: 100%;
-  max-height: 180px; /* Limita altura de la imagen */
-  object-fit: contain; /* Mantiene proporción, no distorsiona */
+  max-height: 180px;
+  object-fit: contain;
   margin-bottom: 15px;
 }
 
 .producto h3 {
   font-size: 1.1rem;
   margin-bottom: 8px;
-  height: 40px; /* Altura fija para títulos */
+  height: 40px; /* Altura fija */
   overflow: hidden;
-}
-
-.producto p {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 40px; /* Limita descripción a una línea */
 }
 
 .precio {
@@ -161,8 +153,14 @@ nav {
   margin-bottom: 10px;
 }
 
+.envio {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #dfe6e9;
+}
+
 .producto button {
-  background: #4cd137; /* Verde botón */
+  background: #4cd137;
   color: #1e272e;
   border: none;
   padding: 8px 12px;
@@ -197,7 +195,7 @@ nav {
   position: absolute;
   top: 45px;
   right: 0;
-  background: #3b3f44; /* Dark menú */
+  background: #3b3f44;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   width: 230px;
@@ -217,7 +215,7 @@ nav {
   margin-top: 6px;
   border: none;
   border-radius: 6px;
-  background: #4cd137; /* Verde botón menú */
+  background: #4cd137;
   cursor: pointer;
   color: #1e272e;
 }
@@ -230,7 +228,7 @@ nav {
 footer {
   text-align: center;
   padding: 15px;
-  background: #1f2a27; /* Dark footer */
+  background: #1f2a27;
   color: #ffffff;
   margin-top: auto;
 }

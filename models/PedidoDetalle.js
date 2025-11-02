@@ -10,7 +10,7 @@ const PedidoDetalle = sequelize.define('PedidoDetalle', {
   precio: { type: DataTypes.DECIMAL(16,4), allowNull: true }
 }, {
   tableName: 'pedido_detalle',
-  timestamps: true
+  timestamps: false
 });
 
 PedidoDetalle.belongsTo(Pedido, { foreignKey: 'pedidoId' });

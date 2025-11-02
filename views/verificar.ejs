@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= titulo || 'Verificar Código' %></title>
-  <link rel="stylesheet" href="/css/verificacion.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar cuenta</title>
+  <link rel="stylesheet" href="/css/verificacion.css">
 </head>
-
 <body>
-  <div class="formulario">
-    <h2>Verificación</h2>
-    <p>Hemos enviado un código de 6 dígitos al número que registraste.</p>
+  <div class="verificar-container">
+    <form id="otpForm" class="otp-form">
+      <h2>Verifica tu correo</h2>
+      <p>Introduce el código de 6 dígitos enviado a tu correo electrónico.</p>
 
-    <!-- 🧩 Formulario OTP -->
-    <form id="otpForm">
       <div class="otp-campos">
-        <!-- Campos individuales para el código -->
-        <% for (let i = 0; i < 6; i++) { %>
-          <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" inputmode="numeric" />
-        <% } %>
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
       </div>
 
       <button type="submit" class="boton">Verificar</button>
-    </form>
-
-    <!-- Mensaje dinámico -->
-    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
-      <p id="msg"><%= mensaje %></p>
-    <% } else { %>
       <p id="msg"></p>
-    <% } %>
+    </form>
   </div>
 
   <script src="/scripts/verificar.js"></script>

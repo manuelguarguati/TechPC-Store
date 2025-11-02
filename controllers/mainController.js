@@ -1,22 +1,20 @@
-// --------------------------------------------------------------
-// controllers/mainController.js
-// Controlador principal que renderiza las vistas EJS públicas, carrito y mini-carrito
-// --------------------------------------------------------------
-
 const Cart = require('../models/cart');
 const Product = require('../models/Product');
 const Pedido = require('../models/Pedido');
-const PedidoDetalle = require('../models/PedidoDetalle');
 const User = require('../models/User');
-const ProductDetail = require('../models/ProductoDetalle');
+const path = require('path');
+const multer = require('multer');
+
+// Configuración de multer para subir imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'public/images/'),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+});
+const upload = multer({ storage });
 
 const mainController = {
-  // Página principal
   home: (req, res) => {
-    const usuario = req.session.user
-      ? { id: req.session.user.id, name: req.session.user.name, email: req.session.user.email }
-      : null;
-
+    const usuario = req.session.user || null;
     res.render('home', { titulo: 'Home - TechPC Store', usuario });
   },
 
@@ -27,11 +25,7 @@ const mainController = {
   perfil: (req, res) => {
     const usuario = req.session.user;
     if (!usuario) return res.redirect('/login');
-
-    res.render('perfil', {
-      titulo: 'Mi perfil - TechPC Store',
-      usuario: { name: usuario.name || '', lastname: usuario.lastname || '', phone: usuario.phone || '' }
-    });
+    res.render('perfil', { titulo: 'Mi perfil - TechPC Store', usuario });
   },
 
   cambiarPassword: (req, res) => {
@@ -42,34 +36,45 @@ const mainController = {
 
   admin: (req, res) => {
     const usuario = req.session.user;
-
-    // Si no hay sesión → redirigir a login
     if (!usuario) return res.redirect('/login');
-
-    // Si no es admin → redirigir a login o mostrar mensaje
     if (usuario.role !== 'admin') return res.status(403).send('No autorizado');
-
-    // Renderizar panel de admin
-    res.render('admin', {
-      titulo: 'Panel de administración - TechPC Store',
-      user: usuario
-    });
+    res.render('admin', { titulo: 'Panel de administración - TechPC Store', user: usuario });
   },
 
-  // 🔹 Carrito
   carrito: async (req, res) => {
     const usuario = req.session.user;
     if (!usuario) return res.redirect('/login');
 
     try {
-      const items = await Cart.findAll({
-        where: { userId: usuario.id },
-        include: [{ model: Product }]
-      });
-
+      const items = await Cart.findAll({ where: { userId: usuario.id }, include: [{ model: Product }] });
       res.render('carrito', { titulo: 'Mi Carrito - TechPC Store', usuario, items });
     } catch (err) {
-      res.send(err.message);
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
+
+  carritoSession: async (req, res) => {
+    const usuario = req.session.user;
+    if (!usuario) return res.status(401).json({ success: false, message: 'Debes iniciar sesión' });
+
+    try {
+      const items = await Cart.findAll({ where: { userId: usuario.id }, include: [{ model: Product }] });
+      const total = items.reduce((acc, i) => acc + parseFloat(i.Product.price) * i.cantidad, 0);
+
+      res.json({
+        success: true,
+        carrito: items.map(i => ({
+          id: i.id,
+          nombre: i.Product.name,
+          precio: parseFloat(i.Product.price),
+          cantidad: i.cantidad
+        })),
+        total
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ success: false, message: 'Error al obtener el carrito' });
     }
   },
 
@@ -84,10 +89,15 @@ const mainController = {
         item.cantidad += parseInt(cantidad);
         await item.save();
       } else {
-        await Cart.create({ userId: usuario.id, productId, cantidad });
+        await Cart.create({ userId: usuario.id, productId, cantidad: parseInt(cantidad) });
       }
-      res.json({ success: true, message: 'Producto agregado al carrito' });
+
+      const items = await Cart.findAll({ where: { userId: usuario.id } });
+      const cantidadTotal = items.reduce((acc, i) => acc + i.cantidad, 0);
+
+      res.json({ success: true, message: 'Producto agregado al carrito', cantidad: cantidadTotal });
     } catch (err) {
+      console.error(err);
       res.json({ success: false, message: err.message });
     }
   },
@@ -98,10 +108,10 @@ const mainController = {
 
     const { cartId } = req.body;
     try {
-      // Elimina solo si el carrito pertenece al usuario
       await Cart.destroy({ where: { id: cartId, userId: usuario.id } });
       res.json({ success: true, message: 'Producto eliminado del carrito' });
     } catch (err) {
+      console.error(err);
       res.json({ success: false, message: err.message });
     }
   },
@@ -112,29 +122,20 @@ const mainController = {
 
     try {
       const items = await Cart.findAll({ where: { userId: usuario.id } });
-      if (items.length === 0) return res.json({ success: false, message: 'Carrito vacío' });
+      if (!items || items.length === 0) return res.json({ success: false, message: 'Carrito vacío' });
 
       let total = 0;
       for (const item of items) {
         const producto = await Product.findByPk(item.productId);
-        total += producto.price * item.cantidad;
+        total += parseFloat(producto.price) * item.cantidad;
       }
 
       const pedido = await Pedido.create({ userId: usuario.id, total });
-
-      for (const item of items) {
-        const producto = await Product.findByPk(item.productId);
-        await PedidoDetalle.create({
-          pedidoId: pedido.id,
-          productId: producto.id,
-          cantidad: item.cantidad,
-          precio: producto.price
-        });
-      }
-
       await Cart.destroy({ where: { userId: usuario.id } });
+
       res.json({ success: true, message: 'Compra realizada con éxito' });
     } catch (err) {
+      console.error(err);
       res.json({ success: false, message: err.message });
     }
   },
@@ -148,22 +149,18 @@ const mainController = {
       const cantidad = items.reduce((acc, i) => acc + i.cantidad, 0);
       res.json({ cantidad });
     } catch (err) {
+      console.error(err);
       res.json({ cantidad: 0 });
     }
   },
 
   detalleProducto: async (req, res) => {
     const productId = req.params.id;
-    const usuario = req.session.user
-      ? { id: req.session.user.id, name: req.session.user.name, email: req.session.user.email }
-      : null;
+    const usuario = req.session.user || null;
 
     try {
       const producto = await Product.findByPk(productId);
       if (!producto) return res.status(404).send('Producto no encontrado');
-
-      const detalles = await ProductDetail.findAll({ where: { productId } });
-      producto.detalles = detalles;
 
       let cantidadCarrito = 0;
       if (usuario) {
@@ -178,21 +175,68 @@ const mainController = {
     }
   },
 
-  subirProducto: (req, res) => {
+  subirProducto: async (req, res) => {
     if (!req.session.user) return res.redirect('/login');
-    res.render('subir-producto', { user: req.session.user });
+
+    try {
+      const usuario = req.session.user;
+      const productos = await Product.findAll({ where: { userId: usuario.id, activo: true } });
+      res.render('subir-producto', { titulo: 'Subir Producto', usuario, productos });
+    } catch (err) {
+      console.error(err);
+      res.render('subir-producto', { titulo: 'Subir Producto', usuario: req.session.user, productos: [] });
+    }
   },
+
+  subirProductoPost: [
+    upload.single('imagen'),
+    async (req, res) => {
+      if (!req.session.user) return res.status(401).json({ success: false, message: 'Debes iniciar sesión' });
+
+      try {
+        const usuario = req.session.user;
+        const { nombre, descripcion, precio, stock } = req.body;
+        const image_url = req.file ? '/images/' + req.file.filename : null;
+
+        const nuevoProducto = await Product.create({
+          name: nombre,
+          description: descripcion,
+          price: parseFloat(precio),
+          stock: parseInt(stock),
+          image_url,
+          userId: usuario.id,
+          activo: true
+        });
+
+        res.json({ success: true, product: nuevoProducto });
+      } catch (err) {
+        console.error(err);
+        res.json({ success: false, message: 'Error al crear producto' });
+      }
+    }
+  ],
 
   terminos: (req, res) => res.render('terminos', { titulo: 'Términos y Condiciones - TechPC Store' }),
 
-  completarRegistro: (req, res) => {
-    if (!req.session.tempGoogleUser) return res.redirect('/login');
-
+  completarRegistroView: (req, res) => {
+    if (!req.session.googleUser) return res.redirect('/login');
     res.render('completar-registro', {
-      email: req.session.tempGoogleUser.email,
-      name: req.session.tempGoogleUser.name,
-      lastname: req.session.tempGoogleUser.lastname
+      email: req.session.googleUser.email,
+      name: req.session.googleUser.name,
+      lastname: req.session.googleUser.lastname
     });
+  },
+
+  getStock: async (req, res) => {
+    const productId = req.params.id;
+    try {
+      const producto = await Product.findByPk(productId);
+      if (!producto) return res.status(404).json({ success: false, message: 'Producto no encontrado' });
+      res.json({ stock: producto.stock });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
   },
 
   guardarPerfil: async (req, res) => {
@@ -203,11 +247,9 @@ const mainController = {
 
     try {
       await User.update({ name, lastname, phone }, { where: { id: usuario.id } });
-
       req.session.user.name = name;
       req.session.user.lastname = lastname;
       req.session.user.phone = phone;
-
       res.json({ success: true });
     } catch (err) {
       console.error(err);

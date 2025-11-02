@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Capturar valores del formulario
-    const correo = document.querySelector('input[type="email"]').value.trim();
-    const nombre = document.querySelector('input[readonly][value]').value.trim();
-    const apellido = document.querySelectorAll('input[readonly][value]')[1].value.trim();
+    // Capturar valores de inputs por id (más seguro)
+    const correo = document.getElementById("email").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
+    const apellido = document.getElementById("apellido").value.trim();
     let celular = document.getElementById("celular").value.trim();
     const contraseña1 = document.getElementById("contraseña1").value;
     const contraseña2 = document.getElementById("contraseña2").value;
@@ -47,26 +47,26 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
     submitBtn.textContent = "Enviando...";
 
-    // Preparar datos para backend
     const data = { phone: celular, password: contraseña1 };
 
     try {
       const res = await fetch("/auth/completar-registro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: "include"  // ✅ enviar cookies para mantener la sesión
       });
 
       const result = await res.json();
 
-      if (result.error) {
-        msg.textContent = "❌ " + result.error;
+      if (!result.success) {
+        msg.textContent = "❌ " + result.message;
         msg.style.color = "#ff5252";
       } else {
         sessionStorage.setItem("registeredPhone", celular);
-        msg.textContent = "✅ Código enviado correctamente. Redirigiendo a verificación...";
+        msg.textContent = "✅ Registro completado. Redirigiendo...";
         msg.style.color = "#00e676";
-        setTimeout(() => window.location.href = result.redirect || "/verificar", 1000);
+        setTimeout(() => window.location.href = result.redirect || "/home", 1000);
       }
     } catch (err) {
       console.error("Error al enviar datos:", err);

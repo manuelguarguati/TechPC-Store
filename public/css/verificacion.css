@@ -7,22 +7,17 @@
 }
 
 body {
-  background: #1e272e; /* Dark mode */
+  background: #1e272e;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100vh;
   padding: 1rem;
-  transition: background 0.6s;
   color: #f1f2f6;
 }
 
-body:hover {
-  background: #2f3640; /* Darker hover */
-}
-
 .formulario {
-  background: #2f3640; /* Dark container */
+  background: #2f3640;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
@@ -30,13 +25,12 @@ body:hover {
   max-width: 450px;
   text-align: center;
   animation: fadeIn 0.6s ease;
-  color: #f1f2f6;
 }
 
 h2 {
   margin-bottom: 1rem;
   font-size: 1.8rem;
-  color: #4cd137; /* Verde */
+  color: #4cd137;
 }
 
 p {
@@ -93,33 +87,19 @@ p {
 /* --- Mensaje --- */
 #msg {
   font-size: 0.9rem;
-  color: #ff6b6b; /* Rojo para alertas */
+  color: #ff6b6b;
   min-height: 1.2rem;
 }
 
 /* --- Animación entrada --- */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Responsive móvil --- */
 @media (max-width: 480px) {
-  .otp-campos {
-    gap: 6px;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .formulario {
-    padding: 1.5rem;
-  }
+  .otp-campos { gap: 6px; }
+  h2 { font-size: 1.5rem; }
+  .formulario { padding: 1.5rem; }
 }

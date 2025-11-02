@@ -1,33 +1,36 @@
+// routes/main.js
 const express = require('express');
 const router = express.Router();
-const mainController = require('../controllers/mainController');
+const main = require('../controllers/mainController');
 
+// 🏠 Páginas principales
+router.get('/', main.home);
+router.get('/home', main.home);
+router.get('/login', main.login);
+router.get('/registro', main.registro);
+router.get('/verificar', main.verificar);
+router.get('/perfil', main.perfil);
+router.get('/cambiar-password', main.cambiarPassword);
+router.get('/admin', main.admin);
 
-// Páginas públicas
-router.get('/', mainController.home);
-router.get('/home', mainController.home);
-router.get('/login', mainController.login);
-router.get('/registro', mainController.registro);
-router.get('/verificar', mainController.verificar);
-router.get('/cambiar-password', mainController.cambiarPassword);
-router.get('/perfil', mainController.perfil);
-router.get('/admin', mainController.admin);
-router.get('/completar-registro', mainController.completarRegistro);
+// 🛒 Carrito
+router.get('/carrito', main.carrito);
+router.get('/carrito/session', main.carritoSession);
+router.post('/carrito/agregar', main.agregarAlCarrito);
+router.post('/carrito/eliminar', main.eliminarDelCarrito);
+router.post('/finalizar-compra', main.finalizarCompra);
 
-// Detalle de producto
-router.get('/producto/:id', mainController.detalleProducto);
-router.get('/subir-producto', mainController.subirProducto);
+// 🧩 Productos
+router.get('/producto/:id', main.detalleProducto);
+router.get('/subir-producto', main.subirProducto);
+router.post('/subir-producto', main.subirProductoPost);
+router.get('/api/producto/:id/stock', main.getStock);
 
-// Carrito
-router.get('/carrito', mainController.carrito);
-router.post('/carrito/finalizar', mainController.finalizarCompra);
-router.post('/carrito/agregar', mainController.agregarAlCarrito);
-router.get('/carrito/session', mainController.miniCarrito);
-router.post('/carrito/eliminar', mainController.eliminarDelCarrito);
+// 📄 Otras vistas
+router.get('/terminos', main.terminos);
+router.get('/completar', main.completarRegistroView);
 
-// Términos y condiciones
-router.get('/terminos', mainController.terminos);
-
-
+// ⚙️ Perfil
+router.post('/perfil/guardar', main.guardarPerfil);
 
 module.exports = router;

@@ -24,6 +24,7 @@ router.put('/actualizar', async (req, res) => {
     req.session.user.name = name;
     req.session.user.lastname = lastname;
     req.session.user.phone = phone;
+    
 
     res.json({ success: true });
   } catch (err) {

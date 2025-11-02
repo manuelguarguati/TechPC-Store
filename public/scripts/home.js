@@ -24,10 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (data.loggedIn) {
       usuario = data.user;
-  
-      nombreSpan.textContent = data.name;
-      correoSpan.textContent = data.email;
-      nombreBienvenida.textContent = data.name;
+
+      nombreSpan.textContent = usuario.name || "Visitante";
+      correoSpan.textContent = usuario.email || "";
+      nombreBienvenida.textContent = usuario.name || "Visitante";
+
 
       if (loginLink) loginLink.style.display = "none";
       if (registroLink) registroLink.style.display = "none";
@@ -56,10 +57,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
       try {
-        await fetch("/auth/logout", { method: "GET", credentials: "include" });
+        await fetch("/auth/logout", { method: "POST", credentials: "include" });
         window.location.reload();
       } catch (err) {
         console.error(err);
@@ -102,7 +104,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         div.addEventListener("click", () => window.location.href = `/producto/${p.id}`);
         contenedor.appendChild(div);
       });
-
     } catch (err) {
       console.error("Error al cargar productos:", err);
     }
@@ -124,5 +125,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) {
       console.error("Error al actualizar mini-carrito:", err);
     }
+  }
+
+  // ===================== 6️⃣ Búsqueda de productos =====================
+  const busquedaInput = document.getElementById("busqueda");
+  const buscarBtn = document.getElementById("buscar-btn");
+
+  if (buscarBtn) {
+    buscarBtn.addEventListener("click", () => {
+      const query = busquedaInput.value.trim();
+      if (!query) return;
+      window.location.href = `/search?q=${encodeURIComponent(query)}`;
+    });
+
+    // Permitir búsqueda al presionar Enter
+    busquedaInput.addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        buscarBtn.click();
+      }
+    });
   }
 });

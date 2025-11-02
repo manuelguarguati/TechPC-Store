@@ -1,65 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= titulo || 'Registro' %></title>
-  <link rel="icon" href="/img/favicon.ico" />
+  <title>Registro - TechPC Store</title>
   <link rel="stylesheet" href="/css/registro.css" />
 </head>
 
 <body>
-  <body>
-     <canvas id="canvas"></canvas>
-   <div class="titulo-pagina">
-    TECHPC STORE
-  </div>
-
   <div class="formulario">
-    <h2>Crear tu cuenta</h2>
+    <h2>Crear cuenta</h2>
 
-    <!-- 🧩 Formulario principal -->
     <form id="registroForm">
-      <!-- Campo de correo -->
-      <div class="campo">
-        <label for="correo">Ingresa tu e-mail</label>
-        <input type="email" name="email" id="correo" placeholder="ejemplo@correo.com" required />
-      </div>
-
-      <!-- Nombre y Apellido en la misma fila -->
-      <div class="fila">
-        <div class="campo">
-          <label for="nombre">Nombre</label>
-          <input type="text" name="name" id="nombre" placeholder="Tu nombre" required />
-        </div>
-
-        <div class="campo">
-          <label for="apellido">Apellido</label>
-          <input type="text" name="lastname" id="apellido" placeholder="Tu apellido" required />
-        </div>
-      </div>
-
-      <!-- Teléfono con prefijo fijo +57 -->
-      <div class="campo">
-        <label for="celular">Teléfono</label>
-        <div class="telefono">
-          <span>+57</span>
-          <input type="tel" name="phone" id="celular" placeholder="3001234567" required pattern="[0-9]{10}" title="Debe tener 10 dígitos" />
-        </div>
-      </div>
-
-      <!-- Contraseña y Confirmación -->
-      <div class="fila">
-        <div class="campo">
-          <label for="contraseña1">Contraseña</label>
-          <input type="password" name="password" id="contraseña1" placeholder="Crea una contraseña" required minlength="8" />
-        </div>
-
-        <div class="campo">
-          <label for="contraseña2">Confirmar</label>
-          <input type="password" id="contraseña2" placeholder="Repite la contraseña" required minlength="8" />
-        </div>
-      </div>
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      <input type="text" id="apellido" placeholder="Apellido" required />
+      <input type="email" id="correo" placeholder="Correo electrónico" required />
+      <input type="tel" id="celular" placeholder="Teléfono (10 dígitos)" required />
+      <input type="password" id="contraseña1" placeholder="Contraseña" required />
+      <input type="password" id="contraseña2" placeholder="Confirmar contraseña" required />
 
       <!-- Aceptación de términos -->
       <div class="autorizacion">
@@ -68,14 +27,14 @@
           Acepto la <a href="terminos">Declaración de privacidad y Términos.</a>
         </label>
       </div>
-
-      <!-- Botón de envío -->
       <button type="submit" class="boton">Crear cuenta</button>
     </form>
+
+    <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
   </div>
 
-  <!-- Script de validación y envío -->
   <script src="/scripts/registro.js"></script>
-    <script type="module" src="/js/diseñoregistro.js"></script>
+  <script type="module" src="/js/diseñoregistro.js"></script>
 </body>
+
 </html>
