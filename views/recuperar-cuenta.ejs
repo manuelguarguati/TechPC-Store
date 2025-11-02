@@ -11,7 +11,7 @@
     <h1>Recuperar contraseña</h1>
     <% if (mensaje) { %><p style="color:#4cd137;"><%= mensaje %></p><% } %>
     <% if (error) { %><p style="color:#ff3f3f;"><%= error %></p><% } %>
-    <form action="/recuperar-cuenta" method="POST">
+    <form action="/auth/recuperar-cuenta" method="POST">
       <div class="usuario">
         <label for="email">Correo:</label>
         <input type="email" name="email" id="email" placeholder="ejemplo@correo.com" required />

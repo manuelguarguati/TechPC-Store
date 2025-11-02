@@ -1,7 +1,9 @@
-// controllers/authController.js
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto'); // Para generar token de recuperación
 const User = require('../models/User');
+const PasswordReset = require('../models/PasswordReset');
+const { Op } = require('sequelize');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com");
 
@@ -18,6 +20,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const authController = {
+  // ================= Registro normal =================
   register: async (req, res) => {
     const { name, lastname, email, phone, password } = req.body;
     try {
@@ -43,6 +46,7 @@ const authController = {
     }
   },
 
+  // ================= Verificar código =================
   verifyCode: async (req, res) => {
     const { email, code } = req.body;
     try {
@@ -65,7 +69,6 @@ const authController = {
 
       delete req.session.tempUser;
 
-      // iniciar sesión automáticamente
       req.session.user = {
         id: created.id,
         name: created.name,
@@ -82,6 +85,7 @@ const authController = {
     }
   },
 
+  // ================= Login normal =================
   login: async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -93,7 +97,6 @@ const authController = {
 
       if (!user.email_verified) return res.json({ success: false, message: 'Verifica tu correo antes de iniciar sesión.' });
 
-      // Guardar info completa en sesión (evita inconsistencias)
       req.session.user = {
         id: user.id,
         name: user.name,
@@ -111,7 +114,7 @@ const authController = {
     }
   },
 
-  // recibe { id_token } desde frontend
+  // ================= Google Login =================
   googleLogin: async (req, res) => {
     try {
       const { id_token } = req.body;
@@ -119,7 +122,7 @@ const authController = {
 
       const ticket = await client.verifyIdToken({
         idToken: id_token,
-        audience: process.env.GOOGLE_CLIENT_ID || "1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com",
+        audience: process.env.GOOGLE_CLIENT_ID
       });
       const payload = ticket.getPayload();
       const email = payload.email;
@@ -142,7 +145,6 @@ const authController = {
         return res.json({ success: true, redirect });
       }
 
-      // nuevo usuario: guardar info temporal en sesión y pedir completar
       req.session.googleUser = { name, lastname, email, picture };
       return res.json({ success: false, redirect: '/completar' });
     } catch (err) {
@@ -151,6 +153,7 @@ const authController = {
     }
   },
 
+  // ================= Completar registro Google =================
   completarRegistro: async (req, res) => {
     try {
       const temp = req.session.googleUser;
@@ -189,6 +192,7 @@ const authController = {
     }
   },
 
+  // ================= Cambiar contraseña =================
   changePassword: async (req, res) => {
     const usuario = req.session.user;
     if (!usuario) return res.status(401).json({ success: false, message: 'No autorizado.' });
@@ -211,9 +215,94 @@ const authController = {
     }
   },
 
+  // ================= Recuperar cuenta con tabla independiente =================
+  recuperarCuenta: async (req, res) => {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ where: { email } });
+      if (!user) return res.render('recuperar-cuenta', { mensaje: null, error: 'Correo no registrado', titulo: 'Recuperar contraseña' });
+
+      // Generar token y expiración
+      const token = crypto.randomBytes(32).toString('hex');
+      const expires = Date.now() + 3600000; // 1 hora
+
+      // Guardar en tabla PasswordResets
+      await PasswordReset.create({ userId: user.id, token, expires });
+
+      const enlace = `https://polygonaceous-uncoincidentally-nick.ngrok-free.dev/auth/reset-password/${token}`;
+      await transporter.sendMail({
+        from: `"TechPC Store" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Recuperar contraseña - TechPC Store',
+        html: `<h2>¡Hola ${user.name}!</h2>
+               <p>Haz clic en este enlace para recuperar tu cuenta:</p>
+               <a href="${enlace}">${enlace}</a>
+               <p>El enlace expira en 1 hora.</p>`
+      });
+
+      res.render('recuperar-cuenta', { mensaje: 'Correo enviado con instrucciones', error: null, titulo: 'Recuperar contraseña' });
+    } catch (err) {
+      console.error('❌ Error enviar enlace recuperar contraseña:', err);
+      res.render('recuperar-cuenta', { mensaje: null, error: 'No se pudo enviar el correo', titulo: 'Recuperar contraseña' });
+    }
+  },
+
+  // ================= Mostrar formulario de reset password =================
+  resetPasswordForm: async (req, res) => {
+    const { token } = req.params;
+    try {
+      const reset = await PasswordReset.findOne({
+        where: {
+          token,
+          expires: { [Op.gt]: Date.now() }
+        },
+        include: User
+      });
+
+      if (!reset) {
+        return res.render('reset-password', { error: 'Token inválido o expirado', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
+      }
+
+      res.render('reset-password', { error: null, mensaje: null, token, titulo: 'Restablecer contraseña' });
+    } catch (err) {
+      console.error('❌ Error en resetPasswordForm:', err);
+      res.render('reset-password', { error: 'Error al cargar el formulario', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
+    }
+  },
+
+  // ================= Actualizar contraseña =================
+  updatePassword: async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    try {
+      const reset = await PasswordReset.findOne({
+        where: {
+          token,
+          expires: { [Op.gt]: Date.now() }
+        }
+      });
+
+      if (!reset) {
+        return res.render('reset-password', { error: 'Token inválido o expirado', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
+      }
+
+      const hashed = await bcrypt.hash(password, 10);
+      await User.update({ password: hashed }, { where: { id: reset.userId } });
+
+      // Borrar el token
+      await reset.destroy();
+
+      res.render('reset-password', { error: null, mensaje: 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.', token: null, titulo: 'Restablecer contraseña' });
+    } catch (err) {
+      console.error('❌ Error en updatePassword:', err);
+      res.render('reset-password', { error: 'Error al actualizar la contraseña', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
+    }
+  },
+
+  // ================= Sesión =================
   session: (req, res) => {
     if (req.session && req.session.user) {
-      // devolver user como objeto (frontend espera data.name, data.email, etc.)
       return res.json({ loggedIn: true, user: req.session.user });
     } else {
       return res.json({ loggedIn: false });
@@ -226,6 +315,7 @@ const authController = {
     } else res.json({ loggedIn: false, role: null });
   },
 
+  // ================= Logout =================
   logout: (req, res) => {
     req.session.destroy(err => {
       if (err) {
