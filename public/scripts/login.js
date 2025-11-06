@@ -4,6 +4,19 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById('loginForm');
+  const msgBox = document.getElementById('loginMessage');
+
+  const showMessage = (text, success = false) => {
+    msgBox.textContent = text;
+    msgBox.style.display = 'block';
+    msgBox.style.background = success ? '#28a745' : '#dc3545';
+    msgBox.style.color = '#fff';
+    msgBox.style.padding = '10px';
+    msgBox.style.borderRadius = '6px';
+    msgBox.style.marginTop = '10px';
+    msgBox.style.fontWeight = '600';
+    msgBox.style.transition = 'opacity 0.3s ease';
+  };
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -21,18 +34,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const data = await res.json();
-
-        // Mostrar mensaje
-        alert(data.message);
+        showMessage(data.message, data.success);
 
         // Redirigir si hay URL
         if (data.success && data.redirect) {
-          window.location.href = data.redirect;
+          setTimeout(() => {
+            window.location.href = data.redirect;
+          }, 1200);
         }
 
       } catch (err) {
         console.error('Error en login:', err);
-        alert('Error de conexión con el servidor');
+        showMessage('Error de conexión con el servidor', false);
       }
     });
   }
@@ -43,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // --------------------------------------------------------------
 window.handleCredentialResponse = async (response) => {
   try {
-    // ✅ Validación de response
     if (!response || !response.credential) {
       console.error('⚠️ Google login falló, response inválido:', response);
       alert('No se pudo iniciar sesión con Google. Intenta de nuevo.');
@@ -56,19 +68,15 @@ window.handleCredentialResponse = async (response) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id_token }),
-      credentials: 'include' // importante para mantener sesión
+      credentials: 'include'
     });
 
     const data = await res.json();
-
-    // ✅ Debug: ver respuesta del backend
     console.log('Respuesta Google login:', data);
 
     if (data.success) {
-      // Usuario existente → redirige normalmente
       window.location.href = data.redirect || '/home';
     } else {
-      // Usuario nuevo → redirige a completar registro
       if (data.redirect) {
         window.location.href = data.redirect;
       } else {

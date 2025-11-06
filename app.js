@@ -61,8 +61,8 @@ const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const productsRoutes = require('./routes/products');
 const perfilRoutes = require('./routes/perfil');
-
-const pedidosRoutes = require('./routes/pedidos'); // ✅ Nueva ruta de pedidos
+const reviewRoutes = require('./routes/review');
+const pedidosRoutes = require('./routes/pedidos'); 
 
 // ------------------------------------------------------------
 // 🚦 USO DE RUTAS
@@ -72,7 +72,7 @@ app.use('/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/perfil', perfilRoutes);
-
+app.use('/api/reviews', reviewRoutes);
 app.use('/api/pedidos', pedidosRoutes); // ✅ API de pedidos (checkout)
 //busqeuda
 const searchRoutes = require('./routes/search');

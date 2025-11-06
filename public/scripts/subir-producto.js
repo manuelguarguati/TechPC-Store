@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ✏️ Guardar edición
+  //  Guardar edición
   if (formEditar) {
     formEditar.addEventListener('submit', async e => {
       e.preventDefault();
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         if (data.product) {
-          alert('✅ Producto actualizado');
+          alert(' Producto actualizado');
           if (tablaProductos) {
             const tr = tablaProductos.querySelector(`tr[data-id="${data.product.id}"]`);
             if (tr) {
@@ -122,10 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
           formEditarContainer.style.display = 'none';
-        } else alert('❌ ' + (data.message || 'Error al actualizar'));
+        } else alert(' ' + (data.message || 'Error al actualizar'));
       } catch (err) {
         console.error(err);
-        alert('❌ Error al actualizar producto');
+        alert(' Error al actualizar producto');
       }
     });
   }

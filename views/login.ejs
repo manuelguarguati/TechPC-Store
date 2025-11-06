@@ -15,11 +15,11 @@
 
   <div class="formulario" role="form" aria-label="Formulario de inicio de sesión">
     <h1>Inicio de sesión</h1>
+
     <form id="loginForm" action="/login" method="POST">
       <div class="usuario">
         <label for="usuario">Correo:</label>
-        <input type="email" id="usuario" name="usuario" placeholder="ejemplo@correo.com" required
-          aria-required="true" />
+        <input type="email" id="usuario" name="usuario" placeholder="ejemplo@correo.com" required aria-required="true" />
       </div>
 
       <div class="usuario">
@@ -30,6 +30,10 @@
       <div class="usuario">
         <button type="submit" class="boton">Entrar</button>
       </div>
+
+      <!-- 📩 Mensaje dinámico -->
+      <div id="loginMessage" style="display:none;"></div>
+
       <p class="recuperar-pass">
         <a href="/auth/recuperar-cuenta">¿Olvidaste tu contraseña?</a>
       </p>
@@ -42,12 +46,13 @@
     <hr style="margin:20px 0;">
 
     <!-- ✅ Botón de Google -->
-    <div id="g_id_onload" data-client_id="1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com"
+    <div id="g_id_onload"
+      data-client_id="1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com"
       data-callback="handleCredentialResponse" data-auto_prompt="false">
     </div>
 
-    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
-      data-size="large" data-logo_alignment="left">
+    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+      data-text="signin_with" data-size="large" data-logo_alignment="left">
     </div>
   </div>
 

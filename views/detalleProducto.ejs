@@ -4,35 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= producto.name %> - TechPC Store</title>
-  <link rel="stylesheet" href="/css/productoDetalle.css">
+  <link rel="icon" href="/img/favicon.ico" />
+  <link rel="stylesheet" href="../css/productoDetalle.css">
 </head>
+
 <body>
-  <!-- ===== HEADER ===== -->
   <header>
     <div class="header-left">
       <a href="/home">🏠 TechPC Store</a>
     </div>
-    
     <div class="header-center">
       <input type="text" id="busqueda" placeholder="Buscar productos...">
       <button id="buscar-btn">🔍</button>
     </div>
-
     <div class="header-right">
       <% if(usuario){ %>
         <span>Hola, <%= usuario.name %></span>
-        <a href="/mis-compras">Mis compras</a>
         <button id="logout-btn">Cerrar sesión</button>
       <% } else { %>
         <a href="/login">Ingresar</a>
         <a href="/registro">Registrarse</a>
       <% } %>
-      <button id="carrito-btn">🛒 (<%= miniCarrito?.cantidad || 0 %>)</button>
+      <a href="/carrito">
+        <button id="carrito-btn">🛒 (<%= miniCarrito?.cantidad || 0 %>)</button>
+      </a>
     </div>
   </header>
 
-  <!-- ===== MAIN ===== -->
-  <main>
+  <main data-id="<%= producto.id %>">
     <div class="detalle-producto">
       <div class="imagenes">
         <img id="img-principal" src="<%= producto.image_url %>" alt="<%= producto.name %>">
@@ -75,12 +74,33 @@
       <h2>También te puede interesar</h2>
       <div id="relacionados" data-id="<%= producto.id %>"></div>
     </section>
+
+    <section class="reviews-section">
+      <h2>Opiniones de clientes</h2>
+      <div id="promedio"></div>
+      <div id="reviews-container"></div>
+
+      <% if (usuario) { %>
+        <form id="reviewForm">
+          <label>Tu calificación:</label>
+          <div class="stars">
+            <% for (let i = 1; i <= 5; i++) { %>
+              <span class="star" data-value="<%= i %>">★</span>
+            <% } %>
+          </div>
+          <input type="hidden" name="calificacion" id="calificacion" value="0">
+          <textarea id="comentario" name="comentario" placeholder="Escribe tu reseña..." required></textarea>
+          <button type="submit">Enviar reseña</button>
+        </form>
+      <% } else { %>
+        <p><a href="/login">Inicia sesión</a> para dejar una reseña.</p>
+      <% } %>
+    </section>
   </main>
 
-  <!-- ===== FOOTER ===== -->
   <footer>© TechPC Store 2025</footer>
 
-  <!-- JS -->
   <script type="module" src="/scripts/DetalleProducto.js"></script>
+  <script type="module" src="/scripts/review.js"></script>
 </body>
 </html>
