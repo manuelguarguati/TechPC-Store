@@ -1,0 +1,225 @@
+/* --- General --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #2d3436, #1e272e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 1rem;
+  color: #f1f2f6;
+  transition: background 0.6s;
+}
+
+body:hover {
+  background: linear-gradient(135deg, #1e272e, #2d3436);
+}
+
+/* Fondo animado Tubes */
+#canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* --- Formulario --- */
+.formulario {
+  background: rgba(47, 54, 64, 0.85);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 500px;
+  color: #f1f2f6;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.6s ease;
+}
+
+/* --- Título --- */
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  color: #4cd137;
+  border-bottom: 2px solid #535c68;
+  padding-bottom: 0.5rem;
+}
+
+/* --- Campos --- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"] {
+  padding: 0.7rem;
+  border: 2px solid #535c68;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #2d3436;
+  color: #f1f2f6;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4cd137;
+  box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
+}
+
+/* --- Teléfono con botón --- */
+.telefono {
+  display: flex;
+  align-items: center;
+}
+
+.telefono span {
+  background: #535c68;
+  padding: 0.7rem;
+  border: 2px solid #535c68;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-weight: 600;
+}
+
+.telefono input {
+  border-radius: 0 8px 8px 0;
+  flex: 1;
+  margin-right: 5px;
+}
+
+/* Botón verificar teléfono */
+#btn-verificar {
+  padding: 0.7rem 1rem;
+  background: #4cd137;
+  color: #23252f;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+#btn-verificar:hover {
+  background: #32b03a;
+}
+
+/* --- OTP Section --- */
+#otpSection {
+  display: none; /* se muestra solo al enviar OTP */
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 1rem;
+}
+
+.otp-campos {
+  display: flex;           /* horizontal */
+  gap: 10px;               /* espacio entre casillas */
+  justify-content: center; /* centrar en la pantalla */
+  margin-top: 1rem;
+}
+
+.code-input {
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+  text-align: center;
+  border: 2px solid #535c68;
+  border-radius: 8px;
+  background: #2d3436;
+  color: #f1f2f6;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.code-input:focus {
+  outline: none;
+  border-color: #4cd137;
+  box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
+}
+
+/* --- Botón continuar / verificar --- */
+.boton {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  background: transparent;
+  color: #64ed85;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  overflow: hidden;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transition: background 0.5s, color 0.5s;
+  -webkit-box-reflect: below 10px linear-gradient(transparent, #64ed842a);
+  margin-top: 1rem;
+}
+
+.boton:hover {
+  background: #64ed85;
+  box-shadow: 0 0 20px #64ed85;
+  color: #23252f;
+}
+
+/* --- Mensaje de error / info --- */
+#msg {
+  text-align: center;
+  margin-top: 10px;
+  color: #ff4757;
+  font-weight: 600;
+}
+
+/* --- Animaciones --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .formulario {
+    padding: 1.5rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  .telefono {
+    flex-direction: column;
+    gap: 5px;
+  }
+  #btn-verificar {
+    width: 100%;
+  }
+  .otp-campos {
+    width: 100%;
+  }
+}

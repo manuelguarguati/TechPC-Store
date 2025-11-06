@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= titulo || "Home - TechPC Store" %></title>
+    <meta name="description" content="TechPC Store - Compra los mejores computadores y accesorios con envío rápido y promociones exclusivas." />
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="icon" href="/img/favicon.ico" />
+  </head>
+  <body>
+    <!-- ===================== HEADER ===================== -->
+    <header>
+      <div class="logo">
+        <img src="/img/unnamed.png" alt="TechPC Store" />
+      </div>
+
+      <!-- ===== Barra de búsqueda ===== -->
+      <div class="search-bar">
+        <label for="busqueda" class="visually-hidden">Buscar productos</label>
+        <input type="text" placeholder="Buscar productos..." id="busqueda" />
+        <button id="buscar-btn">Buscar</button>
+      </div>
+
+      <nav>
+        <% if (!usuario) { %>
+          <a href="/login" id="login-link">Login</a>
+          <a href="/registro" id="registro-link">Registro</a>
+        <% } %>
+
+        <a href="/carrito" id="carrito-btn">🛒</a>
+
+        <% if (usuario) { %>
+          <div class="usuario-container">
+            <button id="usuario-btn">👤 Cuenta ▼</button>
+            <div id="menu-usuario" class="menu-usuario">
+              <p><strong>Nombre:</strong> <span id="nombre-usuario"><%= usuario.name %></span></p>
+              <p><strong>Correo:</strong> <span id="correo-usuario"><%= usuario.email %></span></p>
+              <hr />
+              <% if (usuario.role === 'admin') { %>
+                <button id="btn-panel">Panel Admin</button>
+              <% } else { %>
+                <button id="btn-subir-producto">Subir producto</button>
+              <% } %>
+              <button id="ver-perfil">Ver perfil</button>
+              <button id="cambiar-pass">Cambiar contraseña</button>
+              <button id="logout-btn">Cerrar sesión</button>
+            </div>
+          </div>
+        <% } %>
+      </nav>
+
+      <div class="banner">ENVÍO GRATIS EN TU PRIMERA COMPRA 💥</div>
+    </header>
+
+    <!-- ===================== MAIN ===================== -->
+    <main class="container">
+      <h1>Bienvenido <span id="nombre-bienvenida"><%= usuario ? usuario.name : "Visitante" %></span></h1>
+      <h2>Computadores en promoción</h2>
+
+      <!-- Productos cargados dinámicamente -->
+      <div class="productos" id="lista-productos"></div>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer>© TechPC Store 2025</footer>
+
+    <!-- Script principal cargado de manera no bloqueante -->
+    <script type="module" src="/scripts/home.js" defer></script>
+  </body>
+</html>

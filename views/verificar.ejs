@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificar cuenta</title>
+   <link rel="icon" href="/img/favicon.ico" />
+  <link rel="stylesheet" href="/css/verificacion.css">
+</head>
+<body>
+  <div class="verificar-container">
+    <form id="otpForm" class="otp-form">
+      <h2>Verifica tu correo</h2>
+      <p>Introduce el código de 6 dígitos enviado a tu correo electrónico.</p>
+
+      <div class="otp-campos">
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+        <input type="text" maxlength="1" class="code-input" />
+      </div>
+
+      <button type="submit" class="boton">Verificar</button>
+      <p id="msg"></p>
+    </form>
+  </div>
+
+  <script src="/scripts/verificar.js"></script>
+</body>
+</html>

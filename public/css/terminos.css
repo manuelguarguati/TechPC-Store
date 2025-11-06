@@ -1,0 +1,114 @@
+/* --- General --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #1e272e;
+  color: #f1f2f6;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  transition: background 0.6s;
+}
+
+body:hover {
+  background: #2f3640;
+}
+
+/* --- Contenedor --- */
+.terminos-container {
+  background: #2f3640;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  width: 100%;
+  line-height: 1.6;
+  animation: fadeIn 0.6s ease;
+}
+
+/* --- Títulos --- */
+.terminos-container h1 {
+  text-align: center;
+  color: #4cd137;
+  margin-bottom: 1.5rem;
+  font-size: 1.9rem;
+}
+
+.terminos-container h2 {
+  color: #4cd137;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.terminos-container p {
+  margin: 0.5rem 0;
+  color: #f1f2f6;
+}
+
+ul {
+  margin-left: 1.2rem;
+  list-style-type: disc;
+}
+
+/* --- Botón Volver --- */
+.volver {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.volver a {
+  background: linear-gradient(135deg, #4cd137, #3f9c2d);
+  color: #1e272e;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.volver a:hover {
+  background: linear-gradient(135deg, #3f9c2d, #2e8c22);
+  transform: scale(1.03);
+}
+
+/* --- Animación --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .terminos-container {
+    padding: 1.5rem;
+  }
+
+  .terminos-container h1 {
+    font-size: 1.6rem;
+  }
+}
+
+.whatsapp-link {
+  color: #25D366;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.whatsapp-link:hover {
+  text-decoration: underline;
+  color: #1ebe5b;
+}
