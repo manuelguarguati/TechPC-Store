@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Perfil - TechPC Store</title>
+  <link rel="stylesheet" href="/css/perfil.css" />
+</head>
+<body>
+  <header>
+    <h1>👤 Mi Perfil</h1>
+    <a href="/home">⬅️ Volver al inicio</a>
+  </header>
+
+  <main class="perfil-container">
+    <div class="perfil-card">
+      <h2>Información del usuario</h2>
+
+      <label>Nombre:</label>
+      <input id="nombre" value="<%= usuario.name %>" readonly />
+
+      <label>Apellido:</label>
+      <input id="apellido" value="<%= usuario.lastname %>" readonly />
+
+      <label>Teléfono:</label>
+      <input id="telefono" value="<%= usuario.phone %>" readonly />
+
+      <button id="editar-btn">Editar</button>
+      <button id="guardar-btn" style="display:none;">Guardar cambios</button>
+    </div>
+  </main>
+
+  <script src="/scripts/perfil.js"></script>
+</body>
+</html>

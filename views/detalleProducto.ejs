@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= producto.name %> - TechPC Store</title>
+  <link rel="stylesheet" href="/css/productoDetalle.css">
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-left">
+      <a href="/home">🏠 TechPC Store</a>
+    </div>
+    
+    <div class="header-center">
+      <input type="text" id="busqueda" placeholder="Buscar productos...">
+      <button id="buscar-btn">🔍</button>
+    </div>
+
+    <div class="header-right">
+      <% if(usuario){ %>
+        <span>Hola, <%= usuario.name %></span>
+        <a href="/mis-compras">Mis compras</a>
+        <button id="logout-btn">Cerrar sesión</button>
+      <% } else { %>
+        <a href="/login">Ingresar</a>
+        <a href="/registro">Registrarse</a>
+      <% } %>
+      <button id="carrito-btn">🛒 (<%= miniCarrito?.cantidad || 0 %>)</button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+    <div class="detalle-producto">
+      <div class="imagenes">
+        <img id="img-principal" src="<%= producto.image_url %>" alt="<%= producto.name %>">
+        <% if(producto.imagenes && producto.imagenes.length > 0){ %>
+          <div class="miniaturas">
+            <% producto.imagenes.forEach(img => { %>
+              <img class="miniatura" src="<%= img %>" alt="Miniatura">
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="info-producto">
+        <h1><%= producto.name %></h1>
+        <p class="precio">$<%= parseFloat(producto.price).toLocaleString() %></p>
+        <p class="envio"><%= producto.envio_gratis ? "Envío GRATIS" : "Envío NO gratis" %></p>
+        <p class="descripcion"><strong>Descripción:</strong> <%= producto.description || "Sin descripción" %></p>
+        
+        <h3>Características:</h3>
+        <ul class="caracteristicas">
+          <% if(producto.detalles && producto.detalles.length > 0){ %>
+            <% producto.detalles.forEach(d => { %>
+              <li><strong><%= d.key_detail %>:</strong> <%= d.value_detail %></li>
+            <% }) %>
+          <% } else { %>
+            <li>Sin características adicionales</li>
+          <% } %>
+        </ul>
+
+        <p class="stock"><strong>Stock:</strong> <%= producto.stock %></p>
+
+        <div class="acciones">
+          <input type="number" id="cantidad" value="1" min="1" max="<%= producto.stock %>">
+          <button id="agregar-carrito" data-id="<%= producto.id %>">Añadir al carrito 🛒</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="productos-relacionados">
+      <h2>También te puede interesar</h2>
+      <div id="relacionados" data-id="<%= producto.id %>"></div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>© TechPC Store 2025</footer>
+
+  <!-- JS -->
+  <script type="module" src="/scripts/DetalleProducto.js"></script>
+</body>
+</html>

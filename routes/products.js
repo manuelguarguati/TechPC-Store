@@ -1,19 +1,30 @@
-// --------------------------------------------------------------
-// routes/products.js — Productos públicos (accesibles sin login)
-// --------------------------------------------------------------
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product');
+const multer = require('multer');
+const path = require('path');
+const productController = require('../controllers/productController');
 
-// 🛍️ Obtener todos los productos (sin autenticación)
-router.get('/', async (req, res) => {
-  try {
-    const productos = await Product.findAll(); // Trae todos los productos de la BD
-    res.json(productos);
-  } catch (err) {
-    console.error('❌ Error obteniendo productos:', err);
-    res.status(500).json({ error: 'Error al obtener productos' });
-  }
+// Configuración Multer para imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'public/images/'),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
+const upload = multer({ storage });
+
+// Middleware para sesión
+const isLoggedIn = (req, res, next) => {
+  if (req.session.user) next();
+  else res.status(401).json({ success: false, message: 'Debes iniciar sesión' });
+};
+
+// ✅ Rutas públicas
+router.get('/', productController.obtenerProductos);
+router.get('/relacionados/:id', productController.obtenerRelacionados);
+
+// 🧍 Rutas para usuarios normales
+router.post('/usuario', isLoggedIn, upload.single('imagen'), productController.crearProductoUsuario);
+router.get('/usuario/:id', isLoggedIn, productController.obtenerProductoPorId);
+router.put('/usuario/:id', isLoggedIn, upload.single('imagen'), productController.editarProductoUsuario);
+router.delete('/usuario/:id', isLoggedIn, productController.eliminarProductoUsuario);
 
 module.exports = router;

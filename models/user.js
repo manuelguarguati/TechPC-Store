@@ -1,36 +1,19 @@
+// models/User.js (ejemplo Sequelize)
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // ajusta si tu ruta es distinta
+const sequelize = require('../config/database');
 
 const User = sequelize.define('User', {
-  name: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
-  },
-  lastname: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
-  },
-  email: { 
-    type: DataTypes.STRING, 
-    allowNull: false, 
-    unique: true 
-  },
-  phone: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
-  },
-  password: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
-  },
-  phone_verified: { 
-    type: DataTypes.BOOLEAN, 
-    defaultValue: false 
-  },
-  role: { 
-    type: DataTypes.STRING,
-    defaultValue: 'user' //  Puede ser 'admin' o 'user'
-  }
+  name: DataTypes.STRING,
+  lastname: DataTypes.STRING,
+  email: { type: DataTypes.STRING, unique: true },
+  phone: DataTypes.STRING,
+  password: DataTypes.STRING,
+  email_verified: { type: DataTypes.BOOLEAN, defaultValue: false },
+  verification_code: DataTypes.STRING,
+  verification_expires: DataTypes.DATE,
+  role: { type: DataTypes.STRING, defaultValue: 'user' }, // 'user' o 'admin'
+  google_id: DataTypes.STRING,
+ 
 });
 
 module.exports = User;

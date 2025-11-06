@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="stylesheet" href="/css/subirProducto.css">
+</head>
+<body>
+  <header>
+    <a href="/home">🏠 Volver al inicio</a>
+    <h1><%= titulo %></h1>
+    <p>Bienvenido, <%= usuario.name %></p>
+  </header>
+
+  <main>
+    <!-- FORMULARIO AGREGAR PRODUCTO -->
+    <section class="card">
+      <h2>➕ Subir nuevo producto</h2>
+      <form id="form-nuevo-producto" action="/api/subirProducto/usuario" method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+          <input type="text" name="nombre" placeholder="Nombre" required />
+          <textarea name="descripcion" placeholder="Descripción"></textarea>
+          <input type="number" name="precio" placeholder="Precio" required />
+          <input type="number" name="stock" placeholder="Stock" required />
+          <input type="file" name="imagen" accept="image/*" />
+        </div>
+        <button type="submit" class="btn-agregar">Subir producto</button>
+      </form>
+    </section>
+
+    <!-- LISTA DE PRODUCTOS DEL USUARIO -->
+    <section class="card">
+      <h2>🛍️ Mis productos</h2>
+      <table id="tablaProductos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (productos && productos.length > 0) { %>
+            <% productos.forEach(p => { %>
+              <tr data-id="<%= p.id %>">
+                <td><%= p.id %></td>
+                <td><%= p.name %></td>
+                <td class="descripcion"><%= p.description || '—' %></td>
+                <td>$<%= p.price %></td>
+                <td><%= p.stock %></td>
+                <td>
+                  <% if(p.image_url){ %>
+                    <img src="<%= p.image_url %>" width="50" />
+                  <% } else { %>
+                    —
+                  <% } %>
+                </td>
+                <td>
+                  <button class="editar">✏️ Editar</button>
+                  <button class="eliminar">🗑️ Eliminar</button>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="7">No tienes productos aún.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- FORMULARIO EDITAR PRODUCTO -->
+    <section id="form-editar-producto-container" class="card" style="display:none;">
+      <h3>✏️ Editar producto</h3>
+      <form id="form-editar-producto" enctype="multipart/form-data">
+        <input type="hidden" name="id" id="edit-id" />
+        <div class="form-grid">
+          <input type="text" name="nombre" id="edit-nombre" placeholder="Nombre" required />
+          <textarea name="descripcion" id="edit-descripcion" placeholder="Descripción"></textarea>
+          <input type="number" name="precio" id="edit-precio" step="0.01" placeholder="Precio" required />
+          <input type="number" name="stock" id="edit-stock" placeholder="Stock" required />
+          <input type="hidden" name="image_url_anterior" id="edit-image_url_anterior" />
+          <input type="file" name="imagen" accept="image/*" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit" class="btn-editar">Guardar cambios</button>
+          <button type="button" id="cancelar-edicion" class="btn-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="/scripts/subir-producto.js"></script>
+</body>
+</html>

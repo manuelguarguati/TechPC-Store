@@ -4,11 +4,20 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
-  color: black; /* Texto negro por defecto */
+  color: #ffffff;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; 
+  padding: 0; margin: -1px; 
+  overflow: hidden; 
+  clip: rect(0,0,0,0); 
+  border: 0;
 }
 
 body {
-  background: linear-gradient(135deg, #ecf0f3, #359fd0);
+  background: linear-gradient(135deg, #2d3436, #1e272e);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,9 +28,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1a1a1a;
+  background: #1f2a27;
   padding: 15px 40px;
-  color: white; /* Texto blanco solo en el header */
+  color: #ffffff;
   flex-wrap: wrap;
 }
 
@@ -29,28 +38,11 @@ header {
   height: 60px;
 }
 
-/* ===== Navegación ===== */
-nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.carrito {
-  font-size: 24px;
-  color: white;
-  text-decoration: none;
-}
-
-.carrito:hover {
-  color: #00ff7f;
-}
-
 /* ===== Buscador ===== */
 .search-bar {
   display: flex;
   align-items: center;
-  background: rgb(25, 23, 23);
+  background: #3b3f44;
   border-radius: 20px;
   overflow: hidden;
 }
@@ -61,12 +53,13 @@ nav {
   font-size: 14px;
   width: 220px;
   outline: none;
-  color: black; /* Texto del input negro */
+  color: #ffffff;
+  background: #3b3f44;
 }
 
 .search-bar button {
-  background: #0077b6;
-  color: white;
+  background: #4cd137;
+  color: #1e272e;
   border: none;
   padding: 8px 15px;
   cursor: pointer;
@@ -74,13 +67,30 @@ nav {
 }
 
 .search-bar button:hover {
-  background: #023e8a;
+  background: #3f9c2d;
+}
+
+/* ===== Navegación ===== */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+a#carrito-btn {
+  font-size: 24px;
+  color: #4cd137;
+  text-decoration: none;
+}
+
+a#carrito-btn:hover {
+  color: #3f9c2d;
 }
 
 /* ===== Banner ===== */
 .banner {
   font-size: 14px;
-  color: #00b4d8;
+  color: #4cd137;
   font-weight: bold;
   margin-top: 5px;
 }
@@ -90,37 +100,42 @@ nav {
   width: 90%;
   margin: 40px auto;
   text-align: center;
-  color: black; /* Asegura texto negro en el contenido */
+  color: #ffffff;
 }
 
 .container h1 {
   font-size: 2rem;
   margin-bottom: 10px;
-  color: black;
+  color: #4cd137;
 }
 
 .container h2 {
   font-size: 1.5rem;
   margin: 20px 0;
-  color: black;
+  color: #b2bec3;
 }
 
 /* ===== Productos ===== */
 .productos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
   padding-bottom: 20px;
 }
 
 .producto {
-  background: white;
+  background: #3b3f44; /* Dark card */
   border-radius: 15px;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s;
-  color: black;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 380px;
+  overflow: hidden;
 }
 
 .producto:hover {
@@ -128,29 +143,43 @@ nav {
 }
 
 .producto img {
-  width: 100%;
-  border-radius: 10px;
+  max-width: 100%;
+  max-height: 180px;
+  object-fit: contain;
   margin-bottom: 15px;
 }
 
+.producto h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  height: 40px; /* Altura fija */
+  overflow: hidden;
+}
+
 .precio {
-  font-size: 1.4rem;
-  color: #0077b6;
-  margin: 10px 0;
+  font-size: 1.2rem;
+  color: #4cd137;
+  margin-bottom: 10px;
+}
+
+.envio {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #dfe6e9;
 }
 
 .producto button {
-  background: #0077b6;
-  color: white;
+  background: #4cd137;
+  color: #1e272e;
   border: none;
-  padding: 10px 15px;
+  padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .producto button:hover {
-  background: #023e8a;
+  background: #3f9c2d;
 }
 
 /* ===== Menú de usuario ===== */
@@ -159,8 +188,8 @@ nav {
 }
 
 #usuario-btn {
-  background: #359fd0;
-  color: white;
+  background: #4cd137;
+  color: #1e272e;
   padding: 8px 15px;
   border: none;
   border-radius: 8px;
@@ -168,21 +197,21 @@ nav {
 }
 
 #usuario-btn:hover {
-  background: #2179a9;
+  background: #3f9c2d;
 }
 
 .menu-usuario {
   position: absolute;
   top: 45px;
   right: 0;
-  background: #fff;
+  background: #3b3f44;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   width: 230px;
   padding: 15px;
   display: none;
   z-index: 1000;
-  color: black;
+  color: #ffffff;
 }
 
 .menu-usuario.mostrar {
@@ -195,20 +224,20 @@ nav {
   margin-top: 6px;
   border: none;
   border-radius: 6px;
-  background: #f0f0f0;
+  background: #4cd137;
   cursor: pointer;
-  color: black;
+  color: #1e272e;
 }
 
 .menu-usuario button:hover {
-  background: #dcdcdc;
+  background: #3f9c2d;
 }
 
 /* ===== Footer ===== */
 footer {
   text-align: center;
   padding: 15px;
-  background: #1a1a1a;
-  color: white; /* Texto blanco solo en el footer */
+  background: #1f2a27;
+  color: #ffffff;
   margin-top: auto;
 }

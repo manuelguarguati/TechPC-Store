@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo || "Mi Carrito - TechPC Store" %></title>
+  <link rel="stylesheet" href="/css/carrito.css">
+  <link rel="icon" href="/img/favicon.ico" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="/home"><img src="/img/unnamed.png" alt="TechPC Store"></a>
+    </div>
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/carrito">🛒 Carrito</a>
+      <% if (!usuario) { %>
+        <a href="/login">Login</a>
+        <a href="/registro">Registro</a>
+      <% } else { %>
+        <span><%= usuario.name || usuario.nombre %></span>
+        <a href="/perfil">Perfil</a>
+        <a href="#" id="logout-btn">Cerrar sesión</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Mi Carrito de Compras</h1>
+
+    <div id="carrito-contenedor">
+      <% if (!items || items.length === 0) { %>
+        <p>Tu carrito está vacío.</p>
+        <a href="/home">Ir a comprar</a>
+      <% } else { %>
+        <% let total = 0; %>
+        <% items.forEach(item => { 
+             const activo = item.Product.activo !== false;
+             const subtotal = activo ? item.Product.price * item.cantidad : 0;
+             total += subtotal;
+        %>
+          <div class="producto-carrito" data-id="<%= item.id %>">
+            <img src="<%= item.Product.image_url || '/img/default.png' %>" alt="<%= activo ? item.Product.name : 'Producto no disponible' %>">
+            <div class="info-producto">
+              <h3><%= activo ? item.Product.name : 'Producto no disponible' %></h3>
+              <p>Cantidad: <%= item.cantidad %></p>
+              <p>Precio unitario: $<%= activo ? item.Product.price.toLocaleString() : '0' %></p>
+              <p>Subtotal: $<%= subtotal.toLocaleString() %></p>
+            </div>
+            <button class="btn-eliminar" data-id="<%= item.id %>">Eliminar</button>
+          </div>
+        <% }) %>
+
+        <h3 class="total">Total: $<%= total.toLocaleString() %></h3>
+
+        <button id="finalizar-btn" class="btn-finalizar">Finalizar Compra</button>
+      <% } %>
+    </div>
+  </main>
+
+  <footer>© TechPC Store 2025</footer>
+
+  <script src="/scripts/carrito.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+/* ==========================
+   ESTILOS GENERALES
+========================== */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #1e272e;
+  color: #f1f2f6;
+}
+
+h1, h2, h3 {
+  margin: 0 0 10px 0;
+  color: #4cd137;
+}
+
+/* ==========================
+   CABECERA
+========================== */
+header {
+  background: #2f3640;
+  color: #f1f2f6;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header a {
+  color: #f1f2f6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header a:hover {
+  color: #4cd137;
+}
+
+/* ==========================
+   SECCIONES / TARJETAS
+========================== */
+.card {
+  background: #2f3640;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  max-width: 1200px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+}
+
+/* ==========================
+   FORMULARIOS
+========================== */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+input[type="file"] {
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background: #1e272e;
+  color: #f1f2f6;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+
+/* ==========================
+   TABLAS
+========================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #444;
+}
+
+th {
+  background: #3d3d3d;
+}
+
+tr:hover {
+  background-color: #4cd13733;
+}
+
+td.descripcion {
+  max-width: 200px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* ==========================
+   BOTONES
+========================== */
+button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.btn-agregar {
+  background: #4cd137;
+  color: #1e272e;
+  margin-top: 10px;
+}
+
+.btn-agregar:hover {
+  background: #3f9c2d;
+}
+
+.editar {
+  background: #f39c12;
+  color: white;
+  margin-right: 5px;
+}
+
+.editar:hover {
+  background: #d78e10;
+}
+
+.eliminar {
+  background: #e74c3c;
+  color: white;
+}
+
+.eliminar:hover {
+  background: #c0392b;
+}
+
+.btn-editar {
+  background: #4cd137;
+  color: #1e272e;
+  margin-right: 10px;
+}
+
+.btn-cancelar {
+  background: #e74c3c;
+  color: white;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
