@@ -1,58 +1,73 @@
 /* ==========================
-   ESTILOS GENERALES
+   🌐 ESTILOS GENERALES
 ========================== */
-body {
-  font-family: Arial, sans-serif;
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
   background: #1e272e;
-  /* Dark background */
   color: #f1f2f6;
-  /* Texto claro */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 h1,
 h2,
 h3 {
-  margin: 0;
   color: #4cd137;
-  /* Verde para títulos */
+  margin-bottom: 10px;
 }
 
 /* ==========================
-   CABECERA
+   🧭 CABECERA
 ========================== */
 header {
   background: #2f3640;
   color: #f1f2f6;
-  padding: 15px 20px;
+  padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  flex-wrap: wrap;
 }
 
 header h1 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 header nav a {
   color: #f1f2f6;
   text-decoration: none;
-  margin-left: 15px;
-  transition: color 0.3s;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: color 0.3s, background 0.3s;
 }
 
 header nav a:hover {
   color: #4cd137;
+  background: rgba(76, 209, 55, 0.1);
 }
 
 /* ==========================
-   CONTENIDO PRINCIPAL
+   🧩 CONTENIDO PRINCIPAL
 ========================== */
 main {
   padding: 25px;
   max-width: 1200px;
   margin: 0 auto;
+  flex-grow: 1;
 }
 
 section {
@@ -60,16 +75,17 @@ section {
 }
 
 /* ==========================
-   TABLAS
+   📊 TABLAS
 ========================== */
 table {
   width: 100%;
   border-collapse: collapse;
   background: #2f3640;
-  /* Dark table background */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  margin-top: 15px;
   color: #f1f2f6;
+  margin-top: 15px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th,
@@ -86,27 +102,34 @@ th {
 
 tr:hover {
   background-color: #4cd13733;
-  /* Verde suave al hover */
+  transition: background 0.3s;
+}
+
+/* Scroll en tablas pequeñas */
+.table-responsive {
+  overflow-x: auto;
 }
 
 /* ==========================
-   BOTONES
+   🔘 BOTONES
 ========================== */
 button {
   border: none;
-  padding: 6px 10px;
+  padding: 8px 12px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.9rem;
-  transition: opacity 0.3s;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
 }
 
 button:hover {
-  opacity: 0.85;
+  transform: scale(1.05);
 }
 
 button.eliminar,
-button.eliminar-producto {
+button.eliminar-producto,
+button.btn-cancelar {
   background: #e74c3c;
   color: white;
 }
@@ -116,106 +139,78 @@ button.editar {
   color: white;
 }
 
-button.btn-agregar {
+button.btn-agregar,
+button.btn-editar,
+#tablaPedidos .btn-enviar {
   background: #4cd137;
-  /* Verde principal */
   color: #1e272e;
-  margin-top: 10px;
 }
 
-button.btn-agregar:hover {
+button.btn-agregar:hover,
+button.btn-editar:hover,
+#tablaPedidos .btn-enviar:hover {
   background: #3f9c2d;
 }
 
+#tablaPedidos .btn-detalle {
+  background-color: #3498db;
+  color: white;
+}
+
 /* ==========================
-   FORMULARIOS
+   🧾 FORMULARIOS
 ========================== */
 form {
   background: #2f3640;
-  padding: 15px;
-  border-radius: 6px;
+  padding: 20px;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   margin-top: 15px;
-  color: #f1f2f6;
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
 }
 
-input {
+input,
+select {
   padding: 8px;
   border: 1px solid #555;
-  border-radius: 4px;
-  width: 100%;
-  box-sizing: border-box;
+  border-radius: 6px;
   background: #1e272e;
   color: #f1f2f6;
+  width: 100%;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus,
+select:focus {
+  border-color: #4cd137;
+  box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
+  outline: none;
 }
 
 /* ==========================
-   PIE DE PÁGINA
-========================== */
-footer {
-  background: #2f3640;
-  color: #f1f2f6;
-  text-align: center;
-  padding: 10px;
-  margin-top: 30px;
-  font-size: 0.9rem;
-}
-
-/* ==========================
-   FORMULARIOS DE EDICIÓN
+   ⚙️ FORMULARIO DE EDICIÓN
 ========================== */
 #form-editar-producto-container {
   margin: 20px 0;
   padding: 20px;
   background-color: #2f3640;
-  border: 1px solid #444;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  color: #f1f2f6;
 }
 
 #form-editar-producto-container h3 {
-  margin-top: 0;
   color: #4cd137;
   margin-bottom: 15px;
 }
 
-/* Botones de editar y cancelar */
-button.btn-editar {
-  background: #4cd137;
-  /* Verde principal */
-  color: #1e272e;
-  margin-right: 10px;
-}
-
-button.btn-editar:hover {
-  background: #3f9c2d;
-}
-
-button.btn-cancelar {
-  background: #e74c3c;
-  color: white;
-}
-
-/* Tabla de pedidos */
-#tablaPedidos td,
-#tablaPedidos th {
-  text-align: center;
-  border: 1px solid #444;
-  padding: 8px;
-}
-
-#tablaPedidos th {
-  background-color: #3d3d3d;
-}
-
-/* Estados de pedidos */
+/* ==========================
+   🚚 ESTADOS DE PEDIDO
+========================== */
 .pendiente {
   color: #f39c12;
   font-weight: bold;
@@ -241,25 +236,194 @@ button.btn-cancelar {
   font-weight: bold;
 }
 
-/* Botones pedidos */
-#tablaPedidos button {
-  margin: 2px;
-  padding: 4px 6px;
-  font-size: 0.8rem;
-  border-radius: 4px;
+/* ==========================
+   🏷️ BADGES
+========================== */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.35rem;
+  color: #fff;
 }
 
-#tablaPedidos .btn-enviar {
-  background-color: #4cd137;
-  color: #1e272e;
+.badge-success {
+  background-color: #28a745;
 }
 
-#tablaPedidos .btn-cancelar {
+.badge-danger {
   background-color: #e74c3c;
-  color: white;
 }
 
-#tablaPedidos .btn-detalle {
+.badge-warning {
+  background-color: #f39c12;
+}
+
+.badge-info {
   background-color: #3498db;
-  color: white;
+}
+
+.badge-google {
+  background-color: #4285f4;
+}
+
+/* ==========================
+   📱 RESPONSIVE DESIGN
+========================== */
+@media (max-width:768px) {
+  header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  main {
+    padding: 15px;
+  }
+
+  th,
+  td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  button {
+    padding: 7px 10px;
+  }
+}
+
+@media (max-width:480px) {
+  header h1 {
+    font-size: 1.3rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  .table-responsive {
+    overflow-x: scroll;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+/* ==========================
+   ⚫ PIE DE PÁGINA
+========================== */
+footer {
+  background: #2f3640;
+  color: #f1f2f6;
+  text-align: center;
+  padding: 12px;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+/* ==========================
+   🌞 MODO CLARO AUTOMÁTICO
+========================== */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #f5f6fa;
+    color: #2f3640;
+  }
+
+  header,
+  footer,
+  form,
+  table,
+  #form-editar-producto-container {
+    background: #fff;
+    color: #2f3640;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  th {
+    background: #dcdde1;
+    color: #2f3640;
+  }
+
+  input,
+  select {
+    background: #fff;
+    color: #2f3640;
+    border: 1px solid #ccc;
+  }
+
+  button.btn-agregar,
+  button.btn-editar,
+  #tablaPedidos .btn-enviar {
+    background: #4cd137;
+    color: white;
+  }
+
+  header nav a:hover {
+    background: rgba(76, 209, 55, 0.15);
+  }
+
+  tr:hover {
+    background-color: rgba(76, 209, 55, 0.15);
+  }
+}
+
+/* ==========================
+   🔘 SWITCH DE ESTADO CUENTA
+========================== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #555;
+  transition: 0.3s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #4cd137;
+}
+
+input:checked+.slider:before {
+  transform: translateX(22px);
 }

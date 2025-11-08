@@ -1,14 +1,17 @@
-/* Reset básico */
+/* ==========================
+   RESET Y BASE
+========================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
-  background-color: #1e272e; /* Dark mode */
+  background-color: #1e272e;
   color: #f1f2f6;
+  transition: background 0.3s, color 0.3s;
 }
 
 /* ==========================
@@ -34,7 +37,7 @@ header nav a, header nav span {
 }
 
 header nav a:hover {
-  color: #4cd137; /* Verde para hover */
+  color: #4cd137;
   text-decoration: underline;
 }
 
@@ -59,7 +62,7 @@ header nav a:hover {
 .producto-carrito {
   display: flex;
   align-items: center;
-  background-color: #2f3640; /* Dark background para productos */
+  background-color: #2f3640;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 2px 5px rgba(0,0,0,0.5);
@@ -81,7 +84,7 @@ header nav a:hover {
 
 /* Botones */
 .btn-eliminar, .btn-finalizar {
-  background-color: #e74c3c; /* Rojo oscuro */
+  background-color: #e74c3c;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -97,16 +100,14 @@ header nav a:hover {
 .total {
   text-align: right;
   font-size: 1.2rem;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  color: #4cd137; /* Verde para destacar total */
+  margin: 15px 0;
+  color: #4cd137;
 }
 
 .btn-finalizar {
   display: block;
   margin-left: auto;
 }
-
 
 /* ===== Footer ===== */
 footer {
@@ -115,4 +116,34 @@ footer {
   background: #1f2a27;
   color: #ffffff;
   margin-top: auto;
+}
+
+/* ==========================
+   🌙 MODO CLARO
+========================== */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #f5f6fa;
+    color: #2f3640;
+  }
+  header {
+    background: #dcdde1;
+    color: #2f3640;
+  }
+  .producto-carrito {
+    background: #ffffff;
+    color: #2f3640;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .btn-eliminar {
+    background: #ff7675;
+  }
+  .btn-finalizar {
+    background: #55efc4;
+    color: #2f3640;
+  }
+  footer {
+    background: #dfe6e9;
+    color: #2f3640;
+  }
 }

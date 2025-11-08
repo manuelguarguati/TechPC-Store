@@ -5,9 +5,9 @@ const User = require('../models/User');
 const PasswordReset = require('../models/PasswordReset');
 const { Op } = require('sequelize');
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Nodemailer
+// ====================== CONFIGURACIÓN DE NODEMAILER ======================
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -20,12 +20,14 @@ const transporter = nodemailer.createTransport({
 });
 
 const authController = {
-  // ================= Registro normal =================
+
+  // ================= REGISTRO NORMAL =================
   register: async (req, res) => {
     const { name, lastname, email, phone, password } = req.body;
     try {
       const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) return res.json({ success: false, message: 'El correo ya está registrado.' });
+      if (existingUser)
+        return res.json({ success: false, message: 'El correo ya está registrado.' });
 
       const code = Math.floor(100000 + Math.random() * 900000).toString();
       const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
@@ -46,16 +48,19 @@ const authController = {
     }
   },
 
-  // ================= Verificar código =================
+  // ================= VERIFICAR CÓDIGO =================
   verifyCode: async (req, res) => {
     const { email, code } = req.body;
     try {
       const tempUser = req.session.tempUser;
-      if (!tempUser || tempUser.email !== email) {
+      if (!tempUser || tempUser.email !== email)
         return res.json({ success: false, message: 'No hay registro pendiente o el correo no coincide.' });
-      }
-      if (new Date() > new Date(tempUser.expires)) return res.json({ success: false, message: 'Código expirado, regístrate nuevamente.' });
-      if (code !== tempUser.code) return res.json({ success: false, message: 'Código incorrecto.' });
+
+      if (new Date() > new Date(tempUser.expires))
+        return res.json({ success: false, message: 'Código expirado, regístrate nuevamente.' });
+
+      if (code !== tempUser.code)
+        return res.json({ success: false, message: 'Código incorrecto.' });
 
       const hashedPassword = await bcrypt.hash(tempUser.password, 10);
       const created = await User.create({
@@ -85,7 +90,7 @@ const authController = {
     }
   },
 
-  // ================= Login normal =================
+  // ================= LOGIN NORMAL =================
   login: async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -95,8 +100,14 @@ const authController = {
       const match = await bcrypt.compare(password, user.password);
       if (!match) return res.json({ success: false, message: 'Contraseña incorrecta.' });
 
-      if (!user.email_verified) return res.json({ success: false, message: 'Verifica tu correo antes de iniciar sesión.' });
+      if (!user.email_verified)
+        return res.json({ success: false, message: 'Verifica tu correo antes de iniciar sesión.' });
 
+      // 🔒 Bloquea si la cuenta está inactiva
+      if (!user.estadoCuenta)
+        return res.json({ success: false, message: 'Tu cuenta está inactiva. Contacta al administrador.' });
+
+      // ✅ Guardar sesión
       req.session.user = {
         id: user.id,
         name: user.name,
@@ -108,17 +119,19 @@ const authController = {
 
       const redirect = user.role === 'admin' ? '/admin' : '/home';
       res.json({ success: true, message: 'Inicio de sesión exitoso.', redirect });
+
     } catch (err) {
       console.error('❌ Error en login:', err);
       res.json({ success: false, message: 'Error al iniciar sesión.' });
     }
   },
 
-  // ================= Google Login =================
+  // ================= LOGIN CON GOOGLE =================
   googleLogin: async (req, res) => {
     try {
       const { id_token } = req.body;
-      if (!id_token) return res.status(400).json({ success: false, message: 'Token Google faltante.' });
+      if (!id_token)
+        return res.status(400).json({ success: false, message: 'Token Google faltante.' });
 
       const ticket = await client.verifyIdToken({
         idToken: id_token,
@@ -133,34 +146,44 @@ const authController = {
       let user = await User.findOne({ where: { email } });
 
       if (user) {
-        req.session.user = {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role || 'user',
-          lastname: user.lastname || '',
-          phone: user.phone || ''
-        };
-        const redirect = user.role === 'admin' ? '/admin' : '/home';
-        return res.json({ success: true, redirect });
+        // ⚠️ Bloquea login si la cuenta está inactiva
+        if (!user.estadoCuenta)
+          return res.json({ success: false, message: 'Tu cuenta está inactiva. Contacta al administrador.' });
+      } else {
+        // Usuario nuevo (crear después)
+        req.session.googleUser = { name, lastname, email, picture };
+        return res.json({ success: false, redirect: '/completar' });
       }
 
-      req.session.googleUser = { name, lastname, email, picture };
-      return res.json({ success: false, redirect: '/completar' });
+      // ✅ Sesión válida
+      req.session.user = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role || 'user',
+        lastname: user.lastname || '',
+        phone: user.phone || ''
+      };
+
+      const redirect = user.role === 'admin' ? '/admin' : '/home';
+      return res.json({ success: true, redirect });
+
     } catch (err) {
       console.error('❌ Error Google login:', err);
-      res.status(500).json({ success: false, message: 'Error al iniciar sesión con Google' });
+      res.status(500).json({ success: false, message: 'Error al iniciar sesión con Google.' });
     }
   },
 
-  // ================= Completar registro Google =================
+  // ================= COMPLETAR REGISTRO GOOGLE =================
   completarRegistro: async (req, res) => {
     try {
       const temp = req.session.googleUser;
-      if (!temp) return res.json({ success: false, message: 'No hay sesión de Google activa.' });
+      if (!temp)
+        return res.json({ success: false, message: 'No hay sesión de Google activa.' });
 
       const { phone, password } = req.body;
-      if (!phone || !password) return res.json({ success: false, message: 'Faltan datos.' });
+      if (!phone || !password)
+        return res.json({ success: false, message: 'Faltan datos.' });
 
       const hashed = await bcrypt.hash(password, 10);
 
@@ -192,18 +215,21 @@ const authController = {
     }
   },
 
-  // ================= Cambiar contraseña =================
+  // ================= CAMBIAR CONTRASEÑA =================
   changePassword: async (req, res) => {
     const usuario = req.session.user;
-    if (!usuario) return res.status(401).json({ success: false, message: 'No autorizado.' });
+    if (!usuario)
+      return res.status(401).json({ success: false, message: 'No autorizado.' });
 
     const { actual, nueva } = req.body;
-    if (!actual || !nueva) return res.status(400).json({ success: false, message: 'Campos incompletos.' });
+    if (!actual || !nueva)
+      return res.status(400).json({ success: false, message: 'Campos incompletos.' });
 
     try {
       const userDB = await User.findByPk(usuario.id);
       const match = await bcrypt.compare(actual, userDB.password);
-      if (!match) return res.status(400).json({ success: false, message: 'Contraseña actual incorrecta.' });
+      if (!match)
+        return res.status(400).json({ success: false, message: 'Contraseña actual incorrecta.' });
 
       const hashed = await bcrypt.hash(nueva, 10);
       await User.update({ password: hashed }, { where: { id: usuario.id } });
@@ -215,18 +241,17 @@ const authController = {
     }
   },
 
-  // ================= Recuperar cuenta con tabla independiente =================
+  // ================= RECUPERAR CUENTA =================
   recuperarCuenta: async (req, res) => {
     const { email } = req.body;
     try {
       const user = await User.findOne({ where: { email } });
-      if (!user) return res.render('recuperar-cuenta', { mensaje: null, error: 'Correo no registrado', titulo: 'Recuperar contraseña' });
+      if (!user)
+        return res.render('recuperar-cuenta', { mensaje: null, error: 'Correo no registrado', titulo: 'Recuperar contraseña' });
 
-      // Generar token y expiración
       const token = crypto.randomBytes(32).toString('hex');
       const expires = Date.now() + 3600000; // 1 hora
 
-      // Guardar en tabla PasswordResets
       await PasswordReset.create({ userId: user.id, token, expires });
 
       const enlace = `https://polygonaceous-uncoincidentally-nick.ngrok-free.dev/auth/reset-password/${token}`;
@@ -247,7 +272,7 @@ const authController = {
     }
   },
 
-  // ================= Mostrar formulario de reset password =================
+  // ================= FORMULARIO RESET PASSWORD =================
   resetPasswordForm: async (req, res) => {
     const { token } = req.params;
     try {
@@ -259,18 +284,17 @@ const authController = {
         include: User
       });
 
-      if (!reset) {
+      if (!reset)
         return res.render('reset-password', { error: 'Token inválido o expirado', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
-      }
 
       res.render('reset-password', { error: null, mensaje: null, token, titulo: 'Restablecer contraseña' });
     } catch (err) {
-      console.error('❌ Error en resetPasswordForm:', err);
+      console.error(' Error en resetPasswordForm:', err);
       res.render('reset-password', { error: 'Error al cargar el formulario', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
     }
   },
 
-  // ================= Actualizar contraseña =================
+  // ================= ACTUALIZAR CONTRASEÑA =================
   updatePassword: async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
@@ -283,24 +307,22 @@ const authController = {
         }
       });
 
-      if (!reset) {
+      if (!reset)
         return res.render('reset-password', { error: 'Token inválido o expirado', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
-      }
 
       const hashed = await bcrypt.hash(password, 10);
       await User.update({ password: hashed }, { where: { id: reset.userId } });
 
-      // Borrar el token
       await reset.destroy();
 
       res.render('reset-password', { error: null, mensaje: 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.', token: null, titulo: 'Restablecer contraseña' });
     } catch (err) {
-      console.error('❌ Error en updatePassword:', err);
+      console.error(' Error en updatePassword:', err);
       res.render('reset-password', { error: 'Error al actualizar la contraseña', mensaje: null, token: null, titulo: 'Restablecer contraseña' });
     }
   },
 
-  // ================= Sesión =================
+  // ================= SESIÓN =================
   session: (req, res) => {
     if (req.session && req.session.user) {
       return res.json({ loggedIn: true, user: req.session.user });
@@ -315,11 +337,11 @@ const authController = {
     } else res.json({ loggedIn: false, role: null });
   },
 
-  // ================= Logout =================
+  // ================= LOGOUT =================
   logout: (req, res) => {
     req.session.destroy(err => {
       if (err) {
-        console.error('❌ Error al cerrar sesión:', err);
+        console.error(' Error al cerrar sesión:', err);
         return res.status(500).json({ success: false, message: 'Error al cerrar sesión.' });
       }
       res.clearCookie('connect.sid');

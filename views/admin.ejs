@@ -1,62 +1,63 @@
+<!-- ====================================================================== -->
+<!-- EJS — admin.ejs -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= titulo %></title>
-   <link rel="icon" href="/img/favicon.ico" />
+  <link rel="icon" href="/img/favicon.ico" />
   <link rel="stylesheet" href="/css/admin.css" />
 </head>
-
 <body>
   <header>
-    <h1>Panel de Administración 👑</h1>
-
+    <h1>Panel de Administración</h1>
     <nav>
-      <a href="/home">🏠 Volver al inicio</a>
+      <a href="/home"> Volver al inicio</a>
       <a href="#" id="logout-admin">🚪 Cerrar sesión</a>
     </nav>
-
     <% if (user) { %>
-      <p class="bienvenida">
-        Bienvenido, <strong><%= user.name %></strong>
-        (<%= user.role %>)
-      </p>
+      <p class="bienvenida">Bienvenido, <strong><%= user.name %></strong> (<%= user.role %>)</p>
     <% } %>
   </header>
 
   <main>
-    <!-- SECCIÓN USUARIOS -->
+    <!-- =============================================================== -->
+    <!--  USUARIOS -->
+    <!-- =============================================================== -->
     <section id="seccion-usuarios">
-      <h2>👤 Lista de usuarios registrados</h2>
-      <table id="tablaUsuarios">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Correo</th>
-            <th>Teléfono</th>
-            <th>Rol</th>
-            <th>Verificado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Usuarios se llenarán con JS -->
-        </tbody>
-      </table>
+      <h2> Lista de usuarios registrados</h2>
+      <div class="table-responsive">
+        <table id="tablaUsuarios">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Correo</th>
+              <th>Teléfono</th>
+              <th>Rol</th>
+              <th>Verificado</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-size:0.9em;color:#aaa;margin-top:5px;">
+      </p>
     </section>
 
     <hr />
 
-    <!-- SECCIÓN PRODUCTOS -->
+    <!-- =============================================================== -->
+    <!--  PRODUCTOS -->
+    <!-- =============================================================== -->
     <section id="seccion-productos">
-      <h2>🛍️ Gestión de Productos</h2>
-
-      <!-- Formulario para agregar producto -->
+      <h2> Gestión de Productos</h2>
       <form id="form-nuevo-producto" enctype="multipart/form-data">
-        <h3>➕ Agregar nuevo producto</h3>
+        <h3> Agregar nuevo producto</h3>
         <div class="form-grid">
           <input type="text" name="nombre" placeholder="Nombre" required />
           <input type="text" name="descripcion" placeholder="Descripción" />
@@ -68,28 +69,26 @@
         <button type="submit" class="btn-agregar">Agregar producto</button>
       </form>
 
-      <!-- Tabla de productos -->
-      <table id="tablaProductos">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Categoría</th>
-            <th>Imagen</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Productos se llenarán con JS -->
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table id="tablaProductos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Categoría</th>
+              <th>Imagen</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-      <!-- Formulario editar producto -->
-      <div id="form-editar-producto-container" style="display: none;">
-        <h3>✏️ Editar producto</h3>
+      <div id="form-editar-producto-container" style="display:none;">
+        <h3> Editar producto</h3>
         <form id="form-editar-producto" enctype="multipart/form-data">
           <input type="hidden" name="id" id="edit-id" />
           <div class="form-grid">
@@ -109,26 +108,27 @@
 
     <hr />
 
-    <!-- SECCIÓN PEDIDOS -->
+    <!-- =============================================================== -->
+    <!--  PEDIDOS -->
+    <!-- =============================================================== -->
     <section id="seccion-pedidos">
-      <h2>📦 Gestión de Pedidos</h2>
-
-      <table id="tablaPedidos">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Total</th>
-            <th>Estado</th>
-            <th>Creado</th>
-            <th>Expira</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Pedidos se llenarán con JS -->
-        </tbody>
-      </table>
+      <h2> Gestión de Pedidos</h2>
+      <div class="table-responsive">
+        <table id="tablaPedidos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Creado</th>
+              <th>Expira</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
   </main>
 

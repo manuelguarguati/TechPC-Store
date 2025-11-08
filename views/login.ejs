@@ -7,7 +7,12 @@
   <title>Iniciar sesión - TechPC Store</title>
   <link rel="stylesheet" href="/css/login.css" />
   <link rel="icon" href="/img/favicon.ico" />
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- ✅ Primero tu script, define la función -->
+  <script src="/scripts/login.js"></script>
+
+  <!-- ✅ Después el script de Google (sin async ni defer) -->
+  <script src="https://accounts.google.com/gsi/client"></script>
 </head>
 
 <body>
@@ -19,7 +24,8 @@
     <form id="loginForm" action="/login" method="POST">
       <div class="usuario">
         <label for="usuario">Correo:</label>
-        <input type="email" id="usuario" name="usuario" placeholder="ejemplo@correo.com" required aria-required="true" />
+        <input type="email" id="usuario" name="usuario" placeholder="ejemplo@correo.com" required
+          aria-required="true" />
       </div>
 
       <div class="usuario">
@@ -31,7 +37,6 @@
         <button type="submit" class="boton">Entrar</button>
       </div>
 
-      <!-- 📩 Mensaje dinámico -->
       <div id="loginMessage" style="display:none;"></div>
 
       <p class="recuperar-pass">
@@ -48,18 +53,22 @@
     <!-- ✅ Botón de Google -->
     <div id="g_id_onload"
       data-client_id="1009394864655-mtbfugom0ephlheoau1i91osd1bcvl1m.apps.googleusercontent.com"
-      data-callback="handleCredentialResponse" data-auto_prompt="false">
+      data-callback="handleCredentialResponse"
+      data-auto_prompt="false">
     </div>
 
-    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
-      data-text="signin_with" data-size="large" data-logo_alignment="left">
+    <div class="g_id_signin"
+      data-type="standard"
+      data-shape="rectangular"
+      data-theme="outline"
+      data-text="signin_with"
+      data-size="large"
+      data-logo_alignment="left">
     </div>
   </div>
 
   <canvas id="canvas"></canvas>
 
-  <script src="/scripts/login.js" defer></script>
   <script type="module" src="/js/diseñologin.js" defer></script>
 </body>
-
 </html>

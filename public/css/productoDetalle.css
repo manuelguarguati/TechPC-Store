@@ -4,14 +4,16 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
-  color: #fff;
+  transition: background 0.6s, color 0.6s;
 }
 
 body {
   background: linear-gradient(135deg, #2d3436, #1e272e);
+  color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding: 2rem 1rem;
 }
 
 /* ===== HEADER ===== */
@@ -49,7 +51,7 @@ header a:hover {
 #busqueda {
   width: 100%;
   max-width: 350px;
-  padding: 8px 12px;
+  padding: 0.8rem 1rem;
   border-radius: 20px;
   border: none;
   outline: none;
@@ -57,7 +59,7 @@ header a:hover {
 }
 
 #buscar-btn {
-  padding: 8px 12px;
+  padding: 0.8rem 1rem;
   border-radius: 20px;
   border: none;
   background: #4cd137;
@@ -80,7 +82,7 @@ header a:hover {
 #carrito-btn, #logout-btn {
   background: #4cd137;
   border: none;
-  padding: 6px 12px;
+  padding: 0.6rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -96,39 +98,41 @@ header a:hover {
 main {
   flex: 1;
   width: 90%;
-  margin: 30px auto;
+  margin: 2rem auto;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 2rem;
 }
 
+/* ===== Detalle Producto ===== */
 .detalle-producto {
-  background: #3b3f44;
+  background: rgba(59, 63, 68, 0.85);
   border-radius: 15px;
-  padding: 30px;
+  padding: 2rem;
   max-width: 1000px;
   margin: 0 auto;
   display: flex;
-  gap: 30px;
+  gap: 1.5rem;
   flex-wrap: wrap;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
 }
 
 .imagenes {
   flex: 1;
-  min-width: 300px;
+  min-width: 280px;
 }
 
 .imagenes img {
   width: 100%;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 .miniaturas {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .miniatura {
@@ -147,19 +151,19 @@ main {
 
 .info-producto {
   flex: 1;
-  min-width: 300px;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
 }
 
 .info-producto h1 {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   color: #4cd137;
 }
 
 .precio {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   color: #ffd32a;
   font-weight: bold;
 }
@@ -174,7 +178,7 @@ main {
 }
 
 .caracteristicas li {
-  padding: 6px 0;
+  padding: 0.5rem 0;
   border-bottom: 1px solid #2d3436;
 }
 
@@ -186,13 +190,14 @@ main {
 /* ===== Acciones ===== */
 .acciones {
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .acciones input[type="number"] {
   width: 70px;
-  padding: 8px;
+  padding: 0.5rem;
   border-radius: 8px;
   border: none;
   outline: none;
@@ -202,7 +207,7 @@ main {
 }
 
 .acciones button {
-  padding: 12px 25px;
+  padding: 0.8rem 1.5rem;
   border-radius: 10px;
   border: none;
   cursor: pointer;
@@ -219,116 +224,100 @@ main {
 
 /* ===== Productos relacionados ===== */
 .productos-relacionados h2 {
-  margin-bottom: 15px;
   color: #ffd32a;
 }
 
 #relacionados {
   display: flex;
-  gap: 20px;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-/* ===== SECCIÓN DE RESEÑAS ===== */
+/* ===== Reviews ===== */
 .reviews-section {
-  background: #3b3f44;
+  background: rgba(59,63,68,0.85);
   border-radius: 15px;
-  padding: 30px;
+  padding: 2rem;
   max-width: 1000px;
   margin: 0 auto;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
 }
 
 .reviews-section h2 {
   color: #ffd32a;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  text-align: left;
-}
-
-.stars {
-  display: flex;
-  justify-content: flex-start;
-  gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .star {
-  font-size: 35px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   color: #bbb;
   cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
-  user-select: none;
 }
 
 .star:hover,
 .star.active {
   color: gold;
-  transform: scale(1.1);
-}
-
-.reviews-section textarea {
-  width: 100%;
-  min-height: 100px;
-  background: #2d3436;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  padding: 12px;
-  font-size: 1rem;
-  resize: vertical;
-  margin-bottom: 15px;
-  outline: none;
-}
-
-.reviews-section textarea::placeholder {
-  color: #aaa;
-}
-
-.reviews-section button {
-  background: #4cd137;
-  color: #1e272e;
-  font-weight: bold;
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.reviews-section button:hover {
-  background: #3f9c2d;
-  transform: scale(1.05);
-}
-
-.review {
-  background: #2f343a;
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  border-left: 4px solid #4cd137;
-}
-
-.review strong {
-  color: #4cd137;
-}
-
-.review small {
-  color: #aaa;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.review p {
-  color: #e0e0e0;
-  margin-top: 5px;
 }
 
 /* ===== Footer ===== */
 footer {
   text-align: center;
-  padding: 15px;
+  padding: 1rem;
   background: #1f2a27;
   color: #ffffff;
   margin-top: auto;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  main {
+    width: 95%;
+    margin: 1rem auto;
+  }
+
+  .detalle-producto {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ===== Modo claro automático ===== */
+@media (prefers-color-scheme: light) {
+  body {
+    background: linear-gradient(135deg, #f0f0f0, #ffffff);
+    color: #2f3640;
+  }
+
+  header, footer {
+    background: #dcdde1;
+    color: #2f3640;
+  }
+
+  .detalle-producto, .reviews-section {
+    background: rgba(255,255,255,0.9);
+    color: #2f3640;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  header a, #buscar-btn, #carrito-btn, #logout-btn, .acciones button {
+    background: #27ae60;
+    color: #fff;
+  }
+
+  .acciones button:hover,
+  #buscar-btn:hover,
+  #carrito-btn:hover,
+  #logout-btn:hover {
+    background: #219150;
+  }
+
+  .precio {
+    color: #0984e3;
+  }
 }

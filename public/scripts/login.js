@@ -2,6 +2,8 @@
 // login.js — Manejo del login normal y login con Google
 // --------------------------------------------------------------
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById('loginForm');
   const msgBox = document.getElementById('loginMessage');

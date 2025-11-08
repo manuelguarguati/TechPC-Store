@@ -9,11 +9,10 @@ const User = sequelize.define('User', {
   phone: DataTypes.STRING,
   password: DataTypes.STRING,
   email_verified: { type: DataTypes.BOOLEAN, defaultValue: false },
-  verification_code: DataTypes.STRING,
-  verification_expires: DataTypes.DATE,
   role: { type: DataTypes.STRING, defaultValue: 'user' }, // 'user' o 'admin'
   google_id: DataTypes.STRING,
- 
+  estadoCuenta: { type: DataTypes.BOOLEAN, defaultValue: true } // true = activa, false = inactiva
+
 });
 
 module.exports = User;

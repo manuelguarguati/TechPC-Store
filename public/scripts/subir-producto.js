@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const formEditarContainer = document.getElementById('form-editar-producto-container');
   const formEditar = document.getElementById('form-editar-producto');
 
-  // ➕ Subir producto
+  //  Subir producto
   if (formNuevo) {
     formNuevo.addEventListener('submit', async e => {
       e.preventDefault();
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await res.json();
 
         if (data.product) {
-          alert('✅ Producto agregado correctamente');
+          alert(' Producto agregado correctamente');
           if (tablaProductos) {
             const tr = document.createElement('tr');
             tr.dataset.id = data.product.id;
@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           formNuevo.reset();
         } else {
-          alert('❌ ' + (data.message || 'Error al subir producto'));
+          alert(' ' + (data.message || 'Error al subir producto'));
         }
       } catch (err) {
         console.error(err);
-        alert('❌ Error al subir producto');
+        alert(' Error al subir producto');
       }
     });
   }

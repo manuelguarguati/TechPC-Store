@@ -1,21 +1,24 @@
-/* ======= Estilos generales ======= */
+/* ======= 🎨 Estilos generales ======= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
-  background: #1e272e; /* Dark mode */
+  background: #1e272e; /* Modo oscuro por defecto */
+  color: #f1f2f6;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   min-height: 100vh;
-  color: #f1f2f6;
+  padding: 1rem;
+  transition: background 0.4s, color 0.4s;
 }
 
-/* ======= Header ======= */
+/* ======= 🧭 Header ======= */
 header {
   width: 100%;
   background: #2f3640;
@@ -23,48 +26,57 @@ header {
   padding: 1rem;
   text-align: center;
   position: relative;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+header h1 {
+  font-size: 1.8rem;
 }
 
 header a {
   position: absolute;
   left: 1rem;
-  top: 1.2rem;
-  color: #f1f2f6;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #1e272e;
   text-decoration: none;
   font-size: 0.9rem;
-  background: #4cd137; /* Verde */
+  background: #4cd137;
   padding: 6px 12px;
-  border-radius: 6px;
-  transition: background 0.3s;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 header a:hover {
-  background: #3f9c2d; /* Verde más oscuro */
+  background: #3f9c2d;
+  transform: translateY(-50%) scale(1.05);
 }
 
-/* ======= Contenedor del perfil ======= */
+/* ======= 👤 Contenedor del perfil ======= */
 .perfil-container {
   margin-top: 3rem;
   width: 100%;
-  max-width: 500px;
-  background: #2f3640; /* Dark container */
+  max-width: 480px;
+  background: #2f3640;
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   color: #f1f2f6;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 .perfil-card h2 {
   text-align: center;
-  margin-bottom: 1.5rem;
-  color: #4cd137; /* Verde título */
+  margin-bottom: 1.8rem;
+  color: #4cd137;
+  font-size: 1.6rem;
 }
 
+/* ======= 📝 Inputs ======= */
 label {
   display: block;
   font-weight: bold;
-  margin-top: 1rem;
-  color: #f1f2f6;
+  margin-top: 1.2rem;
 }
 
 input {
@@ -76,41 +88,103 @@ input {
   font-size: 1rem;
   background: #3b3b3b;
   color: #f1f2f6;
+  transition: border 0.3s, background 0.3s;
+}
+
+input:focus {
+  border-color: #4cd137;
+  outline: none;
+  background: #2d3436;
 }
 
 input[readonly] {
   background: #1e272e;
-  cursor: not-allowed;
   color: #95a5a6;
+  cursor: not-allowed;
 }
 
-/* ======= Botones ======= */
+/* ======= 🔘 Botones ======= */
 button {
   width: 100%;
   padding: 12px;
-  margin-top: 1.5rem;
+  margin-top: 1.8rem;
   font-size: 1rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  background: #4cd137; /* Verde */
+  background: #4cd137;
   color: #1e272e;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background: #3f9c2d; /* Verde más oscuro */
+  background: #3f9c2d;
+  transform: scale(1.03);
 }
 
-/* Responsive */
-@media (max-width: 500px) {
-  .perfil-container {
-    margin: 1.5rem;
-    padding: 1.5rem;
+/* ======= 🌐 Responsive ======= */
+@media (max-width: 600px) {
+  body {
+    padding: 0.5rem;
   }
 
   header h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
+
+  .perfil-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  input,
+  button {
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 10px;
+  }
+}
+
+/* ======= 🌙 Modo claro (automático según el sistema) ======= */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #f5f6fa;
+    color: #2f3640;
+  }
+
+  header {
+    background: #dcdde1;
+    color: #2f3640;
+  }
+
+  .perfil-container {
+    background: #ffffff;
+    color: #2f3640;
+  }
+
+  input {
+    background: #f1f2f6;
+    color: #2f3640;
+    border-color: #ccc;
+  }
+
+  input[readonly] {
+    background: #e0e0e0;
+    color: #7f8c8d;
+  }
+
+  button {
+    background: #4cd137;
+    color: #fff;
+  }
+}
+
+/* ======= ✨ Animaciones ======= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

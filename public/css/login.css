@@ -1,204 +1,244 @@
 /* ===== Estilos generales ===== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #2d3436, #1e272e);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: background 0.5s ease;
+  background: linear-gradient(135deg, #2d3436, #1e272e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: background 0.5s ease;
+  overflow-x: hidden;
 }
 
 body:hover {
-    background: linear-gradient(135deg, #1e272e, #2d3436);
+  background: linear-gradient(135deg, #1e272e, #2d3436);
 }
 
 /* ===== Contenedor del formulario ===== */
 .formulario {
-    background: #3b3f44;
-    padding: 2.5rem 2.2rem;
-    border-radius: 16px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    animation: fadeIn 0.6s ease;
-    margin-left: 200px;
-    position: relative;
-    z-index: 10;
-    backdrop-filter: blur(4px);
+  background: #3b3f44;
+  padding: 2.5rem 2.2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+  margin-left: 200px;
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(4px);
 }
 
 .formulario h1 {
-    margin-bottom: 1.8rem;
-    font-size: 1.8rem;
-    color: #4cd137;
-    border-bottom: 2px solid #535c68;
-    padding-bottom: 0.6rem;
+  margin-bottom: 1.8rem;
+  font-size: 1.8rem;
+  color: #4cd137;
+  border-bottom: 2px solid #535c68;
+  padding-bottom: 0.6rem;
 }
 
 /* ===== Campos ===== */
 form .usuario {
-    margin-bottom: 1.4rem;
-    text-align: left;
+  margin-bottom: 1.4rem;
+  text-align: left;
 }
 
 .usuario label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: #ffffff;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #ffffff;
 }
 
 .usuario input[type="email"],
 .usuario input[type="password"] {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 0.95rem;
-    border: 2px solid #535c68;
-    border-radius: 8px;
-    background-color: #2d3436;
-    color: #ffffff;
-    transition: border 0.3s, box-shadow 0.3s;
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  border: 2px solid #535c68;
+  border-radius: 8px;
+  background-color: #2d3436;
+  color: #ffffff;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
 .usuario input:focus {
-    outline: none;
-    border-color: #4cd137;
-    box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
+  outline: none;
+  border-color: #4cd137;
+  box-shadow: 0 0 5px rgba(76, 209, 55, 0.5);
 }
 
 /* ===== Botón gamer ===== */
 .usuario .boton {
-    position: relative;
-    width: 100%;
-    padding: 0.9rem;
-    font-size: 1.1rem;
-    background: transparent;
-    color: #64ed85;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    overflow: hidden;
-    border-radius: 8px;
-    text-transform: uppercase;
-    transition: background 0.5s, color 0.5s;
-    -webkit-box-reflect: below 10px linear-gradient(transparent, #64ed842a);
+  position: relative;
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  background: transparent;
+  color: #64ed85;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  overflow: hidden;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transition: background 0.5s, color 0.5s;
+  -webkit-box-reflect: below 10px linear-gradient(transparent, #64ed842a);
 }
 
 .usuario .boton:hover {
-    background: #64ed85;
-    box-shadow: 0 0 40px #64ed85;
-    color: #23252f;
-    filter: hue-rotate(20deg);
+  background: #64ed85;
+  box-shadow: 0 0 40px #64ed85;
+  color: #23252f;
+  filter: hue-rotate(20deg);
 }
 
 .usuario .boton:active {
-    box-shadow: 0 0 20px #64ed85;
-    filter: hue-rotate(40deg);
+  box-shadow: 0 0 20px #64ed85;
+  filter: hue-rotate(40deg);
 }
 
 .usuario .boton::after,
 .usuario .boton::before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    transition: width 0.4s, height 0.4s;
+  content: "";
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transition: width 0.4s, height 0.4s;
 }
 
 .usuario .boton::after {
-    border-top: 3px solid #64ed85;
-    border-left: 3px solid #64ed85;
-    top: 0;
-    left: 0;
+  border-top: 3px solid #64ed85;
+  border-left: 3px solid #64ed85;
+  top: 0;
+  left: 0;
 }
 
 .usuario .boton::before {
-    border-bottom: 3px solid #64ed85;
-    border-right: 3px solid #64ed85;
-    bottom: 0;
-    right: 0;
+  border-bottom: 3px solid #64ed85;
+  border-right: 3px solid #64ed85;
+  bottom: 0;
+  right: 0;
 }
 
 .usuario .boton:hover::after,
 .usuario .boton:hover::before {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 /* ===== Mensaje dinámico ===== */
 #loginMessage {
-    margin-top: 10px;
-    font-weight: 600;
-    border-radius: 5px;
-    padding: 8px;
-    text-align: center;
-    display: none;
+  margin-top: 10px;
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 8px;
+  text-align: center;
+  display: none;
 }
 
 /* ===== Link registro ===== */
 .formulario a {
-    color: #4cd137;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.3s;
+  color: #4cd137;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 .formulario a:hover {
-    color: #3f9c2d;
-    text-decoration: underline;
+  color: #3f9c2d;
+  text-decoration: underline;
 }
 
 /* ===== Animación entrada ===== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-15px); }
-    to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 480px) {
-    .formulario {
-        padding: 2rem 1.5rem;
-        margin-left: 0;
-    }
-}
-
-/* Fondo animado con Tubes */
+/* ===== Fondo animado con Tubes ===== */
 #canvas {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
 }
 
 /* ===== Título TECHPC STORE ===== */
 .titulo-pagina {
-    position: absolute;
-    top: 20px;
-    left: 60px;
-    font-size: 50px;
-    font-weight: 900;
-    color: #00ff88;
-    text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88, 0 0 45px #00ff88;
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 3px;
-    user-select: none;
-    animation: glow 2s ease-in-out infinite alternate;
-    z-index: 5;
+  position: absolute;
+  top: 20px;
+  left: 60px;
+  font-size: 50px;
+  font-weight: 900;
+  color: #00ff88;
+  text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88, 0 0 45px #00ff88;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 3px;
+  user-select: none;
+  animation: glow 2s ease-in-out infinite alternate;
+  z-index: 5;
 }
 
 @keyframes glow {
-    from { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88; }
-    to { text-shadow: 0 0 20px #00ffaa, 0 0 40px #00ffaa, 0 0 60px #00ffaa; }
+  from { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88; }
+  to { text-shadow: 0 0 20px #00ffaa, 0 0 40px #00ffaa, 0 0 60px #00ffaa; }
+}
+
+/* ===== Responsive ===== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .formulario {
+    margin-left: 0;
+    max-width: 400px;
+    padding: 2rem;
+  }
+
+  .titulo-pagina {
+    font-size: 38px;
+    left: 30px;
+  }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px;
+  }
+
+  .formulario {
+    margin: 0;
+    width: 90%;
+    padding: 1.8rem 1.5rem;
+  }
+
+  .titulo-pagina {
+    position: static;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .usuario input {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .usuario .boton {
+    font-size: 1rem;
+  }
 }

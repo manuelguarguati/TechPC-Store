@@ -1,3 +1,7 @@
+// ======================================================================
+// 📦 CONTROLADOR ADMIN — adminController.js
+// ======================================================================
+
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -65,7 +69,11 @@ const adminController = {
   getUsuarios: async (req, res) => {
     try {
       const usuarios = await User.findAll({
-        attributes: ['id', 'name', 'lastname', 'email', 'phone', 'role'],
+        attributes: [
+          'id', 'name', 'lastname', 'email', 'phone', 'role',
+          'email_verified', 'google_id', 'verification_code', 'verification_expires',
+          'estadoCuenta'
+        ],
         order: [['id', 'ASC']]
       });
       res.json(usuarios);
@@ -84,6 +92,46 @@ const adminController = {
       res.status(500).json({ error: 'Error al eliminar usuario' });
     }
   },
+ // ===============================
+// Activar / Desactivar usuario
+// ===============================
+actualizarEstadoCuenta: async (req, res) => {
+  try {
+    const { id } = req.params;
+    let { estadoCuenta } = req.body; // puede venir como "0" o "1"
+
+    // Convertir a número o booleano
+    estadoCuenta = Number(estadoCuenta) === 1 ? 1 : 0;
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Normalizar role para evitar problemas de mayúsculas o espacios
+    const role = (user.role || '').trim().toLowerCase();
+
+    //  Evita desactivar cuentas con rol "admin"
+    if (role === 'admin' && estadoCuenta === 0) {
+      return res.status(403).json({
+        error: 'No puedes desactivar una cuenta de administrador.'
+      });
+    }
+
+    // Actualizar estado de cuenta
+    user.estadoCuenta = estadoCuenta;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: `Cuenta ${estadoCuenta ? 'activada' : 'desactivada'} correctamente.`
+    });
+  } catch (err) {
+    console.error('❌ Error actualizando estado de cuenta:', err);
+    res.status(500).json({ error: 'Error al actualizar estado de la cuenta' });
+  }
+},
+
 
   // Productos
   getProductos: async (req, res) => {
@@ -164,7 +212,6 @@ const adminController = {
   getPedidos: async (req, res) => {
     try {
       const ahora = new Date();
-      // Cancelar pedidos expirados
       const expirados = await Pedido.findAll({
         where: { status: 'pending', expiresAt: { [Op.lt]: ahora } }
       });
@@ -175,7 +222,7 @@ const adminController = {
 
       const pedidos = await Pedido.findAll({
         include: [
-          { model: PedidoDetalle, include: [Product] } // detalles + producto
+          { model: PedidoDetalle, include: [Product] }
         ],
         order: [['createdAt', 'DESC']]
       });

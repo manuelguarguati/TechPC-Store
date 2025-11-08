@@ -2,10 +2,13 @@
    ESTILOS GENERALES
 ========================== */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  background: #1e272e;
+  background: linear-gradient(135deg, #1e272e, #2d3436);
   color: #f1f2f6;
+  min-height: 100vh;
+  padding: 1.5rem;
+  transition: background 0.6s, color 0.6s;
 }
 
 h1, h2, h3 {
@@ -17,34 +20,39 @@ h1, h2, h3 {
    CABECERA
 ========================== */
 header {
-  background: #2f3640;
+  background: rgba(47,54,64,0.88);
   color: #f1f2f6;
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.5);
 }
 
 header a {
   color: #f1f2f6;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.3s;
 }
 
 header a:hover {
-  color: #4cd137;
+  color: #64ed85;
 }
 
 /* ==========================
    SECCIONES / TARJETAS
 ========================== */
 .card {
-  background: #2f3640;
+  background: rgba(47,54,64,0.88);
   padding: 20px;
   margin: 20px auto;
-  border-radius: 10px;
+  border-radius: 18px;
   max-width: 1200px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 35px rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
 }
 
 /* ==========================
@@ -67,10 +75,17 @@ input[type="number"],
 textarea,
 input[type="file"] {
   padding: 8px;
-  border: 1px solid #555;
-  border-radius: 5px;
-  background: #1e272e;
+  border: 2px solid #535c68;
+  border-radius: 10px;
+  background: #2d3436;
   color: #f1f2f6;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #4cd137;
+  box-shadow: 0 0 10px rgba(76,209,55,0.5);
 }
 
 textarea {
@@ -98,7 +113,7 @@ th {
 }
 
 tr:hover {
-  background-color: #4cd13733;
+  background-color: rgba(76, 209, 55, 0.2);
 }
 
 td.descripcion {
@@ -112,31 +127,30 @@ td.descripcion {
 ========================== */
 button {
   border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
+  padding: 8px 14px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s;
 }
 
 button:hover {
-  opacity: 0.85;
+  transform: scale(1.03);
 }
 
+/* Botones de acción */
 .btn-agregar {
   background: #4cd137;
   color: #1e272e;
-  margin-top: 10px;
 }
 
 .btn-agregar:hover {
-  background: #3f9c2d;
+  background: #64ed85;
 }
 
 .editar {
   background: #f39c12;
-  color: white;
-  margin-right: 5px;
+  color: #fff;
 }
 
 .editar:hover {
@@ -145,7 +159,7 @@ button:hover {
 
 .eliminar {
   background: #e74c3c;
-  color: white;
+  color: #fff;
 }
 
 .eliminar:hover {
@@ -155,16 +169,73 @@ button:hover {
 .btn-editar {
   background: #4cd137;
   color: #1e272e;
-  margin-right: 10px;
 }
 
 .btn-cancelar {
   background: #e74c3c;
-  color: white;
+  color: #fff;
 }
 
 .form-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+/* ==========================
+   Animaciones
+========================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================
+   Responsive
+========================== */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================
+   Modo Claro Automático
+========================== */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #f0f0f0;
+    color: #2f3640;
+  }
+
+  header, .card {
+    background: rgba(255,255,255,0.9);
+    color: #2f3640;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  input[type="text"], input[type="number"], textarea {
+    background: #ffffff;
+    color: #2f3640;
+    border-color: #ccc;
+  }
+
+  .btn-agregar, .btn-editar {
+    background: #27ae60;
+    color: #fff;
+  }
+
+  .btn-agregar:hover, .btn-editar:hover {
+    background: #219150;
+  }
+
+  .editar {
+    background: #f39c12;
+    color: #fff;
+  }
+
+  .eliminar, .btn-cancelar {
+    background: #e74c3c;
+    color: #fff;
+  }
 }

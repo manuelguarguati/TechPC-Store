@@ -1,71 +1,136 @@
 // ======================================================================
-// 📦 PANEL DE ADMINISTRACIÓN — admin.js
+//  FRONTEND ADMIN — admin.js (con switch activar/desactivar funcional)
 // ======================================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // ---------------------------------------------------------------
-    // 🔒 1️⃣ Verificar sesión y rol de administrador
-    // ---------------------------------------------------------------
+    // ==========================
+    // 1️⃣ Verificar sesión admin
+    // ==========================
     const sessionRoleRes = await fetch('/auth/session-role', { credentials: 'include' });
     const sessionRoleData = await sessionRoleRes.json();
-
     if (!sessionRoleData.loggedIn || sessionRoleData.role !== 'admin') {
       alert('Acceso restringido. Solo para administradores.');
       window.location.href = '/home';
       return;
     }
-
     console.log('Bienvenido al panel de admin');
 
-    // ---------------------------------------------------------------
-    // 👥 2️⃣ Cargar lista de usuarios
-    // ---------------------------------------------------------------
+    // ==========================
+    // 2️⃣ Cargar usuarios
+    // ==========================
     async function cargarUsuarios() {
-      const res = await fetch('/api/admin/usuarios', { credentials: 'include' });
-      const usuarios = await res.json();
-      const tbody = document.querySelector('#tablaUsuarios tbody');
-      tbody.innerHTML = '';
+      try {
+        const res = await fetch('/api/admin/usuarios', { credentials: 'include' });
+        const usuarios = await res.json();
+        const tbody = document.querySelector('#tablaUsuarios tbody');
+        tbody.innerHTML = '';
 
-      usuarios.forEach(u => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${u.id}</td>
-          <td>${u.name}</td>
-          <td>${u.lastname}</td>
-          <td>${u.email}</td>
-          <td>${u.phone || '—'}</td>
-          <td>${u.role}</td>
-          <td>
-            <button class="eliminar" data-id="${u.id}">🗑️</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+        usuarios.forEach(u => {
+          const verificadoBadge = u.email_verified
+            ? '<span class="badge badge-success">Verificado</span>'
+            : '<span class="badge badge-danger">No verificado</span>';
+          const estadoBadge = u.estadoCuenta
+            ? '<span class="badge badge-info">Activo</span>'
+            : '<span class="badge badge-warning">Inactivo</span>';
+          const googleBadge = u.google_id ? ' <span class="badge badge-google">Google</span>' : '';
 
-      tbody.addEventListener('click', async e => {
-        if (e.target.classList.contains('eliminar')) {
-          const id = e.target.dataset.id;
-          if (confirm('¿Seguro que deseas eliminar este usuario?')) {
-            const res = await fetch(`/api/admin/usuarios/${id}`, {
-              method: 'DELETE',
-              credentials: 'include'
-            });
-            const result = await res.json();
-            if (result.success) {
-              alert('✅ Usuario eliminado.');
-              cargarUsuarios();
-            } else alert('❌ Error al eliminar usuario.');
-          }
-        }
-      });
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${u.id}</td>
+            <td>${u.name}</td>
+            <td>${u.lastname}</td>
+            <td>${u.email}</td>
+            <td>${u.phone || '—'}</td>
+            <td>${u.role}</td>
+            <td>${verificadoBadge}${googleBadge}</td>
+            <td>${estadoBadge}</td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" class="toggle-estado" data-id="${u.id}" ${u.estadoCuenta ? 'checked' : ''}>
+                <span class="slider"></span>
+              </label>
+              <button class="eliminar" data-id="${u.id}">🗑️</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('❌ Error cargando usuarios:', err);
+        alert('❌ No se pudieron cargar los usuarios.');
+      }
     }
 
     await cargarUsuarios();
 
-    // ---------------------------------------------------------------
-    // 🛍️ 3️⃣ Cargar lista de productos
-    // ---------------------------------------------------------------
+    // ==========================
+    // 2.1️⃣ Activar / Desactivar usuario
+    // ==========================
+    document.querySelector('#tablaUsuarios tbody').addEventListener('change', async e => {
+      if (e.target.classList.contains('toggle-estado')) {
+        const id = e.target.dataset.id;
+        const nuevoEstado = e.target.checked ? 1 : 0;
+
+        try {
+          const res = await fetch(`/api/admin/usuarios/${id}/estado`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ estadoCuenta: nuevoEstado }),
+            credentials: 'include'
+          });
+
+          const result = await res.json();
+
+          if (!res.ok) {
+            // ⚠️ Si backend devuelve 403, significa que es admin
+            if (res.status === 403) {
+              alert(result.error || 'No tienes permiso para desactivar esta cuenta.');
+            } else {
+              alert(result.error || '❌ Error al actualizar estado de cuenta');
+            }
+
+            // 🔁 Restaurar el switch al estado anterior (ya que falló)
+            e.target.checked = !nuevoEstado;
+            return;
+          }
+
+          if (result.success) {
+            alert(result.message);
+            cargarUsuarios();
+          }
+        } catch (err) {
+          console.error('❌ Error al cambiar estado:', err);
+          alert('❌ No se pudo cambiar el estado de la cuenta.');
+          e.target.checked = !nuevoEstado;
+        }
+      }
+    });
+
+    // ==========================
+    // 🧹 Eliminar usuario
+    // ==========================
+    document.querySelector('#tablaUsuarios tbody').addEventListener('click', async e => {
+      if (e.target.classList.contains('eliminar')) {
+        const id = e.target.dataset.id;
+        if (confirm('¿Seguro que deseas eliminar este usuario?')) {
+          const res = await fetch(`/api/admin/usuarios/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          const result = await res.json();
+          if (result.success) {
+            alert('✅ Usuario eliminado.');
+            cargarUsuarios();
+          } else {
+            alert('❌ Error al eliminar usuario.');
+          }
+        }
+      }
+    });
+
+    // ==========================
+    // 3️⃣ Cargar productos
+    // ==========================
     async function cargarProductos() {
       const res = await fetch('/api/admin/products', { credentials: 'include' });
       const productos = await res.json();
@@ -83,8 +148,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>${p.category || 'General'}</td>
           <td>${p.image_url ? `<img src="${p.image_url}" width="50">` : '—'}</td>
           <td>
-            <button class="editar" data-id="${p.id}">✏️</button>
-            <button class="eliminar-producto" data-id="${p.id}">🗑️</button>
+            <button class="editar" data-id="${p.id}">Editar</button>
+            <button class="eliminar-producto" data-id="${p.id}">Eliminar</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -93,9 +158,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await cargarProductos();
 
-    // ---------------------------------------------------------------
-    // ➕ 4️⃣ Agregar nuevo producto
-    // ---------------------------------------------------------------
+    // ==========================
+    // 4️⃣ Agregar producto
+    // ==========================
     const formNuevo = document.getElementById('form-nuevo-producto');
     if (formNuevo) {
       formNuevo.addEventListener('submit', async e => {
@@ -115,15 +180,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-    // ---------------------------------------------------------------
-    // 🗑️ 5️⃣ Eliminar y ✏️ Editar producto (delegado)
-    // ---------------------------------------------------------------
+    // ==========================
+    // 5️⃣ Editar / eliminar producto
+    // ==========================
     const tbodyProductos = document.querySelector('#tablaProductos tbody');
     tbodyProductos.addEventListener('click', async e => {
       const id = e.target.dataset.id;
       if (!id) return;
 
-      // Eliminar producto
+      // Eliminar
       if (e.target.classList.contains('eliminar-producto')) {
         if (confirm('¿Seguro que deseas eliminar este producto?')) {
           const res = await fetch(`/api/admin/products/${id}`, {
@@ -138,7 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
 
-      // Editar producto
+      // Editar
       if (e.target.classList.contains('editar')) {
         const res = await fetch(`/api/admin/products/${id}`, { credentials: 'include' });
         const p = await res.json();
@@ -155,9 +220,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
-    // ---------------------------------------------------------------
-    // ✏️ 6️⃣ Guardar edición de producto
-    // ---------------------------------------------------------------
+    // ==========================
+    // 6️⃣ Guardar edición producto
+    // ==========================
     const formEditar = document.getElementById('form-editar-producto');
     formEditar.addEventListener('submit', async e => {
       e.preventDefault();
@@ -175,16 +240,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else alert('❌ Error al actualizar producto');
     });
 
-    // ---------------------------------------------------------------
-    // ❌ 7️⃣ Cancelar edición
-    // ---------------------------------------------------------------
     document.getElementById('cancelar-edicion').addEventListener('click', () => {
       document.getElementById('form-editar-producto-container').style.display = 'none';
     });
 
-    // ---------------------------------------------------------------
-    // 🚪 8️⃣ Cerrar sesión
-    // ---------------------------------------------------------------
+    // ==========================
+    // 7️⃣ Logout
+    // ==========================
     document.getElementById('logout-admin').addEventListener('click', async e => {
       e.preventDefault();
       try {
@@ -197,95 +259,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert('❌ No se pudo cerrar sesión');
       }
     });
-
-    // ---------------------------------------------------------------
-    // 📦 9️⃣ Cargar lista de pedidos
-    // ---------------------------------------------------------------
-    const tbodyPedidos = document.querySelector('#tablaPedidos tbody');
-    async function cargarPedidos() {
-      const res = await fetch('/api/admin/pedidos', { credentials: 'include' });
-      const pedidos = await res.json();
-      tbodyPedidos.innerHTML = '';
-
-      pedidos.forEach(p => {
-        const fechaCreado = new Date(p.createdAt).toLocaleString();
-        const fechaExpira = new Date(p.expiresAt).toLocaleString();
-        const estadoClases = {
-          pending: 'pendiente',
-          paid: 'pagado',
-          shipped: 'enviado',
-          delivered: 'entregado',
-          cancelled: 'cancelado'
-        };
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${p.id}</td>
-          <td>${p.userId}</td>
-          <td>$${p.total}</td>
-          <td class="${estadoClases[p.status] || ''}">${p.status}</td>
-          <td>${fechaCreado}</td>
-          <td>${fechaExpira}</td>
-          <td>
-            ${p.status === 'pending' ? `<button class="btn-enviar" data-id="${p.id}">Marcar como enviado</button>` : ''}
-            ${p.status === 'pending' ? `<button class="btn-cancelar" data-id="${p.id}">Cancelar</button>` : ''}
-            <button class="btn-detalle" data-id="${p.id}">Ver detalle</button>
-          </td>
-        `;
-        tbodyPedidos.appendChild(tr);
-      });
-    }
-
-    await cargarPedidos();
-
-    tbodyPedidos.addEventListener('click', async e => {
-      const id = e.target.dataset.id;
-      if (!id) return;
-
-      // Marcar como enviado
-      if (e.target.classList.contains('btn-enviar')) {
-        const res = await fetch(`/api/admin/pedidos/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'shipped' }),
-          credentials: 'include'
-        });
-        const result = await res.json();
-        if (result.success) {
-          alert('✅ Pedido marcado como enviado');
-          cargarPedidos();
-        }
-      }
-
-      // Cancelar pedido
-      if (e.target.classList.contains('btn-cancelar')) {
-        if (confirm('¿Seguro que deseas cancelar este pedido?')) {
-          const res = await fetch(`/api/admin/pedidos/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: 'cancelled' }),
-            credentials: 'include'
-          });
-          const result = await res.json();
-          if (result.success) {
-            alert('❌ Pedido cancelado');
-            cargarPedidos();
-          }
-        }
-      }
-
-      // Ver detalle
-      if (e.target.classList.contains('btn-detalle')) {
-        const res = await fetch(`/api/pedidos/${id}`, { credentials: 'include' });
-        const detalle = await res.json();
-        let info = `Pedido #${id}\n\nProductos:\n`;
-        detalle.forEach(d => {
-          info += `- Producto ID: ${d.productId} | Cantidad: ${d.cantidad} | Precio: $${d.precio}\n`;
-        });
-        alert(info);
-      }
-    });
-
   } catch (err) {
     console.error('Error en panel admin:', err);
     alert('❌ Error cargando el panel de administración');

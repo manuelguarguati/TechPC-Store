@@ -5,61 +5,63 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Completar registro - TechPC Store</title>
-   <link rel="icon" href="/img/favicon.ico" />
-  <link rel="stylesheet" href="/css/registro.css" />
+  <link rel="icon" href="/img/favicon.ico" />
+  <link rel="stylesheet" href="/css/completar-registro.css" />
 </head>
 
 <body>
-  <div class="titulo-pagina">TECHPC STORE</div>
+  <div class="formulario-container">
+    <div class="titulo-pagina">TECHPC STORE</div>
 
-  <div class="formulario">
-    <h2>Completa tu registro</h2>
-    <p>Ingresa tu teléfono y crea una contraseña para finalizar tu registro con Google</p>
+    <div class="formulario">
+      <h2>Completa tu registro</h2>
+      <p>Ingresa tu teléfono y crea una contraseña para finalizar tu registro con Google</p>
 
-    <form id="completarForm">
-      <div class="campo">
-        <label>Email</label>
-        <input type="email" id="email" value="<%= email %>" readonly />
-      </div>
-
-      <div class="fila">
+      <form id="completarForm">
         <div class="campo">
-          <label>Nombre</label>
-          <input type="text" id="nombre" value="<%= name %>" readonly />
+          <label>Email</label>
+          <input type="email" id="email" value="<%= email %>" readonly />
         </div>
+
+        <div class="fila">
+          <div class="campo">
+            <label>Nombre</label>
+            <input type="text" id="nombre" value="<%= name %>" readonly />
+          </div>
+          <div class="campo">
+            <label>Apellido</label>
+            <input type="text" id="apellido" value="<%= lastname %>" readonly />
+          </div>
+        </div>
+
         <div class="campo">
-          <label>Apellido</label>
-          <input type="text" id="apellido" value="<%= lastname %>" readonly />
+          <label>Teléfono</label>
+          <div class="telefono">
+            <span>+57</span>
+            <input type="tel" id="celular" placeholder="3001234567" required pattern="[0-9]{10}" />
+          </div>
         </div>
-      </div>
 
-      <div class="campo">
-        <label>Teléfono</label>
-        <div class="telefono">
-          <span>+57</span>
-          <input type="tel" id="celular" placeholder="3001234567" required pattern="[0-9]{10}" />
+        <div class="campo">
+          <label>Contraseña</label>
+          <input type="password" id="contraseña1" placeholder="Crea una contraseña" required minlength="8" />
         </div>
-      </div>
 
-      <div class="campo">
-        <label>Contraseña</label>
-        <input type="password" id="contraseña1" placeholder="Crea una contraseña" required minlength="8" />
-      </div>
+        <div class="campo">
+          <label>Confirmar contraseña</label>
+          <input type="password" id="contraseña2" placeholder="Repite la contraseña" required minlength="8" />
+        </div>
 
-      <div class="campo">
-        <label>Confirmar contraseña</label>
-        <input type="password" id="contraseña2" placeholder="Repite la contraseña" required minlength="8" />
-      </div>
+        <div class="autorizacion campo">
+          <label>
+            <input type="checkbox" required /> Acepto la <a href="/terminos?from=google">Declaración de privacidad y Términos</a>.
+          </label>
+        </div>
 
-      <div class="autorizacion">
-        <label>
-          <input type="checkbox" required /> Acepto la <a href="/terminos">Declaración de privacidad y Términos</a>.
-        </label>
-      </div>
-
-      <button type="submit" class="boton">Continuar</button>
-      <p id="msg"></p>
-    </form>
+        <button type="submit" class="boton">Continuar</button>
+        <p id="msg"></p>
+      </form>
+    </div>
   </div>
 
   <script src="/scripts/verificargoogle.js"></script>

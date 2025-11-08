@@ -1,5 +1,5 @@
 // ------------------------------------------------------------
-// 🌐 TechPC Store - Servidor Principal (app.js)
+// 🌐TechPC Store - Servidor Principal (app.js)
 // ------------------------------------------------------------
 
 require('dotenv').config();
@@ -13,19 +13,19 @@ const { Op } = require('sequelize');
 const sequelize = require('./config/database');
 
 // ------------------------------------------------------------
-// 📦 MODELOS
+//  MODELOS
 // ------------------------------------------------------------
 const Pedido = require('./models/Pedido');
 const PedidoDetalle = require('./models/PedidoDetalle');
 const Product = require('./models/Product');
 
 // ------------------------------------------------------------
-// 🚀 INICIALIZACIÓN DE EXPRESS
+//  INICIALIZACIÓN DE EXPRESS
 // ------------------------------------------------------------
 const app = express();
 
 // ------------------------------------------------------------
-// ⚙️ CONFIGURACIÓN GENERAL
+//  CONFIGURACIÓN GENERAL
 // ------------------------------------------------------------
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -34,27 +34,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ------------------------------------------------------------
-// 🔒 CONFIGURACIÓN DE SESIONES
+//  CONFIGURACIÓN DE SESIONES
 // ------------------------------------------------------------
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'mi_secreto_seguro',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60, // 1 hora
-    secure: false, // Cambia a true si usas HTTPS en producción
+    secure: true, // Cambia a true si usas HTTPS en producción
     httpOnly: true,
-    sameSite: 'lax'
+    sameSite: 'none'
   }
 }));
 
 // ------------------------------------------------------------
-// 🗂️ ARCHIVOS ESTÁTICOS
+// ARCHIVOS ESTÁTICOS
 // ------------------------------------------------------------
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ------------------------------------------------------------
-// 📦 IMPORTAR RUTAS
+//  IMPORTAR RUTAS
 // ------------------------------------------------------------
 const mainRoutes = require('./routes/main');
 const authRoutes = require('./routes/auth');
@@ -79,20 +79,20 @@ const searchRoutes = require('./routes/search');
 app.use('/search', searchRoutes);
 
 // ------------------------------------------------------------
-// 🧠 CONEXIÓN CON BASE DE DATOS
+//  CONEXIÓN CON BASE DE DATOS
 // ------------------------------------------------------------
 sequelize.authenticate()
   .then(() => console.log('💾 Conexión con la base de datos establecida correctamente.'))
   .catch(err => console.error('❌ Error al conectar con la base de datos:', err));
 
 // ------------------------------------------------------------
-// 🕒 CRON JOB: Cancelar pedidos pendientes de más de 24 h
+//  CRON JOB: Cancelar pedidos pendientes de más de 24 h
 // ------------------------------------------------------------
 require('./tasks/expirarPedidos');
 
 
 // ------------------------------------------------------------
-// 🔐 CONFIGURACIÓN HTTPS LOCAL
+//  CONFIGURACIÓN HTTPS LOCAL
 // ------------------------------------------------------------
 const options = {
   key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),

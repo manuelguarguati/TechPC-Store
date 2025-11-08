@@ -4,26 +4,19 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
-  color: #ffffff;
+  transition: background 0.4s, color 0.4s;
 }
 
-.visually-hidden {
-  position: absolute !important;
-  width: 1px; height: 1px; 
-  padding: 0; margin: -1px; 
-  overflow: hidden; 
-  clip: rect(0,0,0,0); 
-  border: 0;
-}
-
+/* ===== Modo oscuro (predeterminado) ===== */
 body {
   background: linear-gradient(135deg, #2d3436, #1e272e);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  color: #ffffff;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
@@ -32,26 +25,33 @@ header {
   padding: 15px 40px;
   color: #ffffff;
   flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .logo img {
   height: 60px;
+  width: auto;
 }
 
-/* ===== Buscador ===== */
+/* Buscador */
 .search-bar {
   display: flex;
   align-items: center;
   background: #3b3f44;
   border-radius: 20px;
   overflow: hidden;
+  flex: 1;
+  max-width: 300px;
+  margin: 10px 0;
 }
 
 .search-bar input {
   border: none;
-  padding: 8px 12px;
+  padding: 10px 12px;
   font-size: 14px;
-  width: 220px;
+  flex: 1;
   outline: none;
   color: #ffffff;
   background: #3b3f44;
@@ -61,7 +61,7 @@ header {
   background: #4cd137;
   color: #1e272e;
   border: none;
-  padding: 8px 15px;
+  padding: 10px 15px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
@@ -70,11 +70,12 @@ header {
   background: #3f9c2d;
 }
 
-/* ===== Navegación ===== */
+/* Navegación */
 nav {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 a#carrito-btn {
@@ -87,20 +88,20 @@ a#carrito-btn:hover {
   color: #3f9c2d;
 }
 
-/* ===== Banner ===== */
+/* Banner */
 .banner {
   font-size: 14px;
   color: #4cd137;
   font-weight: bold;
   margin-top: 5px;
+  text-align: center;
 }
 
-/* ===== Contenido principal ===== */
+/* Contenido principal */
 .container {
   width: 90%;
   margin: 40px auto;
   text-align: center;
-  color: #ffffff;
 }
 
 .container h1 {
@@ -115,16 +116,16 @@ a#carrito-btn:hover {
   color: #b2bec3;
 }
 
-/* ===== Productos ===== */
+/* Productos */
 .productos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
   padding-bottom: 20px;
 }
 
 .producto {
-  background: #3b3f44; /* Dark card */
+  background: #3b3f44;
   border-radius: 15px;
   padding: 15px;
   text-align: center;
@@ -135,7 +136,6 @@ a#carrito-btn:hover {
   flex-direction: column;
   justify-content: space-between;
   height: 380px;
-  overflow: hidden;
 }
 
 .producto:hover {
@@ -152,7 +152,7 @@ a#carrito-btn:hover {
 .producto h3 {
   font-size: 1.1rem;
   margin-bottom: 8px;
-  height: 40px; /* Altura fija */
+  height: 40px;
   overflow: hidden;
 }
 
@@ -182,7 +182,7 @@ a#carrito-btn:hover {
   background: #3f9c2d;
 }
 
-/* ===== Menú de usuario ===== */
+/* Menú usuario */
 .usuario-container {
   position: relative;
 }
@@ -194,6 +194,7 @@ a#carrito-btn:hover {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 #usuario-btn:hover {
@@ -211,7 +212,6 @@ a#carrito-btn:hover {
   padding: 15px;
   display: none;
   z-index: 1000;
-  color: #ffffff;
 }
 
 .menu-usuario.mostrar {
@@ -233,11 +233,106 @@ a#carrito-btn:hover {
   background: #3f9c2d;
 }
 
-/* ===== Footer ===== */
+/* Footer */
 footer {
   text-align: center;
   padding: 15px;
   background: #1f2a27;
   color: #ffffff;
   margin-top: auto;
+}
+
+/* ===== MODO CLARO ===== */
+@media (prefers-color-scheme: light) {
+  body {
+    background: linear-gradient(135deg, #f1f2f6, #dcdde1);
+    color: #2f3640;
+  }
+
+  header, footer {
+    background: #ffffff;
+    color: #2f3640;
+  }
+
+  .search-bar {
+    background: #e0e0e0;
+  }
+
+  .search-bar input {
+    background: #e0e0e0;
+    color: #2f3640;
+  }
+
+  .producto {
+    background: #ffffff;
+    color: #2f3640;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .menu-usuario {
+    background: #ffffff;
+    color: #2f3640;
+  }
+
+  a#carrito-btn {
+    color: #27ae60;
+  }
+}
+
+/* ===== Responsive ===== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: none;
+    margin: 10px 0;
+  }
+
+  nav {
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .productos {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+  header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo img {
+    height: 50px;
+  }
+
+  .container {
+    width: 95%;
+    margin: 20px auto;
+  }
+
+  .producto {
+    height: auto;
+    padding: 10px;
+  }
+
+  .producto img {
+    max-height: 150px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
 }
